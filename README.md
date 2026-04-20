@@ -28,5 +28,6 @@ This repository contains Amiga-related manuals and books converted from scanned 
 
 ## Notes
 
+* If you want support the project, please send DM
 * OCR is not perfect; some errors may remain
 * Documents are continuously improved
