@@ -1,3 +1,5 @@
+<img src="assets/wshell.svg" alt="WShell Cover" width="200"/>
+
 # **The Beachcomber's Guide to the WShell Version 2.0**
 *Copyright © 1988, 1991 William S. Hawes All Rights Reserved*
 
@@ -22,11 +24,8 @@ WShell 2.0 has been extensively tested to ensure reliable operation, and is supe
 
 Ask your dealer for our companion product ARexx, the REXX language for the Amiga. ARexx and WShell work together to give you a full procedural language for writing command scripts, offering you unprecedented power and flexibility in a command shell. ARexx is now used as the macro extension language by dozens of other Amiga software products, and has been licensed by Commodore for use with AmigaDOS 2.0!
 
-Developed and Supported by:
-Wishful Thinking Development Corp.
-P.O. Box 308
-Maynard, MA 01754
-(508) 568-8695
+Developed and Supported by: Wishful Thinking Development Corp. P.O. Box 308 Maynard, MA 01754 (508) 568-8695 
+
 System requirements: Amiga 500/1000/2000/3000 with Vl.3 or V2.0 OS
 ARexx and WShell are trademarks of Wishful Thinking Development Corp. 
 Amiga is a registered trademark of Commodore-Amiga, Inc. 
