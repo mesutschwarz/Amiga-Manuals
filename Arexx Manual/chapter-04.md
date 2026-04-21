@@ -415,140 +415,184 @@ the stream would be read in the order "line 3," "line 2," and "line 1."
 
 There are several restrictions governing the use of the `PUSH` instruction and its alter ego `QUEUE`. These instructions use a special I/O mechanism to accomplish their task, and as a result can be used only with an interactive (stream-model) I/O device like a console or pipe. The stream must be managed by with a DOS handler that supports the special `ACTION_STACK` (for `PUSH`) or `ACTION_QUEUE` (for `QUEUE`) command.
 
-PUSH allows the STDIN stream to be used as a private scratchpad to prepare data for subsequent processing. For example, several files could be concatenated with delimiters between them by simply reading the input files, PUSHing the lines into the stream, and inserting a delimiter where required. Once the stacked lines are exhausted, the stream reverts to its normal source of data.
+`PUSH` allows the `STDIN` stream to be used as a private scratchpad to prepare data for subsequent processing. For example, several files could be concatenated with delimiters between them by simply reading the input files, PUSHing the lines into the stream, and inserting a delimiter where required. Once the stacked lines are exhausted, the stream reverts to its normal source of data.
 
 ```rexx
 
-I*Stack commands for compile and link*I
-push "blink c.o+main.o library amiga.lib to myprog" push 11 cc main"
+/* Stack commands for compile and link */
+push "blink c.o+main.o library amiga.lib to myprog" 
+push "cc main"
 ```
 
-The QUEUE instruction is used to prepare a stream of data to be read by a command shell or other program. It is very similar to the preceding PUSH instruction, and differs only in that the data lines are placed in the STDIN stream in "first-in, first-out" order. In this case the instructions
+## 4.23 QUEUE
+```rexx
+QUEUE [expression]
+```
+
+The `QUEUE` instruction is used to prepare a stream of data to be read by a command shell or other program. It is very similar to the preceding `PUSH` instruction, and differs only in that the data lines are placed in the `STDIN` stream in "first-in, first-out" order. In this case the instructions
 
 ```rexx
-
 queue line 1
 queue line 2
 queue line 3
 ```
 
-would be read in the order "line 1," "line 2," and "line 3.'' The QUEUEd lines always precede all interactivly-entered lines, and always follow any PUSHed (stacked) lines.
+would be read in the order `line 1`, `line 2`, and `line 3`. The QUEUEd lines always precede all interactivly-entered lines, and always follow any PUSHed (stacked) lines.
 
-The same restrictions noted with the use of the PUSH instruction apply to the QUEUE instruction. The queueing mechanism uses the ACTIDN_QUEUE command, so the DOS handler associated with the STDIN stream must support this command.
+The same restrictions noted with the use of the `PUSH` instruction apply to the `QUEUE` instruction. The queueing mechanism uses the `ACTION_QUEUE` command, so the DOS handler associated with the `STDIN` stream must support this command.
 
-In most cases the choice of whether to use PUSH or QUEUE is just a matter of conve-nience or personal preference. Each of them provides a "scratch pad" facility similar to that provided by an I/O pipe, but useful within one program or task rather than just for interprocess communications.
-
-/â€¢ Queue commands for compile and linkâ€¢/ queue "cc main"
+In most cases the choice of whether to use `PUSH` or `QUEUE` is just a matter of conve-nience or personal preference. Each of them provides a "scratch pad" facility similar to that provided by an I/O pipe, but useful within one program or task rather than just for interprocess communications.
 
 ```rexx
-
-queue "blinkc.o+main.o library amiga.lib to myprog"
+/* Queue commands for compile and link */ 
+queue "cc main"
+queue "blink c.o+main.o library amiga.lib to myprog"
+```
+## 4.24 RETURN
+```rexx
+RETURN [expression]
 ```
 
-RETURN is used to leave a function and return control to the point of the previous function invocation. The evaluated expression is returned as the function result. If an expression is not supplied, an error may result in the caller's environment. Functions called from within an expression must return a result string, and will generate an error if no result is available. Function invoked by the CALL instruction need not return a result.
+`RETURN` is used to leave a function and return control to the point of the previous function invocation. The evaluated expression is returned as the function result. If an expression is not supplied, an error may result in the caller's environment. Functions called from within an expression must return a result string, and will generate an error if no result is available. Function invoked by the `CALL` instruction need not return a result.
 
-A RETURN issued from the base environment of a program is not an error, and is equivalent to an EXIT instruction. Refer to the EXIT instruction for a description of how result strings are passed back to an external caller.
+A `RETURN` issued from the base environment of a program is not an error, and is equivalent to an `EXIT` instruction. Refer to the `EXIT` instruction for a description of how result strings are passed back to an external caller.
 
 ```rexx
+return 6*7       /* the answer
+```
 
-return 6â€¢7 /â€¢ the answer
+## 4.25 SAY
+```rexx
+SAY [expression]
 ```
 
 The result of the evaluated expression is written to the output console, with a "newline" character appended. If the expression is omitted, a null string is sent to the console.
 
 ```rexx
-
-say 'The answer is ' value 4-26 SELECT
+say 'The answer is ' value 
 ```
 
-This instruction begins a group of instructions containing one or more WHEN clauses and possibly a single **OTHERWISE** clause, each followed by a conditional statement.
+## 4.26 SELECT
+```rexx
+SELECT
+```
 
-Only one of the conditional statements within the **SELECT ** group will be executed. Each**WHEN ** statement is executed in succession until one succeeds; if none succeeds, the**OTHERWISE ** statement is executed. The**SELECT ** range must be terminated by an eventual**END** statement.
+This instruction begins a group of instructions containing one or more `WHEN` clauses and possibly a single `OTHERWISE` clause, each followed by a conditional statement.
 
+Only one of the conditional statements within the `SELECT` group will be executed. Each`WHEN` statement is executed in succession until one succeeds; if none succeeds, the `OTHERWISE ` statement is executed. The`SELECT ` range must be terminated by an eventual`END` statement.
+
+```rexx
 select
-
-```rexx
-
-when i=1 then say 'one' when i=2 then say 'two' otherwise say 'other' end
+    when i=1 then say 'one' 
+    when i=2 then say 'two' 
+    otherwise say 'other' 
+end
 ```
 
-The **SHELL ** instruction is a synonym for the**ADDRESS** instruction. Example:
-
+## 4.27 SHELL
 ```rexx
-
-shell edit I* set host to 'EDIT' 4-28 SIGNAL
+SHELL [symbol | string] [expression, ...]
 ```
 
-There are two forms of the **SIGNAL ** instruction. The first form illustrated controls the state of the internal interrupt flags. Interrupts allow a program to detect and retain control when certain errors occur, and are discussed in Chapter 7. In this form**SIGNAL ** must be followed by one of the keywords**ON ** or**OFF** and one of the condition keywords listed below. The interrupt flag specified by the condition symbol is then set to the indicated state. The valid signal conditions are:
-
-BREAK_C A "control-C" break was detected.
+The `SHELL` instruction is a synonym for the`ADDRESS` instruction. Example:
 
 ```rexx
-
-BREAK.J) A "control-D" break was detected.
-BREAK.E A "control-E" break was detected.
-BREAK...F A "control-F" break was detected.
+shell edit      /* set host to 'EDIT' */
 ```
 
-ERROR A host command returned a non-zero code.
-
-HALT An external HALT request was detected.
-
-IOERR An error was detected by the I/O system.
-
-NOVALUE An uninitialized variable was used.
-
-SYNTAX A syntax or execution error was detected.
-
-The condition keywords are interpreted as labels to which control will be transferred if the selected condition occurs. For example, if the ERROR interrupt is enabled and a command returns a non-zero code, the interpreter will transfer control to the label ERROR:. The condition label must of course be defined in the program; otherwise, an immediate **SYNTAX** error results and the program exits.
-
-In the second form of the instruction, the tokens following SIGNAL are evaluated as an expression. An immediate interrupt is generated that transfers control to the label specified by the expression result. The instruction thus acts as a "computed goto."
-
-Interrupts. Whenever an interrupt occurs, all currently active control ranges (IF, DO, SELECT, INTERPRET, or interactive TRACE) are dismantled before the transfer of control. Thus, the transfer cannot be used to jump into the range of a DO-loop or other control structure. Only the control structures in the current environment are affected by a SIGNAL condition, so it is safe to SIGNAL from within an internal function without affecting the state of the caller's environment.
-
-Special Variables. The special variable SIGL is set to the current line number whenever a transfer of control occurs. The program can inspect SIGL to determine which line was being executed before the transfer. If an ERROR or SYNTAX condition causes an interrupt, the special variable R.C is set to the error code that triggered the interrupt. For the ERROR condition, this code is usually an error severity level. The **SYNTAX** condition will always indicate an ARex.x error code.
-
+## 4.28 SIGNAL
 ```rexx
-
-signal on error signal off syntax signal start
-I* enable interrupt I* disable SYNTAX I* goto START
+SIGNAL {ON | OFF} condition
+SIGNAL [value] expression
 ```
 
-The THEN instruction must be the next statement following an IF or WHEN instruction, and is valid only in that context. It tests whether the preceding expression evaluated to 1 (True), in which case the conditional statement following the THEN is performed. If the expression result was a O (False), the conditional statement is skipped.
+There are two forms of the `SIGNAL` instruction. The first form illustrated controls the state of the internal interrupt flags. Interrupts allow a program to detect and retain control when certain errors occur, and are discussed in Chapter 7. In this form `SIGNAL` must be followed by one of the keywords `ON` or `OFF` and one of the condition keywords listed below. The interrupt flag specified by the condition symbol is then set to the indicated state. The valid signal conditions are:
+
+
+* `BREAK_C` A "control-C" break was detected.
+* `BREAK.D` A "control-D" break was detected.
+* `BREAK.E` A "control-E" break was detected.
+* `BREAK.F` A "control-F" break was detected.
+* `ERROR` A host command returned a non-zero code.
+* `HALT` An external HALT request was detected.
+* `IOERR` An error was detected by the I/O system.
+* `NOVALUE` An uninitialized variable was used.
+* `SYNTAX` A syntax or execution error was detected.
+
+The condition keywords are interpreted as labels to which control will be transferred if the selected condition occurs. For example, if the `ERROR` interrupt is enabled and a command returns a non-zero code, the interpreter will transfer control to the label `ERROR:`. The condition label must of course be defined in the program; otherwise, an immediate `SYNTAX` error results and the program exits.
+
+In the second form of the instruction, the tokens following `SIGNAL` are evaluated as an expression. An immediate interrupt is generated that transfers control to the label specified by the expression result. The instruction thus acts as a "computed goto."
+
+**Interrupts.** Whenever an interrupt occurs, all currently active control ranges (`IF`, `DO`, `SELECT`, `INTERPRET`, or interactive `TRACE`) are dismantled before the transfer of control. Thus, the transfer cannot be used to jump into the range of a `DO-loop` or other control structure. Only the control structures in the current environment are affected by a `SIGNAL` condition, so it is safe to `SIGNAL` from within an internal function without affecting the state of the caller's environment.
+
+**Special Variables.** The special variable `SIGL` is set to the current line number whenever a transfer of control occurs. The program can inspect `SIGL` to determine which line was being executed before the transfer. If an `ERROR` or `SYNTAX` condition causes an interrupt, the special variable `RC` is set to the error code that triggered the interrupt. For the `ERROR` condition, this code is usually an error severity level. The `SYNTAX` condition will always indicate an ARex.x error code.
 
 ```rexx
+signal on error       /* enable interrupt */
+signal off syntax     /* disable SYNTAX */
+signal start          /* goto START */
+```
 
+## 4.29 THEN
+```rexx
+THEN [;] [conditional statement]
+```
+
+The `THEN` instruction must be the next statement following an `IF` or `WHEN` instruction, and is valid only in that context. It tests whether the preceding expression evaluated to `1 (True)`, in which case the conditional statement following the `THEN` is performed. If the expression result was a `0 (False)`, the conditional statement is skipped.
+
+```rexx
 if i = j
-then say 'equal' else say 'not equal'
+    then say 'equal' 
+    else say 'not equal'
 ```
 
-The **TRACE ** instruction is used to set the internal tracing mode. If a symbol or string is supplied, it is taken as a literal. Otherwise, the tokens following the**VALUE ** keyword are evaluated as an expression. The**VALUE** keyword can be omitted if the expression doesn't start with a symbol or string token.
-
-In either case the result string is converted to uppercase and checked first for one of the "alphabetic" options. The valid alphabetic options are **ALL, COMMANDS, ERRORS, INTERMEDIATES, LABELS, RESULTS,** and **SCAN.** These can be spelled out in full or shortened to the initial character, and are described in Chapter 7. If the result doesn't match any of these options, the interpreter attempts to convert it to an integer. A conversion failure here will be reported as an error.
-
-Numeric Option. If the specified trace option is a negative whole number, it is accepted as a trace suppression count. The suppression count is the number of clauses (that would otherwise be traced) to be passed over before resuming the tracing display. Suppression counts are ignored except during interactive tracing.
-
+## 4.30 TRACE
 ```rexx
-
-trace ?r trace off trace -20
-I*interactive RESULTS *I I* skip 20 clauses*I
+TRACE [symbol | string | [[VALUE] expression]
 ```
 
-The values of the variables in the list are converted to uppercase. It is not an error to include an uninitialized variable in the list, but it will be trapped if the **NOVALUE** interrupt has been enabled.
+The `TRACE` instruction is used to set the internal tracing mode. If a symbol or string is supplied, it is taken as a literal. Otherwise, the tokens following the `VALUE`* keyword are evaluated as an expression. The`VALUE` keyword can be omitted if the expression doesn't start with a symbol or string token.
 
-The **TRANSLATE()** or **UPPER()** Built-In functions could also be used to convert variables to uppercase, but the instruction form is more concise (and faster) if several variables are being converted.
+In either case the result string is converted to uppercase and checked first for one of the "alphabetic" options. The valid alphabetic options are `ALL, COMMANDS, ERRORS, INTERMEDIATES, LABELS, RESULTS,` and `SCAN.` These can be spelled out in full or shortened to the initial character, and are described in Chapter 7. If the result doesn't match any of these options, the interpreter attempts to convert it to an integer. A conversion failure here will be reported as an error.
+
+**Prefix Characters.** Two special symbol characters may precede any of the alphabetic
+keywords. The `?` character controls interactive tracing, and the `!` character controls
+***command inhibition***. These characters act as "toggles" to alternatively select and de-select the respective modes. Any number of prefix characters may precede an alphabetic option. Interactive tracing and ***command inhibition*** are described in Chapter 7. 
+
+**Numeric Option.** If the specified trace option is a negative whole number, it is accepted as a trace suppression count. The suppression count is the number of clauses (that would otherwise be traced) to be passed over before resuming the tracing display. Suppression counts are ignored except during interactive tracing.
 
 ```rexx
-
-when = 'Now is the time' upper when
-say when I*NOW IS THE TIME*I
+trace ?r        /* interactive RESULTS */
+trace off 
+trace -20       /* skip 20 clauses */
 ```
 
-The **WHEN ** instruction is similar to the IF instruction, but is valid only within a**SELECT ** range. Each**WHEN ** expression is evaluated in turn and must result in a boolean value. If the result is a 1, the conditional statement is executed and control passes to the**END ** statement that terminates the**SELECT.** As in the case of the IF instruction, the **THEN** need not be part of the same clause.
+## 4.31 UPPER
+```rexx
+UPPER variable1 [variable2 ...]
+```
+
+The values of the variables in the list are converted to uppercase. It is not an error to include an uninitialized variable in the list, but it will be trapped if the `NOVALUE` interrupt has been enabled.
+
+The `TRANSLATE()` or `UPPER()` Built-In functions could also be used to convert variables to uppercase, but the instruction form is more concise (and faster) if several variables are being converted.
 
 ```rexx
+when = 'Now is the time' 
+upper when
+say when         /* NOW IS THE TIME */
+```
 
+## 4.32 WHEN
+```rexx
+WHEN expression [THEN] [;] [conditional statement]
+```
+
+The `WHEN ` instruction is similar to the IF instruction, but is valid only within a `SELECT` range. Each `WHEN` expression is evaluated in turn and must result in a boolean value. If the result is a `1`, the conditional statement is executed and control passes to the `END` statement that terminates the `SELECT`. As in the case of the `IF` instruction, the `THEN` need not be part of the same clause.
+
+```rexx
 select;
-when i<j then say 'less' when i=j then say 'equal' otherwise say 'greater' end
+    when i<j then say 'less' 
+    when i=j then say 'equal' 
+    otherwise say 'greater' 
+end
 ```
-
