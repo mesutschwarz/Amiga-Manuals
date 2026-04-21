@@ -1,12 +1,14 @@
 ﻿# Chapter 4 Instructions 
-Instruction clauses are identified by an initial keyword symbol that is not followed by a colon (**:**) or an equals (**=**) operator. Each instruction signifies a specific action, and may be followed by one or more subkeywords, expressions, or other instruction-specific information. Instruction keywords and subkeywords are recognized only in this specific context, and are therefore not "reserved words" in the usual sense of the term. Keywords may be used freely as variables or function names, although such usage may become confusing at times.
+Instruction clauses are identified by an initial keyword symbol that is not followed by a colon `:` or an equals `=` operator. Each instruction signifies a specific action, and may be followed by one or more subkeywords, expressions, or other instruction-specific information. Instruction keywords and subkeywords are recognized only in this specific context, and are therefore not "reserved words" in the usual sense of the term. Keywords may be used freely as variables or function names, although such usage may become confusing at times.
 
-In the descriptions that follow, keywords are shown in uppercase and optional parts of the instruction are enclosed in brackets. Alternative selections are separated by a vertical bar (**|**), and required alternatives are enclosed in braces (**{}**).
+In the descriptions that follow, keywords are shown in uppercase and optional parts of the instruction are enclosed in brackets. Alternative selections are separated by a vertical bar `|`, and required alternatives are enclosed in braces `{ }`.
 
 ## 4.1 ADDRESS
-*Usage:* ADDRESS [symbol | string | [[VALUE] [expression]]
+```rexx
+ADDRESS [symbol | string | [[VALUE] [expression]]
+```
 
-This instruction specifies a *host address* for commands issued by the interpreter. A host address is the name associated with an external program to which commands can be sent; external hosts are described in Chapter 5. ARexx maintains two host addresses: a "current" and a "previous" value. Whenever a new host address is supplied, the "previous" address is lost, and the "current" address becomes the "previous" one. These host addresses are part of a program's storage environment and are preserved across internal function calls. The current address can be retrieved with the Built-In function ADDRESS(). There are four distinct forms for the ADDRESS instruction:
+This instruction specifies a ***host address*** for commands issued by the interpreter. A host address is the name associated with an external program to which commands can be sent; external hosts are described in Chapter 5. ARexx maintains two host addresses: a "current" and a "previous" value. Whenever a new host address is supplied, the "previous" address is lost, and the "current" address becomes the "previous" one. These host addresses are part of a program's storage environment and are preserved across internal function calls. The current address can be retrieved with the Built-In function ADDRESS(). There are four distinct forms for the ADDRESS instruction:
 
 * **ADDRESS {*string* | *symbol*}** *expression.* The expression is evaluated and the result is issued to the host specified by the string or symbol, which is taken as a literal. No changes are made to the current or previous address strings. This provides a convenient way to issue a single command to an external host without disturbing the current host addresses. The return code from the command is treated as it would be from a command clause.
 
@@ -23,19 +25,24 @@ address VALUE edit n    /* compute a new host address */
 address                 /* swap current and previous */
 ```
 ## 4.2 ARG
-*Usage:* ARG [template] [,template ...]
+```rexx
+ARG [template] [,template ...]
+```
 
-ARG is a shorthand form for the **PARSE UPPER ARG** instruction. It retrieves one or more of the argument strings available to the program, and assigns values to the variables in the template. The number of argument strings available depends on the whether the program was invoked as a command or a function. Command invocations normally have only one argument string, but functions may have up to 15. The argument strings are not altered by the ARG instruction.
+ARG is a shorthand form for the `PARSE UPPER ARG` instruction. It retrieves one or more of the argument strings available to the program, and assigns values to the variables in the template. The number of argument strings available depends on the whether the program was invoked as a command or a function. Command invocations normally have only one argument string, but functions may have up to 15. The argument strings are not altered by the ARG instruction.
 
-The structure and processing of templates is described briefly with the **PARSE** instruction, and in greater depth in Chapter 8.
+The structure and processing of templates is described briefly with the `PARSE` instruction, and in greater depth in Chapter 8.
 
 ```rexx
 arg first,second        /* fetch arguments */
 ```
 
 ## 4.3 BREAK
-*Usage:* BREAK
-The **BREAK** instruction is used to exit from the range of a **DO** instruction or from within an **INTERPRETed** string, and is valid only in these contexts. If used within a **DO** statement, **BREAK** exits from the innermost **DO** statement containing the **BREAK**. This contrasts with the otherwise similar **LEAVE** instruction, which exits only from an iterative **DO**.
+```rexx
+BREAK
+```
+
+The `BREAK` instruction is used to exit from the range of a `DO` instruction or from within an `INTERPRETed` string, and is valid only in these contexts. If used within a `DO` statement, `BREAK` exits from the innermost `DO` statement containing the `BREAK`. This contrasts with the otherwise similar `LEAVE` instruction, which exits only from an iterative `DO`.
 
 ```rexx
 do                          /* begin block */
@@ -46,9 +53,11 @@ end                         /* end block */
 ```
 
 ## 4.4 CALL
-*Usage:* CALL {symbol | string} [expression, ...]
+```rexx
+CALL {symbol | string} [expression, ...]
+```
 
-The **CALL** instruction is used to invoke an internal or external function. The function name is specified by the symbol or string token, which is taken as a literal. Any expressions that follow are evaluated and become the arguments to the called function. The value returned by the function is assigned to the special variable **RESULT**. It is not an error if a result string is not returned; in this case the variable **RESULT** is **DROPped** (becomes uninitialized.)
+The `CALL` instruction is used to invoke an internal or external function. The function name is specified by the symbol or string token, which is taken as a literal. Any expressions that follow are evaluated and become the arguments to the called function. The value returned by the function is assigned to the special variable `RESULT`. It is not an error if a result string is not returned; in this case the variable `RESULT` is `DROPped` (becomes uninitialized.)
 
 The linkage to the function is established dynamically at the time of the call. ARexx follows a specific search order in attempting to locate the called function; this process is described in Chapter 6.
 
@@ -57,68 +66,74 @@ call center name,length+4,'+'
 ```
 
 ## 4.5 DO
-*Usage:* DO [var=exp [TO exp] [BY exp]] [FOR exp] [FOREVER] [WHILE exp] [UNTIL exp]]
+```rexx
+DO [var=exp [TO exp] [BY exp]] [FOR exp] [FOREVER] [WHILE exp] [UNTIL exp]]
+```
 
-The **DO** instruction begins a group of instructions to be executed as a block. The range of the **DO** instruction includes all statements up to and including an eventual **END** instruction. There are two basic forms of the instruction:
+The `DO` instruction begins a group of instructions to be executed as a block. The range of the `DO` instruction includes all statements up to and including an eventual `END` instruction. There are two basic forms of the instruction:
 
-* The **DO** keyword by itself defines a block of instructions to be executed once.
+* The `DO` keyword by itself defines a block of instructions to be executed once.
 
-* If any iteration specifiers follow the **DO** keyword, the block of instructions is executed repeatedly until a termination condition occurs.
+* If any iteration specifiers follow the `DO` keyword, the block of instructions is executed repeatedly until a termination condition occurs.
 
-An iterative **DO** instruction is sometimes called a "loop", since the interpreter "loops back" to perform the instruction repeatedly. The various parts of the **DO** instruction are described below.
+An iterative `DO` instruction is sometimes called a "loop", since the interpreter "loops back" to perform the instruction repeatedly. The various parts of the `DO` instruction are described below.
 
-BY **expression.** The expression following a BY symbol defines the increment to be added to the index variable in each subsequent iteration. The expression must yield a numeric result, which may be positive or negative and need not be an integer. The default increment is 1.
+`BY` **expression.** The expression following a `BY` symbol defines the increment to be added to the index variable in each subsequent iteration. The expression must yield a numeric result, which may be positive or negative and need not be an integer. The default increment is 1.
 
-TO **expression.** The result of the TO expression specifies the upper (or lower) limit for the index variable. At each iteration the index variable is compared to the TO result. If the increment (BY result) is positive and the variable is greater than the limit, the DO instruction terminates and control passes to the statement following the END instruction. Similarly, the loop terminates if the increment is negative and the index variable is less than the limit.
+`TO` **expression.** The result of the `TO` expression specifies the upper (or lower) limit for the index variable. At each iteration the index variable is compared to the `TO` result. If the increment (`BY` result) is positive and the variable is greater than the limit, the `DO` instruction terminates and control passes to the statement following the `END` instruction. Similarly, the loop terminates if the increment is negative and the index variable is less than the limit.
 
-FOR **expression.** The FOR expression must yield a positive whole number when evaluated, and specifies the maximum number of iterations to be performed. The loop terminates when this limit is reached irrespective of the value of the index variable.
+`FOR` **expression.** The `FOR` expression must yield a positive whole number when evaluated, and specifies the maximum number of iterations to be performed. The loop terminates when this limit is reached irrespective of the value of the index variable.
 
-FOREVER. The FOREVER keyword can be used if an iterative DO instruction is required but no index variable is necessary. Presumably the loop will be terminated by a LEAVE or BREAK instruction contained within the loop body.
+`FOREVER`. The `FOREVER` keyword can be used if an iterative `DO` instruction is required but no index variable is necessary. Presumably the loop will be terminated by a `LEAVE` or `BREAK` instruction contained within the loop body.
 
-WHILE expression. The WHILE expression is evaluated at the beginning of each iteration and must result in a boolean value. The iteration proceeds if the result is 1; otherwise, the loop terminates.
+`WHILE` **expression.** The `WHILE` expression is evaluated at the beginning of each iteration and must result in a boolean value. The iteration proceeds if the result is 1; otherwise, the loop terminates.
 
-UNTIL **expression.** The UNTIL expression is evaluated at the end of each iteration and must result in a boolean value. The instruction continues with the next iteration if the result is 0, and terminates otherwise.
+`UNTIL` **expression.** The `UNTIL` expression is evaluated at the end of each iteration and must result in a boolean value. The instruction continues with the next iteration if the result is `0`, and terminates otherwise.
 
-The initializer, BY, TO, and FOR expressions are evaluated only when the instruction is first activated, so the increment and limits are fixed throughout the execution. Note that a limit need not be supplied; for example, the instruction "DO i=l" will simply count away forever. Note also that only one of the WHILE or UNTIL keywords can be specified.
+The initializer, `BY`, `TO`, and `FOR` expressions are evaluated only when the instruction is first activated, so the increment and limits are fixed throughout the execution. Note that a limit need not be supplied; for example, the instruction `DO i=1` will simply count away forever. Note also that only one of the `WHILE` or `UNTIL` keywords can be specified.
 
 ```rexx
 
-do i=1 to limit for 5 vhile time < 50
-y.i = iâ€¢time end
+do i=1 to limit for 5 while time < 50
+    y.i = i*time 
+end
 ```
 
-The specified variable symbols are reset to their uninitialized state, in which the value of the variable is the variable name itself. It is not an error to DROP a variable that is already uninitialized. DROPping a stem symbol is equivalent to DROPping the values of all possible compound symbols derived from that stem.
+## 4.6 DROP
+```rexx
+DROP variable1 [variable2 ...]
+```
+
+The specified variable symbols are reset to their uninitialized state, in which the value of the variable is the variable name itself. It is not an error to `DROP` a variable that is already uninitialized. `DROP`ping a stem symbol is equivalent to `DROP`ping the values of all possible compound symbols derived from that stem.
 
 ```rexx
-
-a = 123
+a = 123      /* assign a value */
+drop a b     /* drop some variables */
+say a b      /* ==>A B */
 ```
 
-drop ab
-
-say ab
-
-/â€¢ **assign a value**
-
-Iâ€¢ drop some
-
+## 4.7 ECHO
 ```rexx
-
-f* ==>AB
+ECHO [expression]
 ```
 
-The ECHO instruction is a synonym for the SAY instruction. It displays the expression result on the console.
+The `ECHO` instruction is a synonym for the `SAY` instruction. It displays the expression result on the console.
 
 ```rexx
 
 echo "You don't SAY!"
 ```
 
-The ELSE instruction provides the alternative conditional branch for an IF statement. It is valid only within the range of an IF instruction, and must follow the conditional statement of the THEN branch. If the THEN branch wasn't executed, the statement following the ELSE clause is performed.
+## 4.8 ELSE
+```rexx
+ELSE [;] [conditional statement]
+```
 
-Binding. ELSE clauses always bind to the nearest (preceding) IF statement. It may be necessary to provide "dummy" ELSE clauses for the inner IF ranges of a compound IF statement in order to allow alternative branches for the outer IF statements. In this case it is not sufficient to follow the ELSE with a semicolon or a null clause. Instead, the NOP (no-operation) instruction can be used for this purpose.
+The `ELSE` instruction provides the alternative conditional branch for an `IF` statement. It is valid only within the range of an `IF` instruction, and must follow the conditional statement of the `THEN` branch. If the `THEN` branch wasn't executed, the statement following the `ELSE` clause is performed.
 
-Exa.mple:
+**Binding.** `ELSE` clauses always bind to the nearest (preceding) `IF` statement. It may be necessary to provide "dummy" `ELSE` clauses for the inner `IF` ranges of a compound `IF` statement in order to allow alternative branches for the outer IF statements. In this case it is not sufficient to follow the `ELSE` with a semicolon or a null clause. Instead, the `NOP` (no-operation) instruction can be used for this purpose.
+
+Example:
 
 ```rexx
 
@@ -126,247 +141,279 @@ if 1 > 2 then say 'really?'
 else say 'I thought so'
 ```
 
-The END instruction terminates the ra.nge of a. DO or SELECT instruction. If the optional va.ria.ble symbol is supplied, it is compared to the index va.ria.ble of the DO statement (which must therefore be iterative). An error is generated if the symbols do not ma.tch, so this provides a. simple mechanism for matching the DO and END statements.
+## 4.9 END
+```rexx
+END [variable]
+```
+The `END` instruction terminates the ra.nge of a. `DO` or `SELECT` instruction. If the optional variable symbol is supplied, it is compared to the index variable of the `DO` statement (which must therefore be iterative). An error is generated if the symbols do not match, so this provides a simple mechanism for matching the `DO` and `END` statements.
 
-Exa.mple:
+Example:
 
 ```rexx
 
-do i=1 to 5 say i end i
+do i=1 to 5     /* index variable is "I" */
+    say i 
+end i           /* end "I" loop */
 ```
 
-/â€¢ index variable is I â€¢I
-
-/â€¢ end ''I'' loop â€¢I
-
-The **EXIT** instruction terminates the execution of a. progra.m, a.nd is valid anywhere within a. progra.m. The evaluated expression is pa.ssed ha.ck to the caller as the function or command result.
-
-Results Processing. The processing of the EXIT result depends on whether a result string wa.s requested by the calling program, a.nd whether the current invocation resulted from a comma.nd or function call. If a result string was requested, the expression result is copied to a block of allocated memory and a pointer to the block is returned as the secondary result of the call.
-
-If the caller did not request a result string, and the program wa.s invoked as a. comma.nd, then an attempt is made to convert the expression result to an integer. This value is then returned as the primary result, with O as the secondary result. This allows the EXIT expression to be interpreted as a. "return code" by the caller. Refer to Chapter 10 for further information on the data structures used to return the result string.
-
+## 4.10 EXIT
 ```rexx
-
-exit exit 12
+EXIT [expression]
 ```
 
-Iâ€¢ no result needed
+The `EXIT` instruction terminates the execution of a program, and is valid anywhere within a program. The evaluated expression is passed back to the caller as the function or command result.
 
-/â€¢ an error return?
+**Results Processing.** The processing of the `EXIT` result depends on whether a result string was requested by the calling program, and whether the current invocation resulted from a command or function call. If a result string was requested, the expression result is copied to a block of allocated memory and a pointer to the block is returned as the secondary result of the call.
 
-The IF instruction is used in conjunction with THEN and ELSE instructions to conditionally execute a 'statement. The result of the expression must be a boolean va.lue. If the result is 1 **(True),** the statement following the THEN symbol is executed; otherwise, control passes to the next statement (which might be a.n ELSE clause.) The THEN keyword need not im-mediately follow the IF expression, but may a.ppear as a. separate clause. The instruction
-
-is actually analyzed as "IF expression; THEN; statement;." In essence, the IF state-ment begins a syntactic range and establishes the test condition that determines whether subsequent THEN or ELSE clauses will be performed.
-
-Any valid statement may follow the THEN symbol; in particular, a "DO; group allows a series of statements to be performed conditionally.
+If the caller did not request a result string, and the program was invoked as a command, then an attempt is made to convert the expression result to an integer. This value is then returned as the primary result, with 0 as the secondary result. This allows the `EXIT` expression to be interpreted as a "return code" by the caller. Refer to Chapter 10 for further information on the data structures used to return the result string.
 
 ```rexx
 
-END;"
-if result< 0 then exit I*all done?*I
+exit        /* no result needed */
+exit 12     /* return code 12 */
 ```
 
-The expression is evaluated and the result is executed as one or more program statements. The statements are considered as a group, as though surrounded by a "DO; ...;END" combination. Any statements can be included in the INTERPRETed source, including DO or SELECT instructions.
+## 4.11 IF
+```rexx
+IF expression [THEN] [;] [conditional statement]
+```
+The `IF` instruction is used in conjunction with `THEN` and `ELSE` instructions to conditionally execute a 'statement. The result of the expression must be a boolean va.lue. If the result is 1 **(True),** the statement following the `THEN` symbol is executed; otherwise, control passes to the next statement (which might be an `ELSE` clause.) The `THEN` keyword need not immediately follow the `IF` expression, but may appear as a separate clause. The instruction is actually analyzed as `IF expression; THEN; statement;` In essence, the `IF` statement begins a syntactic range and establishes the test condition that determines whether subsequent `THEN` or `ELSE` clauses will be performed.
 
-An INTERPRET instruction activates a control range when it is executed, which serves as a "fence" for LEAVE and ITERATE instructions. These instructions can therefore be used only with DO-loops defined within the INTERPRET. The BREAK instruction can be used to terminate the processing of INTERPRETed statements. While it is not an error to include label clauses within the interpreted string, only those labels defined in the original source code are searched during a transfer of control.
-
-The INTERPRET instruction can be used to solve programming problems in interesting and novel ways. Programs can be constructed dynamically and then executed using this instruction, or program fragments may be passed as arguments to functions, which then INTERPRET them.
-
-. . .
+Any valid statement may follow the `THEN` symbol; in particular, a `DO; ...;END` group allows a series of statements to be performed conditionally.
 
 ```rexx
-
-inst = 'say' interpret inst hello
-I* an instruction I* "say HELLO"
+if result< 0 then exit      /* all done? */
 ```
 
-The ITERATE instruction terminates the current iteration of a DO instruction and begins the next iteration. Effectively, control passes to the END statement and then (depending on the outcome of the UNTIL expression) back to the DO statement. The instruction normally acts on the innermost iterative DO range containing the instruction. An error results if the LEAVE instruction is not contained within an iterative DO instruction.
+## 4.12 INTERPRET
+```rexx
+INTERPRET expression
+```
+The expression is evaluated and the result is executed as one or more program statements. The statements are considered as a group, as though surrounded by a `DO; ...;END` combination. Any statements can be included in the `INTERPRETed` source, including `DO` or `SELECT` instructions.
 
-The optional variable symbol specifies which DO range is to be exited, in the event that several nested ranges exist. The variable is taken as a literal and must match the index variable of a currently active DO instruction. An error results if no such matching DO instruction is found.
+An `INTERPRET` instruction activates a control range when it is executed, which serves as a "fence" for `LEAVE` and `ITERATE` instructions. These instructions can therefore be used only with DO-loops defined within the `INTERPRET`. The `BREAK` instruction can be used to terminate the processing of `INTERPRETed` statements. While it is not an error to include label clauses within the interpreted string, only those labels defined in the original source code are searched during a transfer of control.
+
+The `INTERPRET` instruction can be used to solve programming problems in interesting and novel ways. Programs can be constructed dynamically and then executed using this instruction, or program fragments may be passed as arguments to functions, which then `INTERPRET` them.
 
 ```rexx
+inst = 'say'            /* an instruction */
+interpret inst hello    /* ... "say HELLO" */
+```
 
+## 4.13 ITERATE
+```rexx
+ITERATE [variable]
+```
+
+The `ITERATE` instruction terminates the current iteration of a `DO` instruction and begins the next iteration. Effectively, control passes to the `END` statement and then (depending on the outcome of the `UNTIL` expression) back to the `DO` statement. The instruction normally acts on the innermost iterative `DO` range containing the instruction. An error results if the `LEAVE` instruction is not contained within an iterative `DO` instruction.
+
+The optional variable symbol specifies which `DO` range is to be exited, in the event that several nested ranges exist. The variable is taken as a literal and must match the index variable of a currently active `DO` instruction. An error results if no such matching `DO` instruction is found.
+
+```rexx
 do i=1 to 3
-if i = j then iterate i
+    if i = j then iterate i
+end    
+```
+## 4.14 LEAVE
+```rexx
+LEAVE [variable]
 ```
 
-end
+`LEAVE` forces an immediate exit from the iterative DO range containing the instruction. An error results if the `LEAVE` instruction is not contained within an iterative DO instruction.
 
-LEAVE forces an immediate exit from the iterative DO range containing the instruction. An error results if the LEAVE instruction is not contained within an iterative DO instruction.
-
-The optional variable symbol specifies which DO range is to be exited, in the event that several nested ranges exist. The variable is taken as a literal and must match the index variable of a currently active DO instruction. An error results if no such matching DO instruction is found.
+The optional variable symbol specifies which `DO` range is to be exited, in the event that several nested ranges exist. The variable is taken as a literal and must match the index variable of a currently active `DO` instruction. An error results if no such matching `DO` instruction is found.
 
 ```rexx
-
 do i = 1 to limit
-if i > 5 then leave f *maximum iterations* f end
+    if i > 5 then leave     /*maximum iterations*/ 
+end
 ```
 
-The NOP or "no-operation" instruction does just that: nothing. It is provided to control the binding of ELSE clauses in compound IF statements.
+## 4.15 NOP
+```rexx
+NOP
+```
+
+The `NOP` or "no-operation" instruction does just that: nothing. It is provided to control the binding of `ELSE` clauses in compound `IF` statements.
 
 ```rexx
 
-if i = j then
-if j = k then a = 0
+if i = j then               /* first (outer) IF */ 
+    if j = k then a = 0     /* second (inner) IF */
+    else nop                /* binds to inner IF */
+else a = a + 1              /* binds to outer IF */   
 ```
 
-first (outer) IF *'
-
-'*
-
-'*
-
-inner IF *'
-
+## 4.16 NUMERIC
 ```rexx
-
-else nop '*binds to inner IF*'
-else a = a + 1 '* binds to outer IF
+NUMERIC {DIGITS | FUZZ} expression
+```
+or: 
+```rexx
+NUMERIC FORM {SCIENTIFIC | ENGINEERING}
 ```
 
-or: NUMERIC FORM {SCIENTIFIC I ENGINEERING}
+This instruction sets options relating to the numeric precision and format. The valid forms of the `NUMERIC` instruction are:
 
-This instruction sets options relating to the numeric precision and format. The valid forms of the NUMERIC instruction are:
+* `NUMERIC DIGITS` *expression.* Specifies the number of digits of precision for arithmetic calculations. The expression must evaluate to a positive whole number.
 
-NUMERIC DIGITS *expression.* Specifies the number of digits of precision for arithmetic calculations. The expression must evaluate to a positive whole number.
+* `NUMERIC FUZZ` *expression.* Specifies the number of digits to be ignored in numeric comparison operations. This must be a positive whole number that is less than the current `DIGITS` setting.
 
-NUMERIC FUZZ *expression.* Specifies the number of digits to be ignored in numeric comparison operations. This must be a positive whole number that is less than the current DIGITS setting.
+* `NUMERIC FORM SCIENTIFIC`. Specifies that numbers that require exponential notation be expressed in `SCIENTIFIC` notation. The exponent is adjusted so that the mantissa (for non-zero numbers) is between 1 and 10. This is the default format.
 
-NUMERIC FORM SCIENTIFIC. Specifies that numbers that require exponential notation be expressed in SCIENTIFIC notation. The exponent is adjusted so that the mantissa (for non-zero numbers) is between 1 and 10. This is the default format.
+* `NUMERIC FORM ENGINEERING`. Selects `ENGINEERING` format for numbers that require exponential notation. `ENGINEERING` format normalizes a number so that its exponent is a multiple of three and the mantissa (if not 0) is between 1 and 1000.
 
-NUMERIC FORM ENGINEERING. Selects ENGINEERING format for numbers that require exponential notation. ENGINEERING format normalizes a number so that its exponent is a multiple of three and the mantissa (if not 0) is between 1 and 1000.
-
-The numeric options are preserved when an internal function is called. Examples:
+The numeric options are preserved when an internal function is called. 
+Examples:
 
 ```rexx
-
-numeric digits 12 /â€¢ precision numeric form scientific/â€¢ format
+numeric digits 12           /* precision 
+numeric form scientific     /* format
 ```
 
-The OPTIONS instruction is used to set various internal defaults. The FAILAT expression sets the limit at or above which command return codes will be signalled as errors, and must evaluate to an integer value. The PROMPT expression provides a string to be used as the prompt with the PULL (or PARSE PULL) instruction. The RESULTS keyword indicates that the interpreter should request a result string when it issues commands to an external host.
+## 4.17 OPTIONS
+```rexx
+OPTIONS [FAILAT expression]
+OPTIONS [PROMPT expression]
+OPTIONS [RESULTS]
+```
 
-The internal options controlled by this instruction are preserved across function calls, so an OPTIONS instruction can be issued within an internal function without affecting the caller's environment. If no keyword is specified with the OPTIONS instruction, all controlled options revert to their default settings.
+The `OPTIONS` instruction is used to set various internal defaults. The `FAILAT` expression sets the limit at or above which command return codes will be signalled as errors, and must evaluate to an integer value. The `PROMPT` expression provides a string to be used as the prompt with the `PULL` (or `PARSE PULL`) instruction. The `RESULTS` keyword indicates that the interpreter should request a result string when it issues commands to an external host.
+
+The internal options controlled by this instruction are preserved across function calls, so an `OPTIONS` instruction can be issued within an internal function without affecting the caller's environment. If no keyword is specified with the `OPTIONS` instruction, all controlled options revert to their default settings.
 
 ```rexx
-
 options failat 10
-options prompt "Yes Boss?" options results
+options prompt "Yes Boss?" 
+options results
 ```
 
-This instruction is valid only within the range of a SELECT instruction, and must follow the "WHEN . . . THEN" statements. If none of the preceding WHEN clauses have succeeded, the statement following the OTHERWISEinstruction is executed. An OTHERWISEis not mandatory within a SELECT range. However, an error will result if the OTHERWISE clause is omitted and none of the WHEN instructions succeed.
+## 4.18 OTHERWISE
+```rexx
+OTHERWISE [;] [conditional statement]
+```
 
-select
+This instruction is valid only within the range of a `SELECT` instruction, and must follow the `WHEN . . . THEN` statements. If none of the preceding `WHEN` clauses have succeeded, the statement following the `OTHERWISE` instruction is executed. An `OTHERWISE` is not mandatory within a `SELECT` range. However, an error will result if the `OTHERWISE` clause is omitted and none of the `WHEN` instructions succeed.
 
 ```rexx
-
-when i=1 then say 'one' when i=2 then say 'two' otherwise say 'other' end
+select
+    when i=1 then say 'one' 
+    when i=2 then say 'two' 
+    otherwise say 'other' 
+end
 ```
 
-The **PARSE ** instruction provides a mechanism to extract one or more substrings from a string and assign them to variables. The input string can come from a variety of sources, including argument strings, an expression, or from the console. The*template * provides both the variables to be given values and the way to determine the value strings. The template may be omitted if the instruction is intended only to create the input string. The different options of the instruction are described below.
+## 4.19 PARSE
+```rexx
+PARSE [UPPER] inputsource [template] [,template ...]
+```
+
+The `PARSE ` instruction provides a mechanism to extract one or more substrings from a string and assign them to variables. The input string can come from a variety of sources, including argument strings, an expression, or from the console. The *template* provides both the variables to be given values and the way to determine the value strings. The template may be omitted if the instruction is intended only to create the input string. The different options of the instruction are described below.
+
+### Input Sources.
 
 The sources for the input strings are specified by the keyword symbols listed below. When multiple templates are supplied, each template receives a new input string, although for some source options the new string will be identical to the previous one. The input source string is copied before being parsed, so the original strings are never altered by the parsing process.
 
-UPPER. This optional keyword may be used with any of the input sources, and specifies that the input string is to be translated to uppercase before being parsed. It must be the first token following PARSE.
+`UPPER`. This optional keyword may be used with any of the input sources, and specifies that the input string is to be translated to uppercase before being parsed. It must be the first token following `PARSE`.
 
-ARG. This input option retrieves the argument strings supplied when the program was invoked. Command invocations normally have only a single argument but func-tions may have up to 15 argument strings. Multiple templates may be given to retrieve successive argument strings.
+* `ARG` This input option retrieves the argument strings supplied when the program was invoked. Command invocations normally have only a single argument but functions may have up to 15 argument strings. Multiple templates may be given to retrieve successive argument strings.
 
-EXTERNAL. The input string is read from the console. If multiple templates are supplied, each template will read a new string. This source option is the same as PULL.
+* `EXTERNAL` The input string is read from the console. If multiple templates are supplied, each template will read a new string. This source option is the same as `PULL`.
 
-NUMERIC. The current numeric options are placed in a string in the order DIGITS, FUZZ,
+* `NUMERIC` The current numeric options are placed in a string in the order `DIGITS`, `FUZZ`,and `FORM`, separated by a single space.
 
-and **FORM,** separated by a single space.
+* `PULL` Reads a string from the input console. If multiple templates are supplied, each template will read a new string.
 
-PULL. Reads a string from the input console. If multiple templates are supplied, each template will read a new string.
+* `VALUE` *expression* `WITH` The input string is the result of the supplied expression. The `WITH` keyword is required to separate the expression from the template. The expression result may be parsed repeatedly by using multiple templates, but the expression is not reevaluated.
 
-VALUE *expression* WITH. The input string is the result of the supplied expression. The WITH keyword is required to separate the expression from the template. The expression result may be parsed repeatedly by using multiple templates, but the expression is not reevaluated.
+* `VAR` *variable* The value of the specified variable is used as the input string. When multiple templates are provided, each template uses the current value of the variable. This value may change if the variable is included as an assignment target in any of the templates.
 
-VAR *variable.* The value of the specified variable is used as the input string. When multiple templates are provided, each template uses the current value of the variable.
+* `VERSION` The current configuration of the ARexx interpreter is supplied in the form **"ARexx** *version cpu mpu video freq'*. The ***version*** token is the release level of the interpreter, formatted as **V1.0**. The ***cpu*** token indicates the processor currently running the program, and will be one of the values `68000`, `68010`, or` 68020`. The ***mpu*** token will be either `NONE` or `68881` depending on whether a math coprocessor is available on the system. The ***video*** token will indicate either `NTSC` or `PAL`, and the ***freq*** token gives the clock (line) frequency as either `60HZ` or `50HZ`.
 
-This value may change if the variable is included as an assignment target in any of the templates.
-
-VERSION. The current configuration of the ARexx interpreter is supplied in the form **"ARexx *** version cpu mpu video fre<f'.*The * version *token is the release level of the in-terpreter, formatted as ** V1.**0. The * cpu *token indicates the processor currently running the program, and will be one of the values 68000, 68010, or 68020. The * mpu *token will be either NONE or 68881 depending on whether a math coprocessor is available on the system. The * video *token will indicate either NTSC or PAL, and the * freq *token gives the clock (line) frequency as either 60HZ or 50HZ.
+### Templates.
 
 Parsing is controlled by a template, which may consist of symbols, strings, operators, and parentheses. During the parsing operation the input string is split into substrings that are assigned to the variable symbols in the template. The process continues until all of the variables in the template have been assigned a value; if the input string is "used up", any remaining variables are given null values.
 
 Templates are described in depth in Chapter 8, so only a simplified description is presented here. The goal of the parsing operation is to associate a "current" and "next" position with each variable symbol in the template. The substring between these positions is then assigned as the value to the variable. There are three basic methods used to determine the value strings.
 
-Parsing by Tokenization. When a variable in the template is followed immediately by another variable, the value string is determined by breaking the input string into words separated by blanks. Each word is assigned to a variable in the template.
+#### Parsing by Tokenization
+When a variable in the template is followed immediately by another variable, the value string is determined by breaking the input string into words separated by blanks. Each word is assigned to a variable in the template.
 
-Values determined by tokenization will never have leading or trailing blanks. Normally the last variable in the template receives the untokenized remainder of the input string, since it is not followed by a symbol. A "placeholder" symbol, signified by a period (. ), may be used to force tokenization. Placeholders behave like variables in the template except that they are never actually assigned a value.
-
-'* =>
-
-=>
-
-Iâ€¢ Numeric string is: "9 0 SCIENTIFIC" *I parse numeric digits fuzz form
+Values determined by tokenization will never have leading or trailing blanks. Normally the last variable in the template receives the untokenized remainder of the input string, since it is not followed by a symbol. A "placeholder" symbol, signified by a period `.`  may be used to force tokenization. Placeholders behave like variables in the template except that they are never actually assigned a value.
 
 ```rexx
-
-say digits 9*'
-say fuzz Iâ€¢ 0 â€¢I
-say form I* => SCIENTIFIC â€¢I
+/* Numeric string is: "9 0 SCIENTIFIC" */ 
+parse numeric digits fuzz form .
+say digits      /* => 9          */
+say fuzz        /* => 0          */
+say form        /* => SCIENTIFIC */
 ```
 
-Parsing by Position. If the fields in the input string have known positions, value strings can be specified by absolute or relative positions. Relative positions are indicated by a number preceded by a "+" or "-" operator. Each positional marker updates the scan position in the string. The value assigned to a variable is the string from the current position up to, but not including, the next position in the string.
-
-f *assume argument is "1234567890"*I
+#### Parsing by Position
+If the fields in the input string have known positions, value strings can be specified by absolute or relative positions. Relative positions are indicated by a number preceded by a `+` or `-` operator. Each positional marker updates the scan position in the string. The value assigned to a variable is the string from the current position up to, but not including, the next position in the string.
 
 ```rexx
-
+/* assume argument is "1234567890"      */
 parse arg 1 a 3b +2 1 c
-say ab c f *==> 12 34 1234567890*I
+say a b c       /* ==> 12 34 1234567890 */
 ```
 
-Parsing with Patterns. Fields in the input string separated by specific characters or strings can be parsed using a pattern, which is matched against the input string. A pattern is specified in the template as a string token, or alternatively as a symbol enclosed in parentheses. The position in the parse string matched by the pattern determines the value strings. The pattern is removed from the input string when a match is found; this is the only parsing operation that modifies the input string.
+#### Parsing with Patterns
+Fields in the input string separated by specific characters or strings can be parsed using a pattern, which is matched against the input string. A pattern is specified in the template as a string token, or alternatively as a symbol enclosed in parentheses. The position in the parse string matched by the pattern determines the value strings. The pattern is removed from the input string when a match is found; this is the only parsing operation that modifies the input string.
 
 ```rexx
-
-check= 'one,tvo,three'
-parse var checka',' b ',' c
+check='one,two,three'
+parse var check a','b','c
+say a b c       /* ==> one two three */
 ```
 
-The PROCEDURE instruction is used within an internal function to create a new symbol table. This protects the symbols defined in the caller's environment from being altered by the execution of the function. PROCEDURE is usually the first statement within the function, although it is valid anywhere withing the function body. It is an error to execute two PROCEDURE statements within the same function.
+## 4.20 PROCEDURE
+```rexx
+PROCEDURE [EXPOSE variable1 [variable2 ...]]
+```
 
-Exposing Variables. The EXPOSE subkeyword provides a selective mechanism for access-ing the caller's symbol table, and for passing global variables to a function. The variables following the EXPOSE keyword are taken to refer to symbols in the caller's table. Any subsequent changes made to these variables will be reflected in the caller's environment.
+The `PROCEDURE` instruction is used within an internal function to create a new symbol table. This protects the symbols defined in the caller's environment from being altered by the execution of the function. `PROCEDURE` is usually the first statement within the function, although it is valid anywhere withing the function body. It is an error to execute two `PROCEDURE` statements within the same function.
 
-The variables in the EXPOSE list may include stems or compound symbols, in which case the ordering of the variables becomes significant. The EXPOSE list is processed from left to right, and compound symbols are expanded based on the values in effect in the new generation. For example, suppose that the value of the symbol J in the previous generation is 123, and that J is uninitialized in the new generation. Then PROCEDURE EXPOSE J A. J will expose J and A.123, whereas PROCEDURE EXPOSE A. J J will expose A. J and J. Exposing a stem has the effect of exposing all possible compound symbols derived from that stem.
+**Exposing Variables.** The `EXPOSE` subkeyword provides a selective mechanism for accessing the caller's symbol table, and for passing global variables to a function. The variables following the `EXPOSE` keyword are taken to refer to symbols in the caller's table. Any subsequent changes made to these variables will be reflected in the caller's environment.
 
-fact: procedure
+The variables in the `EXPOSE` list may include stems or compound symbols, in which case the ordering of the variables becomes significant. The `EXPOSE` list is processed from left to right, and compound symbols are expanded based on the values in effect in the new generation. 
+For example, suppose that the value of the symbol `J` in the previous generation is `123`, 
+and that `J` is uninitialized in the new generation.  Then `PROCEDURE EXPOSE J A.J` will expose `J` and `A.123`, whereas `PROCEDURE EXPOSE A.J J` will expose `A.J` and `J`. Exposing a stem has the effect of exposing all possible compound symbols derived from that stem.
 
+```rexx
+fact: procedure         /* a recursive function */
 arg i
-
-```rexx
-
 if i <= 1
-then return 1
+    then return 1
+    else return i*fact(i-1)
 ```
 
-/*a recursive function*I
+## 4.21 PULL
+```rexx
+PULL [template] [,template ...]
+```
+
+This is a shorthand form of the `PARSE UPPER PULL` instruction. It reads a string from the input console, translates it to uppercase, and parses it using the template. Multiple strings can be read by supplying additional templates. The instruction will read from the console even if no template is given.
+
+Templates are described briefly with the `PARSE` instruction and in greater depth in Chapter 8.
 
 ```rexx
-
-else return i*fact(i-1)
+pull first last .       /* read names */
 ```
 
-This is a shorthand form of the PARSE UPPER PULL instruction. It reads a string from the input console, translates it to uppercase, and parses it using the template. Multiple strings can be read by supplying additional templates. The instruction will read from the console even if no template is given.
-
-Templates are described briefly with the PARSE instruction and in greater depth in Chapter 8.
-
+## 4.22 PUSH
 ```rexx
-
-pull first last . I* read names
-```
-
-The PUSH instruction is used to prepare a stream of data to be read by a command shell or other program. It appends a "newline" to the result of the expression and then stacks or "pushes" it into the STDIN stream. Stacked lines are placed in the stream in "last-in, first-out" order, and are then available to be read just as though they had been entered interactively. For example, after issuing the instructions
-
+PUSH [expression]
+```    
+The `PUSH` instruction is used to prepare a stream of data to be read by a command shell or other program. It appends a "newline" to the result of the expression and then stacks or "pushes" it into the `STDIN` stream. Stacked lines are placed in the stream in "last-in, first-out" order, and are then available to be read just as though they had been entered interactively. For example, after issuing the instructions
 ```rexx
-
-push line 1 push line 2 push line 3
+push line 1
+push line 2
+push line 3
 ```
-
 the stream would be read in the order "line 3," "line 2," and "line 1."
 
-There are several restrictions governing the use of the PUSH instruction and its alter ego QUEUE. These instructions use a special I/O mechanism to accomplish their task, and as a result can be used only with an interactive (stream-model) I/O device like a console or pipe. The stream must be managed by with a DOS handler that supports the special ACTION-5TACK (for PUSH) or ACTIONï¿½UEUE (for QUEUE) command.
+There are several restrictions governing the use of the `PUSH` instruction and its alter ego `QUEUE`. These instructions use a special I/O mechanism to accomplish their task, and as a result can be used only with an interactive (stream-model) I/O device like a console or pipe. The stream must be managed by with a DOS handler that supports the special `ACTION_STACK` (for `PUSH`) or `ACTION_QUEUE` (for `QUEUE`) command.
 
 PUSH allows the STDIN stream to be used as a private scratchpad to prepare data for subsequent processing. For example, several files could be concatenated with delimiters between them by simply reading the input files, PUSHing the lines into the stream, and inserting a delimiter where required. Once the stacked lines are exhausted, the stream reverts to its normal source of data.
 
