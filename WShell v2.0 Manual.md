@@ -484,7 +484,7 @@ The WShell distribution disk contains an environment directory that can be copie
 To activate the WShell environment variables under AmigaDOS 1.3, create an environment directory on `RAM:`, `VD0:`, or some other permanently-mounted device, and use the assign command to define it as the `ENV:` device. Then copy the `:s/env` directory to `ENV:`
 
 For example,
-```
+```sh
 R(0); 01:44:53\> makedir ram:env
 R(0); 01:44:55\> assign  ENV: ram:env
 R(0); 01:44:59\> copy :s/env ENV:
