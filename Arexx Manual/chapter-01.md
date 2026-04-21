@@ -17,13 +17,17 @@ Data are treated as typeless character strings. Variables do not have to be decl
 ### Command Interface
 ARexx programs can issue commands to external programs that provide a suitable command interface. Any software package that implements the command interface is then fully programmable using ARexx, and can be extended and customized by the end user.
 
-**Tracing and Debugging.**  ARexx includes source-level debugging facilities that allow the programmer to see the step-by-step actions of a program as it runs, thereby reducing the time required to develop and test programs. An internal interrupt system permits special handling of errors that would otherwise cause the program to terminate.
+### Tracing and Debugging.
+ ARexx includes source-level debugging facilities that allow the programmer to see the step-by-step actions of a program as it runs, thereby reducing the time required to develop and test programs. An internal interrupt system permits special handling of errors that would otherwise cause the program to terminate.
 
-**Interpreted Execution.** ARexx programs are run by an interpreter, so separate compila-tion and linking steps are not required. This makes it especially useful for prototyping and as a learning tool.
+### Interpreted Execution.
+ ARexx programs are run by an interpreter, so separate compila-tion and linking steps are not required. This makes it especially useful for prototyping and as a learning tool.
 
-**Function Libraries.** External function libraries can be used to extend the capabilities of the language or as bridges to other programs. Libraries also allow ARexx programs to be used as "test drivers" for software development and testing.
+### Function Libraries.
+ External function libraries can be used to extend the capabilities of the language or as bridges to other programs. Libraries also allow ARexx programs to be used as "test drivers" for software development and testing.
 
-**Automatic Resource Management.** Internal memory allocation related to the creation and destruction of strings and other data structures is handled automatically.
+### Automatic Resource Management.
+ Internal memory allocation related to the creation and destruction of strings and other data structures is handled automatically.
 
 ## 1.2 ARexx on the Amiga
 

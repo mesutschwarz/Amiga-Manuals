@@ -5,29 +5,36 @@ This chapter introduces the rules and concepts that make up the REXX language. T
 
 ARexx programs are composed of ASCII characters and may be created using any text editor. No special formatting of the program statements is required or imposed on the programmer.
 
-The smallest distinct entities or "words" of the langauge are called *tokens.* A token may be a series of characters, as in the symbol **MyName**, or just a single character like the "**+**" operator. Tokens can be categorized into *comments, symbols, strings, operators,* and *special characters.* Each of these groups are described below.
+## 3.2 Tokens
 
-Any group of characters beginning with the sequence "**/\***" and ending with "**\*/** " defines a *comment* token. Comments may be placed anywhere in a program and cost little in terms of execution speed, since they are stripped (removed) when the program is first scanned by the interpreter. Comments may be "nested" within one another, but each "**/\***" must have a matching "**\*/** " in the program.
+The smallest distinct entities or "words" of the langauge are called *tokens.* A token may be a series of characters, as in the symbol `MyName`, or just a single character like the `+` operator. Tokens can be categorized into *comments, symbols, strings, operators,* and *special characters.* Each of these groups are described below.
+
+### Comment Tokens
+
+Any group of characters beginning with the sequence `/*` and ending with `*/` defines a *comment* token. Comments may be placed anywhere in a program and cost little in terms of execution speed, since they are stripped (removed) when the program is first scanned by the interpreter. Comments may be "nested" within one another, but each `/*` must have a matching `*/` in the program.
 
 ```rexx
 /*Your basic comment */ 
 /* a /* nested! */ comment*/
 ```
 
-Any group of the characters **a-z, A-Z, 0-9,** and **. ! ? $ _** defines a *symbol* token. Symbols are translated to uppercase as the program is scanned by the interpreter, so the symbol **MyName** is equivalent to **MYNAME**. Four types of symbols are recognized:
+### Symbol Tokens
 
-* *Fixed* symbols begin with a digit (0-9) or a period (.).
+Any group of the characters `a-z, A-Z, 0-9,` and `. ! ? $ _` defines a *symbol* token. Symbols are translated to uppercase as the program is scanned by the interpreter, so the symbol `MyName` is equivalent to `MYNAME`. Four types of symbols are recognized:
 
-* *Simple* symbols do not begin with a digit, and do not contain any periods.
+* ***Fixed*** symbols begin with a digit (`0-9`) or a period (`.`).
 
-* *Stem* symbols have exactly one period at the end of the symbol name.
+* ***Simple*** symbols do not begin with a digit, and do not contain any periods.
 
-* *Compound* symbols include one or more periods in the interior of the name.
+* ***Stem*** symbols have exactly one period at the end of the symbol name.
+
+* ***Compound*** symbols include one or more periods in the interior of the name.
 
 Stems and compound symbols have special properties that make them useful for building arrays and lists.
 
 **Symbol Values.** The value used for a fixed symbol is always the symbol name itself (as translated to uppercase.) Simple, stem, and compound symbols are called *variables* and may be assigned a value during the course of the program execution. A variable is *uninitialized* if it has not yet been assigned a value; the value used for an uninitialized variable is just
 the variable name itself.
+
 Examples:
 ```rexx
 123.45      /* a fixed symbol */
@@ -35,11 +42,13 @@ MyName      /* same as MYNAME */
 a.          /* a stem symbol */
 a.1.Index   /* a compound symbol */
 ```
+
 ### String Tokens
 
-A group of characters beginning and ending with a quote(') or double quote(") delimiter defines a *string* token. The delimiter character itself may be included within the string by a double-delimiter sequence(' ' or " "). The number of characters in the string is called its length, and a string of length zero is called a *null string.* A string is treated as a *literal* in an expression; that is, its value is just the string itself.
+A group of characters beginning and ending with a quote(`'`) or double quote(`"`) delimiter defines a ***string*** token. The delimiter character itself may be included within the string by a double-delimiter sequence(`''` or `""`). The number of characters in the string is called its length, and a string of length zero is called a ***null string.*** A string is treated as a ***literal*** in an expression; that is, its value is just the string itself.
 
-Strings followed immediately by an "**X**" or "**B**" character that is not part of a longer symbol are classifed as *hex* or *binary* strings, respectively, and must be composed of hexadecimal digits (0-9, A-F) or binary digits (0, 1). Blanks are permitted at byte boundaries for added readability. Hex and binary strings are convenient for specifying non-ASCII characters and for machine-specific information like addresses in a program. They are converted immediately to the "packed" internal form.
+Strings followed immediately by an "`X`" or "`B`" character that is not part of a longer symbol are classifed as ***hex*** or ***binary*** strings, respectively, and must be composed of hexadecimal digits (`0-9`, `A-F`) or binary digits (`0, 1`). Blanks are permitted at byte boundaries for added readability. Hex and binary strings are convenient for specifying non-ASCII characters and for machine-specific information like addresses in a program. They are converted immediately to the "packed" internal form.
+
 Examples:
 ```rexx
 "Nov is the time"       /* a simple example */
@@ -48,8 +57,9 @@ Examples:
 '4A 3B C0'X             /* a hex string */
 '00110111'b             /* binary for '7' */
 ```
+
 ### Operators
-The characters **+ - \* / = > < & | ^**    may be combined in the sequences shown in Table 3.1 to form ***operator*** tokens. Operator sequences may include leading, trailing, and embedded blanks, all of which are removed when the program is scanned. In addition to the above characters, the ***blank*** character is treated as a concatenation operator if it follows a symbol or string and is not adjacent to an operator or special character.
+The characters `~ + - * / = > < & | ^`    may be combined in the sequences shown in Table 3.1 to form ***operator*** tokens. Operator sequences may include leading, trailing, and embedded blanks, all of which are removed when the program is scanned. In addition to the above characters, the ***blank*** character is treated as a concatenation operator if it follows a symbol or string and is not adjacent to an operator or special character.
 
 Each operator has an associated priority that determines the order in which operations will be performed in an expression. Operators with higher priorities are performed before those with lower priorites.
 
@@ -82,24 +92,24 @@ Each operator has an associated priority that determines the order in which oper
 
 ### Special Character Tokens
 
-The characters **: ( ) ; ,** are each treated as a separate *special character* token and have particular meanings within an ARexx program. Blanks adjacent to these special characters are removed, except for those preceding an open parenthesis or following a close parenthesis.
+The characters `: ( ) ; ,` are each treated as a separate ***special character*** token and have particular meanings within an ARexx program. Blanks adjacent to these special characters are removed, except for those preceding an open parenthesis or following a close parenthesis.
 
-**Colon (:)**. A colon, if preceded by a symbol token, defines a label within the program. Labels are locations in the program to which control may be transferred under various conditions.
+**Colon** `:` A colon, if preceded by a symbol token, defines a ***label*** within the program. Labels are locations in the program to which control may be transferred under various conditions.
 
-**Opening and Closing Parentheses ( () )**. Parentheses are used in expressions to group operators and operands into subexpressions, in order to override the normal operator priorities. An open parenthesis also serves to identify a ***function call*** within an expression ; a symbol or string followed immediately by an open parenthesis defines a function name.
+**Opening and Closing Parentheses** `( )` Parentheses are used in expressions to group operators and operands into subexpressions, in order to override the normal operator priorities. An open parenthesis also serves to identify a ***function call*** within an expression ; a symbol or string followed immediately by an open parenthesis defines a function name.
 Parentheses must always be balanced within a statement. 
 
-**Semicolon (;)**. The semicolon acts as a program statement terminator. Several statements may be placed on a single source line if separated by semicolons.
+**Semicolon** `;` The semicolon acts as a program statement terminator. Several statements may be placed on a single source line if separated by semicolons.
 
-**Comma (,)**. A comma token acts as the continuation character for statements that must be entered on several source lines. It is also used to separate the argument expressions in a function call.
+**Comma** `,` A comma token acts as the continuation character for statements that must be entered on several source lines. It is also used to separate the argument expressions in a function call.
 
 ## 3.3 Clauses
 
 Tokens are grouped together to form ***clauses,*** the smallest language unit that can be executed as a statement. Every clause in ARexx can be classified as either a ***null, label, assignment, instruction,*** or ***command*** clause. The classification process is very simple, since no more than two tokens are required to classify any clause. Assignment, instruction, and command clauses are jointly termed ***statements.***
 
-**Clause Continuation.** The end of a source line normally acts as the implicit end of a clause. A clause can be continued on the next source line by ending the line with a comma (**,**). The comma is then removed, and the next line is considered as a continuation of the clause. There is no limit to the number of continuations that may occur. String and comment tokens are automatically continued if a line ends before the closing delimiter has been found, and the "newline" character is not considered to be part of the token.
+**Clause Continuation.** The end of a source line normally acts as the implicit end of a clause. A clause can be continued on the next source line by ending the line with a comma `,`. The comma is then removed, and the next line is considered as a continuation of the clause. There is no limit to the number of continuations that may occur. String and comment tokens are automatically continued if a line ends before the closing delimiter has been found, and the "newline" character is not considered to be part of the token.
 
-**Multiple Clauses.** Several clauses can be placed on a single line by separating them with semicolons (**;**).
+**Multiple Clauses.** Several clauses can be placed on a single line by separating them with semicolons `;`.
 
 ### Null Clauses
 
@@ -121,7 +131,7 @@ syntax:     /* error processing */
 
 ### Assignment Clauses
 
-Assignments are identified by a variable symbol followed by an "**=**" operator. In this context the operator's normal definition (an equality comparison) is overridden, and it becomes an assignment operator. The tokens to the right of the "**=**" are evaluated as an expression, and the result is ***assigned to*** (becomes the value of) the variable symbol.
+Assignments are identified by a variable symbol followed by an "`=`" operator. In this context the operator's normal definition (an equality comparison) is overridden, and it becomes an assignment operator. The tokens to the right of the "`=`" are evaluated as an expression, and the result is ***assigned to*** (becomes the value of) the variable symbol.
 
 Examples:
 ```rexx
@@ -158,25 +168,25 @@ The process by which program lines are divided into clauses and then classified 
 SAY 'Hello, Bill'
 ```
 
-is an instruction clause and will display "**Hello, Bill**" on the console, but
+is an instruction clause and will display `Hello, Bill` on the console, but
 
 ```rexx
 ''SAY 'Hello, Bill'
 ```
 
-is a command clause, and will issue "**SAY Hello, Bill**" as a command to an external program. The presence of the leading null string changes the classification from an instruction clause to a command clause.
+is a command clause, and will issue `SAY Hello, Bill` as a command to an external program. The presence of the leading null string changes the classification from an instruction clause to a command clause.
 
 ## 3.4 Expressions
 
-Expression evaluation is an important part of ARexx programs, since most statements include at least one expression. Expressions are composed of strings, symbols, operators, and parentheses. Strings are used as literals in an expression; their value in an operation is just the string itself. Fixed symbols are also literals (remember that symbols are always translated to uppercase,) but variable symbols may have an assigned value. Operator tokens represent the predefined operations of ARexx; each operator has an associated priority that determines the order in which operations will be performed. Parentheses may be used to alter the normal order of evaluation in the expression, or to identify *function* calls. A symbol or string followed immediately by an open parenthesis defines the function name, and the tokens between the opening and (final) closing parenthesis form the *argument list* for the function.
+Expression evaluation is an important part of ARexx programs, since most statements include at least one expression. Expressions are composed of strings, symbols, operators, and parentheses. Strings are used as literals in an expression; their value in an operation is just the string itself. Fixed symbols are also literals (remember that symbols are always translated to uppercase,) but variable symbols may have an assigned value. Operator tokens represent the predefined operations of ARexx; each operator has an associated priority that determines the order in which operations will be performed. Parentheses may be used to alter the normal order of evaluation in the expression, or to identify ***function*** calls. A symbol or string followed immediately by an open parenthesis defines the function name, and the tokens between the opening and (final) closing parenthesis form the ***argument list*** for the function.
 
-For example, the expression "**J 'factorial is' fact(J)**" is composed of a symbol **J**, a blank operator, the string **'factorial is'**, another blank, the symbol **fact**, an open parenthesis, the symbol **J** again, and a closing parenthesis. **FACT** is a function name and **(J)** is its argument list, in this case the single expression **J**.
+For example, the expression `J 'factorial is' fact(J)` is composed of a symbol `J`, a blank operator, the string `'factorial is'`, another blank, the symbol `fact`, an open parenthesis, the symbol `J` again, and a closing parenthesis. `FACT` is a function name and `(J)` is its argument list, in this case the single expression `J`.
 
 ### Symbol Resolution
 
-Before the evaluation of an expression can proceed, the interpreter must obtain a value for each symbol in the expression. For fixed symbols the value is just the symbol name itself, but variable symbols must be looked up in the current symbol table. In the example above, the expression after symbol resolution would be "**3 'factorial is' FACT(3)**," assuming that the symbol **J** had the value **3**.
+Before the evaluation of an expression can proceed, the interpreter must obtain a value for each symbol in the expression. For fixed symbols the value is just the symbol name itself, but variable symbols must be looked up in the current symbol table. In the example above, the expression after symbol resolution would be `3 'factorial is' FACT(3)`, assuming that the symbol `J` had the value `3`.
 
-Suppose that the example above had been "**FACT(J) 'is' J 'factorial'.**" Would the second occurrence of symbol **J** still resolve to **3** in this case? In general, function calls may have "side effects" that include altering the values of variables, so the value of **J** might have been changed by the call to **FACT**. In order to avoid ambiguities in the values assigned to symbols during the resolution process, ARexx guarantees a strict left-to-right resolution order. Symbol resolution proceeds irrespective of operator priority or parenthetical grouping; if a function call is found, the resolution is suspended while the function is evaluated. Note that it is possible for the same symbol to have more than one value in an expression.
+Suppose that the example above had been "`FACT(J) 'is' J 'factorial'.`" Would the second occurrence of symbol `J` still resolve to `3` in this case? In general, function calls may have "side effects" that include altering the values of variables, so the value of `J` might have been changed by the call to `FACT`. In order to avoid ambiguities in the values assigned to symbols during the resolution process, ARexx guarantees a strict left-to-right resolution order. Symbol resolution proceeds irrespective of operator priority or parenthetical grouping; if a function call is found, the resolution is suspended while the function is evaluated. Note that it is possible for the same symbol to have more than one value in an expression.
 
 ### Order of Evaluation
 
@@ -186,11 +196,11 @@ After all symbol values have been resolved, the expression is evaluated based on
 (1 = 2) & (FACT(3) = 6)
 ```
 
-the call to the **FACT** function will be made, although it is clear that the final result will be 0, since the first term of the AND operation is 0.
+the call to the `FACT` function will be made, although it is clear that the final result will be 0, since the first term of the AND operation is 0.
 
 ## 3.5 Numbers and Numeric Precision
 
-An important class of operands are those representing numbers. Numbers consist of the characters **0-9**, **. + -** , and blanks; an **e** or **E** may follow a number to indicate ***exponential notation,*** in whlch case it must be followed by a (signed) integer.
+An important class of operands are those representing numbers. Numbers consist of the characters `0-9`, `. + -` , and blanks; an `e` or `E` may follow a number to indicate ***exponential notation,*** in whlch case it must be followed by a (signed) integer.
 
 Both string tokens and symbol tokens may be used to specify numbers. Since the language is typeless, variables do not have to be declared as "numeric" before being used in an arithmetic operation. Instead, each value string is examined when it is used to verify that it represents a number. The following examples are all valid numbers:
 
@@ -201,11 +211,11 @@ Both string tokens and symbol tokens may be used to specify numbers. Since the l
 ' + 15.'
 ```
 
-Note that leading and trailing blanks are permitted, and that blanks may be embedded between a "**+**" or "**-**" sign and the number body (but not within the body.)
+Note that leading and trailing blanks are permitted, and that blanks may be embedded between a `+` or `-` sign and the number body (but not within the body.)
 
 ### Boolean Values.
 
-The numbers 0 and 1 are used to represent the boolean values **False** and **True**, respectively. The use of a value other than 0 or 1 when a boolean operand is expected will generate an error. Any number equivalent to 0 or 1, for example "**0.000**" or "**0.1E1,**"** is also acceptable as a boolean value.
+The numbers 0 and 1 are used to represent the boolean values `False` and `True`, respectively. The use of a value other than `0` or `1` when a boolean operand is expected will generate an error. Any number equivalent to `0` or `1`, for example `0.000` or `0.1E1,` is also acceptable as a boolean value.
 
 ### Numeric Precision
 
@@ -233,7 +243,7 @@ Operators can be grouped into four categories:
 
 ### Arithmetic Operators
 
-The arithmetic operators are listed in Table 3.2 below. Note the inclusion of the integer division (**%**) and remainder (**//**) operators, along with the usual arithmetic operations. The result of an arithmetic operation is always formatted based on the current Numeric Digits setting, and will never have leading or trailing blanks.
+The arithmetic operators are listed in Table 3.2 below. Note the inclusion of the integer division `%` and remainder `//` operators, along with the usual arithmetic operations. The result of an arithmetic operation is always formatted based on the current Numeric Digits setting, and will never have leading or trailing blanks.
 
 Table 3.2 Arithmetic Operators
 
@@ -249,23 +259,21 @@ Table 3.2 Arithmetic Operators
 | +        | 5        | Addition             |
 | -        | 5        | Subtraction          |
 
-**Prefix Conversion (+)** This unary operator converts the operand to and internal numeric form and formats the result based on the current Numeric Digits settings. This causes any leading and trailing blanks to be removed, and may result in a loss of precision.
-
-Examples:
+**Prefix Conversion** `+` This unary operator converts the operand to and internal numeric form and formats the result based on the current Numeric Digits settings. This causes any leading and trailing blanks to be removed, and may result in a loss of precision.
 
 ```rexx
 '  3.12  '  ==> 3.12
-1.5001      ==> 1.500 /* If digits =3 */
+1.5001      ==> 1.500   /* If digits =3 */
 ```
 
-**Prefix Negation (-)**. This unary operator negates the operand. The result is formatted based on the current Numeric Digits setting.
+**Prefix Negation** `-` This unary operator negates the operand. The result is formatted based on the current Numeric Digits setting.
 
 ```rexx
 -'  3.12  ' ==> -3.12
 -1.5E2      ==> -150
 ```
 
-**Exponentiation (\*\*)**. The left operand is raised to the power specified by the right operand, which must be an integer. The number of decimal places for the result is the product of the exponent and the number of decimal places in the base.
+**Exponentiation** `**` The left operand is raised to the power specified by the right operand, which must be an integer. The number of decimal places for the result is the product of the exponent and the number of decimal places in the base.
 
 ```rexx
 2**3        ==> 8
@@ -273,27 +281,27 @@ Examples:
 0.5**3      ==> 0.125
 ```
 
-**Multiplication (\*)**. The product of two numbers is computed. The number of decimal places for the result is the sum of the decimal places of the operands.
+**Multiplication** `*` The product of two numbers is computed. The number of decimal places for the result is the sum of the decimal places of the operands.
 
 ```rexx
 12 * 3      ==> 36
 1.5 * 1.50  ==> 2.250
 ```
-**Division (/)**. The quotient of two numbers is computed. The number of decimal places for the result depends on the current setting of the numeric **DIGITS** variable; the number is formatted to the maximum precision required.
+**Division** `/` The quotient of two numbers is computed. The number of decimal places for the result depends on the current setting of the numeric **DIGITS** variable; the number is formatted to the maximum precision required.
 
 ```rexx
 6 / 3       ==> 2
 8 / 3       ==> 2.666666667
 ```
 
-**Integer Division (%)**. The quotient of two numbers is computed, and the integer part of the quotient is used as the result.
+**Integer Division** `%` The quotient of two numbers is computed, and the integer part of the quotient is used as the result.
 
 ```rexx
 5 % 3       ==> 1
 -8 % 3      ==> -2
 ```
 
-**Remainder (//).** The result is the remainder after the two operands are divided. The remainder for "**a//b**" is calculated as "**a-(a%b)\*b**" If both operands are positive integers, this operation yields the usual "modulo" result.
+**Remainder** `//` The result is the remainder after the two operands are divided. The remainder for "`a//b`" is calculated as "`a-(a%b)*b`" If both operands are positive integers, this operation yields the usual "modulo" result.
 
 ```rexx
 5 // 3      ==> 2
@@ -301,14 +309,14 @@ Examples:
 5.1 // 0.2  ==> 0.1
 ```
 
-**Addition (+).** The sum of two numbers is computed. The number of decimal places for the result is the larger of the decimal places of the operands.
+**Addition** `+` The sum of two numbers is computed. The number of decimal places for the result is the larger of the decimal places of the operands.
 
 ```rexx
 12 + 3      ==> 15
 3.1 + 4.05  ==> 7.15
 ```
 
-**Subtraction (-).** The difference of two numbers is computed. As in the case of addition, the number of decimal places for the result is the larger ofthe decimal places ofthe operands. Examples:
+**Subtraction** `-` The difference of two numbers is computed. As in the case of addition, the number of decimal places for the result is the larger ofthe decimal places ofthe operands. Examples:
 
 ```rexx
 12 - 3      ==> 9
@@ -317,9 +325,9 @@ Examples:
 
 ### Concatenation Operators
 
-ARexx defines two concatenation operators, both of which require two operands. The first, identified by the operator sequence "**||**", joins two strings into a single string with no intervening blank. The second concatenation operation is identified by the blank operator, and joins the two operand strings with one intervening blank.
+ARexx defines two concatenation operators, both of which require two operands. The first, identified by the operator sequence `||`, joins two strings into a single string with no intervening blank. The second concatenation operation is identified by the blank operator, and joins the two operand strings with one intervening blank.
 
-An implicit concatenation operator is recognized when a symbol and a string are directly abutted in an expression. Concatenation by abuttal uses the "**||**" operator, and behaves exactly as though the operator had been provided explicitly.
+An implicit concatenation operator is recognized when a symbol and a string are directly abutted in an expression. Concatenation by abuttal uses the `||` operator, and behaves exactly as though the operator had been provided explicitly.
 
 ```rexx
 'why me,' || 'Mom?'     ==> why me,Mom?
@@ -367,11 +375,11 @@ ARexx defines the four logical operations NOT, AND, OR, and Exclusive OR, all of
 
 ## 3.7 Stems and Compound Symbols
 
-Stems and compound symbols have special properties that allow for some interesting and unusual programming. A compound symbol can be regarded as having the structure stem.***n1.n2.n3...nk*** where the leading name is a stem symbol and each node ***n1...nk*** is a fixed or simple symbol. Whenever a compound symbol appears in a program, its name is***expanded*** by replacing each node with its current value as a (simple) symbol. The value string may consist of any characters, including embedded blanks, and is not converted to uppercase. The result of the expansion is a new name that is used in place of the compound symbol. For example, if **J** has the value **3** and **K** has the value 7, then the compound symbol **a.j.k** will expand to **A.3.7**. 
+Stems and compound symbols have special properties that allow for some interesting and unusual programming. A compound symbol can be regarded as having the structure stem.***n1.n2.n3...nk*** where the leading name is a stem symbol and each node ***n1...nk*** is a fixed or simple symbol. Whenever a compound symbol appears in a program, its name is ***expanded*** by replacing each node with its current value as a (simple) symbol. The value string may consist of any characters, including embedded blanks, and is not converted to uppercase. The result of the expansion is a new name that is used in place of the compound symbol. For example, if `J` has the value `3` and `K` has the value 7, then the compound symbol `a.j.k` will expand to `A.3.7`. 
 
 Stem symbols provide a way to initialize a whole class of compound symbols. When an assignment is made to a stem symbol, it assigns that value to all possible compound symbols derived from the stem. Thus, the value of a compound symbol depends on the prior assignments made to itself or its associated stem.
 
-Compound symbols can be regarded as a form of "associative" or "content-addressable" memory. For example, suppose that you needed to store and retrieve a set of names and telephone numbers. The conventional approach would be to set up two arrays **NAME** and **NUMBER**, each indexed by an integer running from one to the number of entries. A number would be "looked up" by scanning the name array until the given name was found, say in **NAME.12**, and then retrieving **NUMBER.12**. With compound symbols, the symbol **NAME** could hold the name to be looked-up, and **NUMBER.NAME** would then expand to **NUMBER.Bill** (for example), which would be the corresponding number.
+Compound symbols can be regarded as a form of "associative" or "content-addressable" memory. For example, suppose that you needed to store and retrieve a set of names and telephone numbers. The conventional approach would be to set up two arrays `NAME` and `NUMBER`, each indexed by an integer running from one to the number of entries. A number would be "looked up" by scanning the name array until the given name was found, say in `NAME.12`, and then retrieving `NUMBER.12`. With compound symbols, the symbol `NAME` could hold the name to be looked-up, and `NUMBER.NAME` would then expand to `NUMBER.Bill` (for example), which would be the corresponding number.
 
 Of course, compound symbols can also be used as conventional indexed arrays, with the added convenience that only a single assignment (to the stem) is required to initialize the entire array.
 
@@ -391,7 +399,7 @@ The internal environment of an ARexx program consists of a static global structu
 
 **Argument Strings.** A program may receive one or more argument strings when it is first invoked. These arguments persist for the duration of the program and are never altered. The number of arguments a program receives depends in part on the mode of invocation. ARexx programs invoked as commands normally have only one argument string, although the "command tokenization" option may provide more than one. A program invoked as a function can have any number of arguments if called as an internal function, but external functions are limited to a maximum of 15 arguments.
 
-The argument strings can be retrieved using either the **ARG** instruction or the **ARG()** Built-In function. **ARG()** can also return the total number of arguments, or the status (as "exists" or "omitted") of a particular argument.
+The argument strings can be retrieved using either the `ARG` instruction or the `ARG()` Built-In function. `ARG()` can also return the total number of arguments, or the status (as "exists" or "omitted") of a particular argument.
 
 **The Symbol Table.** Every storage environment includes a *symbol table* to store the value strings that have been assigned to variables. This symbol table is organized as a two-level *binary tree*, a data structure that provides an efficient look-up mechanism. The primary level stores entries for simple and stem symbols, and the secondary level is used for compound symbols. All of the compound symbols associated with a particular stem are stored in one *tree*, with the root of the tree held by the entry for the stem. 
 
@@ -403,7 +411,7 @@ For the most part ARexx programmers need not be concerned with the details of st
 
 Most computer programs require some means of communicating with the outside world, either to accept input data or to pass along results. The REXX language includes only a minimal specification of input and output (I/O) operations, leaving the choice of additional functionality to the language implementor. This is in keeping with the design of many computer languages. For instance, the "C" langauge has no statements dedicated to I/O, but instead relies on a standardized set of I/O functions.
 
-ARexx extends the I/O facilities of REXX by providing Built-In functions to manipu-late external files. Files are referenced by a ***logical name*** associated with the file when it is first opened. The initial input and output streams are given the names **STDIN** and **STDOUT**.
+ARexx extends the I/O facilities of REXX by providing Built-In functions to manipu-late external files. Files are referenced by a ***logical name*** associated with the file when it is first opened. The initial input and output streams are given the names `STDIN` and `STDOUT`.
 
 ARexx maintains a list of all of the files opened by a program and automatically closes them when the program finishes. There is no limit to the number of files that may be open simultaneously.
 
