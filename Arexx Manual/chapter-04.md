@@ -3,7 +3,7 @@ Instruction clauses are identified by an initial keyword symbol that is not foll
 
 In the descriptions that follow, keywords are shown in uppercase and optional parts of the instruction are enclosed in brackets. Alternative selections are separated by a vertical bar `|`, and required alternatives are enclosed in braces `{ }`.
 
-## 4.1 ADDRESS
+## ADDRESS
 ```rexx
 ADDRESS [symbol | string | [[VALUE] [expression]]
 ```
@@ -24,7 +24,7 @@ address edit 'top'      /* move to the top */
 address VALUE edit n    /* compute a new host address */
 address                 /* swap current and previous */
 ```
-## 4.2 ARG
+## ARG
 ```rexx
 ARG [template] [,template ...]
 ```
@@ -37,7 +37,7 @@ The structure and processing of templates is described briefly with the `PARSE` 
 arg first,second        /* fetch arguments */
 ```
 
-## 4.3 BREAK
+## BREAK
 ```rexx
 BREAK
 ```
@@ -52,7 +52,7 @@ do                          /* begin block */
 end                         /* end block */
 ```
 
-## 4.4 CALL
+## CALL
 ```rexx
 CALL {symbol | string} [expression, ...]
 ```
@@ -65,7 +65,7 @@ The linkage to the function is established dynamically at the time of the call. 
 call center name,length+4,'+'
 ```
 
-## 4.5 DO
+## DO
 ```rexx
 DO [var=exp [TO exp] [BY exp]] [FOR exp] [FOREVER] [WHILE exp] [UNTIL exp]]
 ```
@@ -99,7 +99,7 @@ do i=1 to limit for 5 while time < 50
 end
 ```
 
-## 4.6 DROP
+## DROP
 ```rexx
 DROP variable1 [variable2 ...]
 ```
@@ -112,7 +112,7 @@ drop a b     /* drop some variables */
 say a b      /* ==>A B */
 ```
 
-## 4.7 ECHO
+## ECHO
 ```rexx
 ECHO [expression]
 ```
@@ -124,7 +124,7 @@ The `ECHO` instruction is a synonym for the `SAY` instruction. It displays the e
 echo "You don't SAY!"
 ```
 
-## 4.8 ELSE
+## ELSE
 ```rexx
 ELSE [;] [conditional statement]
 ```
@@ -141,7 +141,7 @@ if 1 > 2 then say 'really?'
 else say 'I thought so'
 ```
 
-## 4.9 END
+## END
 ```rexx
 END [variable]
 ```
@@ -156,7 +156,7 @@ do i=1 to 5     /* index variable is "I" */
 end i           /* end "I" loop */
 ```
 
-## 4.10 EXIT
+## EXIT
 ```rexx
 EXIT [expression]
 ```
@@ -173,7 +173,7 @@ exit        /* no result needed */
 exit 12     /* return code 12 */
 ```
 
-## 4.11 IF
+## IF
 ```rexx
 IF expression [THEN] [;] [conditional statement]
 ```
@@ -185,7 +185,7 @@ Any valid statement may follow the `THEN` symbol; in particular, a `DO; ...;END`
 if result< 0 then exit      /* all done? */
 ```
 
-## 4.12 INTERPRET
+## INTERPRET
 ```rexx
 INTERPRET expression
 ```
@@ -200,7 +200,7 @@ inst = 'say'            /* an instruction */
 interpret inst hello    /* ... "say HELLO" */
 ```
 
-## 4.13 ITERATE
+## ITERATE
 ```rexx
 ITERATE [variable]
 ```
@@ -214,7 +214,7 @@ do i=1 to 3
     if i = j then iterate i
 end    
 ```
-## 4.14 LEAVE
+## LEAVE
 ```rexx
 LEAVE [variable]
 ```
@@ -229,7 +229,7 @@ do i = 1 to limit
 end
 ```
 
-## 4.15 NOP
+## NOP
 ```rexx
 NOP
 ```
@@ -244,7 +244,7 @@ if i = j then               /* first (outer) IF */
 else a = a + 1              /* binds to outer IF */   
 ```
 
-## 4.16 NUMERIC
+## NUMERIC
 ```rexx
 NUMERIC {DIGITS | FUZZ} expression
 ```
@@ -271,7 +271,7 @@ numeric digits 12           /* precision
 numeric form scientific     /* format
 ```
 
-## 4.17 OPTIONS
+## OPTIONS
 ```rexx
 OPTIONS [FAILAT expression]
 OPTIONS [PROMPT expression]
@@ -288,7 +288,7 @@ options prompt "Yes Boss?"
 options results
 ```
 
-## 4.18 OTHERWISE
+## OTHERWISE
 ```rexx
 OTHERWISE [;] [conditional statement]
 ```
@@ -303,7 +303,7 @@ select
 end
 ```
 
-## 4.19 PARSE
+## PARSE
 ```rexx
 PARSE [UPPER] inputsource [template] [,template ...]
 ```
@@ -367,7 +367,7 @@ parse var check a','b','c
 say a b c       /* ==> one two three */
 ```
 
-## 4.20 PROCEDURE
+## PROCEDURE
 ```rexx
 PROCEDURE [EXPOSE variable1 [variable2 ...]]
 ```
@@ -388,7 +388,7 @@ if i <= 1
     else return i*fact(i-1)
 ```
 
-## 4.21 PULL
+## PULL
 ```rexx
 PULL [template] [,template ...]
 ```
@@ -401,7 +401,7 @@ Templates are described briefly with the `PARSE` instruction and in greater dept
 pull first last .       /* read names */
 ```
 
-## 4.22 PUSH
+## PUSH
 ```rexx
 PUSH [expression]
 ```    
@@ -424,7 +424,7 @@ push "blink c.o+main.o library amiga.lib to myprog"
 push "cc main"
 ```
 
-## 4.23 QUEUE
+## QUEUE
 ```rexx
 QUEUE [expression]
 ```
@@ -448,7 +448,7 @@ In most cases the choice of whether to use `PUSH` or `QUEUE` is just a matter of
 queue "cc main"
 queue "blink c.o+main.o library amiga.lib to myprog"
 ```
-## 4.24 RETURN
+## RETURN
 ```rexx
 RETURN [expression]
 ```
@@ -461,7 +461,7 @@ A `RETURN` issued from the base environment of a program is not an error, and is
 return 6*7       /* the answer
 ```
 
-## 4.25 SAY
+## SAY
 ```rexx
 SAY [expression]
 ```
@@ -472,7 +472,7 @@ The result of the evaluated expression is written to the output console, with a 
 say 'The answer is ' value 
 ```
 
-## 4.26 SELECT
+## SELECT
 ```rexx
 SELECT
 ```
@@ -489,7 +489,7 @@ select
 end
 ```
 
-## 4.27 SHELL
+## SHELL
 ```rexx
 SHELL [symbol | string] [expression, ...]
 ```
@@ -500,7 +500,7 @@ The `SHELL` instruction is a synonym for the`ADDRESS` instruction. Example:
 shell edit      /* set host to 'EDIT' */
 ```
 
-## 4.28 SIGNAL
+## SIGNAL
 ```rexx
 SIGNAL {ON | OFF} condition
 SIGNAL [value] expression
@@ -533,7 +533,7 @@ signal off syntax     /* disable SYNTAX */
 signal start          /* goto START */
 ```
 
-## 4.29 THEN
+## THEN
 ```rexx
 THEN [;] [conditional statement]
 ```
@@ -546,7 +546,7 @@ if i = j
     else say 'not equal'
 ```
 
-## 4.30 TRACE
+## TRACE
 ```rexx
 TRACE [symbol | string | [[VALUE] expression]
 ```
@@ -567,7 +567,7 @@ trace off
 trace -20       /* skip 20 clauses */
 ```
 
-## 4.31 UPPER
+## UPPER
 ```rexx
 UPPER variable1 [variable2 ...]
 ```
@@ -582,7 +582,7 @@ upper when
 say when         /* NOW IS THE TIME */
 ```
 
-## 4.32 WHEN
+## WHEN
 ```rexx
 WHEN expression [THEN] [;] [conditional statement]
 ```
