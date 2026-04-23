@@ -2681,7 +2681,7 @@ The first template consists of the variables `first` and `second`, which are set
 
 When multiple templates are used with the `EXTERNAL` or `PULL` source options, each additional template requests an additional line of input from the user. 1n the next example two lines of input are read:
 
-```
+```rexx
 /* read last, first, and middle names and ssn */
 pull last ',' first middle,ssn
 ```
