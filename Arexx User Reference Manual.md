@@ -2802,7 +2802,7 @@ pi=3.14159; e=2.718; sqrt2=1.414 ...
 
 i.e., a series of assignments separated by semicolons. In use, such a string could be retrieved by name using the Built-In function `GETCLIP()` and then `INTERPRETed` within the program. The assignment statements within the string would then create the required constant definitions. The following program fragment illustrates the process:
 
-```
+```rexx
 /* assume a string called "numbers" is available */ 
 numbers = getclip('numbers')   /* case-sensitive */
 interpret numbers              /* ...assignments */
