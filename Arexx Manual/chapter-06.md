@@ -90,721 +90,977 @@ This section of the chapter is devoted to descriptions of the individual Built-I
 
 There is no limit to the number of files that may be open simultaneously, and all open files are closed automatically when the program exits.
 
-Bit-Manipulation Functions. The functions BITCHG(), BITCLR(), BITCOMP(), BIT-SET(), and BITTST() are provided to implement extended bit-testing on character strings. These functions differ from similar string-manipulation functions in that the elementary unit of comparison is the bit rather than the byte. Bit numbers are defined such that bit 0 is the low-order bit of the rightmost byte of the string.
+**Bit-Manipulation Functions.** The functions `BITCHG()`, `BITCLR()`, `BITCOMP()`, `BITSET()`, and `BITTST()` are provided to implement extended bit-testing on character strings. These functions differ from similar string-manipulation functions in that the elementary unit of comparison is the bit rather than the byte. Bit numbers are defined such that bit 0 is the low-order bit of the rightmost byte of the string.
 
-Returns a boolean value that indicates whether *string2* is an abbreviation of *stringl * with length greater than or equal to the specified *length* argument. The default length is 0, so the null string is an acceptable abbreviation.
-
+## ABBREV()
 ```rexx
-
-say abbrev('fullname','ful') say abbrev('almost','alm',4) say abbrev('any','')
-==> 1
-==> 0
-==> 1
+ ABBREV(string1,string2,[length]) 
 ```
 
-Returns the absolute value of the *number* argument, which must be numeric. Examples:
+Returns a boolean value that indicates whether ***string2*** is an abbreviation of ***string1*** with length greater than or equal to the specified ***length*** argument. The default length is 0, so the null string is an acceptable abbreviation.
 
 ```rexx
-
-say abs(-5.35) say abs(10)
-==> 5.35
-==> 10
+say abbrev('fullname','ful')    ==> 1
+say abbrev('almost','alm',4)    ==> 0
+say abbrev('any','')            ==> 1
 ```
 
-Adds a function library or a function host to the Library List maintained by the resident process. The *name * argument specifies either the name of a function library or the public message port associated with a function host. The name is case-sensitive, and any libraries thus declared should reside in the system LIBS: directory. The *priority * argument specifies the search priority and must be an integer between 100 and -100, inclusive. The *offset * and *version * arguments apply only to libraries. The *offset * is the integer offset to the library's "query" entry point, and the *version* is an integer specifying the minimum acceptable release level of the library.
-
-The function returns a boolean result that indicates whether the operation was suc-cessful. Note that if a library is specified, it is not actually opened at this time; similarly, no check is performed as to whether a specified function host port has been opened yet. Example:
+## ABS()
+```rexx
+ABS(number)
+```
+Returns the absolute value of the ***number*** argument, which must be numeric. 
 
 ```rexx
+say abs(-5.35)      ==> 5.35
+say abs(10)         ==> 10
+```
 
-say addlib("rexxsupport.library",0,-30,0) ==> 1 call addlib 11 EtherNet 11,-20 I* a gate.ray*I
+## ADDLIB()
+```rexx
+ADDLIB(name,priority,[offset,version])
+```
+
+Adds a function library or a function host to the Library List maintained by the resident process. The ***name*** argument specifies either the name of a function library or the public message port associated with a function host. The name is case-sensitive, and any libraries thus declared should reside in the system `LIBS:` directory. The ***priority*** argument specifies the search priority and must be an integer between 100 and -100, inclusive. The ***offset*** and ***version*** arguments apply only to libraries. The ***offset*** is the integer offset to the library's "query" entry point, and the ***version*** is an integer specifying the minimum acceptable release level of the library.
+
+The function returns a boolean result that indicates whether the operation was successful. Note that if a library is specified, it is not actually opened at this time; similarly, no check is performed as to whether a specified function host port has been opened yet. 
+
+```rexx
+say addlib("rexxsupport.library",0,-30,0) ==> 1 
+call addlib "EtherNet" ,-20        /* a gateway */
+```
+
+## ADDRESS()
+```rexx
+ADDRESS()
 ```
 
 Returns the current host address string. The host address is the message port to which commands will be sent. The `SHOW()` function can be used to check whether the required external host is actually available.
 
 ```rexx
-
-say address() ==> REXX
+say address()       ==> REXX
 ```
 
-ARGO returns the number of arguments supplied to the current environment. If the *number* parameter alone is supplied, the corresponding argument string is returned. If a number and one of the keywords **Exists** or Omitted is given, the boolean return indicates the status of the corresponding argument. Note that the existence or omission test does not indicate whether the string has a null value, but only whether a string was supplied.
+## ARG()
+```rexx
+ARG([number],['Exists'|'Omitted'])
+```
 
-Converts a string of binary digits (0, 1) into the corresponding (packed) character repre-sentation. The conversion is the same as though the argument string had been specified as a literal binary string (e.g. '1010'B). Blanks are permitted in the string, but only at byte boundaries. This function is particularly useful for creating strings that are to be used as bit masks.
+ARG() returns the number of arguments supplied to the current environment. If the ***number*** parameter alone is supplied, the corresponding argument string is returned. If a number and one of the keywords `Exists` or `Omitted` is given, the boolean return indicates the status of the corresponding argument. Note that the existence or omission test does not indicate whether the string has a null value, but only whether a string was supplied.
 
 ```rexx
+/* Assume  arguments  were:  ('one',, 10)*/
+say  arg()  ==> 3 
+say  arg(1)  ==> one 
+say  arg(2, 'O')  ==> 1
+```
 
-==> a
-say b2c('00110011') say b2c('01100001')
-==> 3
+## B2C()
+```rexx
+B2C(string)
+```
+
+Converts a string of binary digits (0, 1) into the corresponding (packed) character representation. The conversion is the same as though the argument string had been specified as a literal binary string (e.g. `'1010'B`). Blanks are permitted in the string, but only at byte boundaries. This function is particularly useful for creating strings that are to be used as bit masks.
+
+```rexx
+say b2c('00110011') ==> 3
+say b2c('01100001') ==> a
+```
+
+## BITAND()
+```rexx
+BITAND(string1,string2,[pad])
 ```
 
 The argument strings are logically ANDed together, with the length of the result being the longer of the two operand strings. If a pad character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
 
 ```rexx
-
 bitand('0313'x,'FFF0'x) ==> '0310'x
 ```
 
-Changes the state of the specified bit in the argument string. Bit numbers are defined such that bit O is the low-order bit of the rightmost byte of the string.
+## BITCHG()
+```rexx
+BITCHG(string,bitnumber)
+```
+
+Changes the state of the specified bit in the argument string. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
 
 ```rexx
-
 bitchg('0313'x,4) ==> '0303'x
 ```
 
-Clears (sets to zero) the specified bit in the argument string. Bit numbers are defined such
+## BITCLR()
+```rexx
+BITCLR(string,bitnumber)
+```
 
-that bit O is the low-order bit of the rightmost byte of the string. Example:
+Clears (sets to zero) the specified bit in the argument string. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
 
 ```rexx
-
 bitclr('0313'x,4) ==> '0303'x
 ```
 
-Compares the argument strings bit-by-bit, starting at bit number 0. The returned value is the bit number of the first bit in which the strings differ, or -1 if the strings are identical. Examples:
-
+## BITCOMP()
 ```rexx
-
-==>
+BITCOMP(string1,string2,[pad])
 ```
 
--1
+Compares the argument strings bit-by-bit, starting at bit number `0`. The returned value is the bit number of the first bit in which the strings differ, or `-1` if the strings are identical.
 
 ```rexx
-
-==> 7
+bitcomp('7F'x,'FF'x)    ==> 7
+bitcomp('FF'x,'FF'x)    ==> -1
 ```
 
-bitcomp('7F'x,'FF'x)
-
-bitcomp('FF'x,'FF'x)
+## BITOR()
+```rexx
+BITOR(string1,string2,[pad])
+```
 
 The argument strings are logically ORed together, with the length of the result being the longer of the two operand strings. If a ***pad*** character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
 
 ```rexx
-
-bitor('0313'x,'003F'x) ==> '033F'x
+bitor('0313'x,'003F'x)  ==> '033F'x
 ```
 
-Sets the specified bit in the argument string is 1. Bit numbers are defined such that bit 0
-
-is the low-order bit of the rightmost byte of the string. Example:
-
+## BITSET()
 ```rexx
-
-bitset('0313'x,2) ==> '0317'x
+BITSET(string,bitnumber)
 ```
 
-The boolean return indicates the state of the specified bit in the argument string. Bit
+Sets the specified bit in the argument string is `1`. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string. 
 
 ```rexx
-
-==>
+bitset('0313'x,2)       ==> '0317'x
 ```
 
-numbers are defined such that bit O is the low-order bit of the rightmost byte of the string. Example:
+## BITTST()
+```rexx
+BITTST(string,bitnumber)
+```
 
-bittst('0313'x,4)
-
-The argument strings are logically exclusively-ORed together, with the length of the result being the longer of the two operand strings. If a *pad* character is supplied, the shorter striI1g is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
+The boolean return indicates the state of the specified bit in the argument string. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
 
 ```rexx
+bittst('0313'x,4)       ==> 1 
+```
 
+## BITXOR()
+```rexx
+BITXOR(string1,string2,[pad])
+```
+The argument strings are logically exclusively-ORed together, with the length of the result being the longer of the two operand strings. If a ***pad*** character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
+
+```rexx
 bitxor('0313'x,'001F'x) ==> '030C'x
 ```
 
-Converts the character string into the equivalent string of binary digits. See Also: **C2X0**
-
+## C2B()
 ```rexx
-
-say c2b( 'abc') ==> 011000010110001001100011
+C2B(string)
 ```
 
-Converts the *string * argument from its character representation to the corresponding decimal number, expressed as ASCII digits (0-9). If *n * is supplied, the character string is considered to be a number expressed in *n* bytes. The string is truncated or padded with nulls on the left as required, and the sign bit is extended for the conversion.
+Converts the character string into the equivalent string of binary digits. See Also: C2X
 
 ```rexx
-
-==>
-say c2d('FF0100'x,2)
+say c2b('abc') ==> 011000010110001001100011
 ```
 
-Converts the *string* argument from its character representation to the corresponding hex-adecimal number, expressed as the ASCII characters 0 9 and A-F.
+## C2D()
+```rexx
+C2D(string,[n])
+```
+
+Converts the ***string*** argument from its character representation to the corresponding decimal number, expressed as ASCII digits (`0-9`). If ***n*** is supplied, the character string is considered to be a number expressed in ***n*** bytes. The string is truncated or padded with nulls on the left as required, and the sign bit is extended for the conversion.
 
 ```rexx
+say c2d('0020'x)        ==> 32 
+say c2d('FFFF')         ==> -1
+say c2d('FF0100'x,2)    ==> 256
 
-say c2x('abc') ==> 616263
 ```
 
-CENTER() or CENTRE()
+## C2X()
+```rexx
+C2X(string)
+```
 
-Centers the *string * argument in a string with the specified *length.*If the length is longer than that of the string, * pad*characters or blanks are added as necessary.
+Converts the ***string*** argument from its character representation to the corresponding hexadecimal number, expressed as the ASCII characters `0-9` and `A-F`.
 
 ```rexx
-
-say center('abc',6)
-say center('abc',6,'+')
-say center('123456',3)
-==> ' abc '
-==> '+abc++'
-==> '234'
+say c2x('abc')          ==> 616263
 ```
 
-Closes the file specified by the given logical name. The returned value is a boolean success flag, and will be 1 unless the specified file was not open.
+## CENTER() or CENTRE()
+```rexx
+CENTER(string,length,[pad]) or CENTRE(string,length,[pad])
+```
+
+Centers the ***string*** argument in a string with the specified ***length***. If the length is longer than that of the string, ***pad*** characters or blanks are added as necessary.
 
 ```rexx
-
-say close('input') ==> 1
+say center('abc',6)     ==> ' abc '
+say center('abc',6,'+') ==> '+abc++'
+say center('123456',3)  ==> '234'
 ```
 
-If the *list * argument is omitted, the function removes leading, trailing, or embedded blank characters from the *string * argument. If the optional *list* is supplied, it specifies the characters to be removed from the string.
+## CLOSE()
+```rexx
+CLOSE(file)
+```
+
+Closes the file specified by the given logical name. The returned value is a boolean success flag, and will be `1` unless the specified file was not open.
 
 ```rexx
-
-say compress(' vhy  not ') ==>vhynot
-say compress('++12-34-+','+-') ==> 1234
+say close('input')      ==> 1
 ```
 
-Compares two strings and returns the index of the first position in which they differ, or 0 if the strings are identical. The shorter string is padded as required using the supplied character or blanks.
+## COMPRESS()
+```rexx
+COMPRESS(string,[list])
+```
+
+If the ***list*** argument is omitted, the function removes leading, trailing, or embedded blank characters from the ***string*** argument. If the optional ***list*** is supplied, it specifies the characters to be removed from the string.
 
 ```rexx
-
-say compare('abcde','abcce')
-say compare('abcde','abcde')
-say compare('abc++','abc+-','+')
-==> 4
-==>
-==> 5
+say compress(' why not ')       ==> whynot
+say compress('++12-34-+','+-')  ==> 1234
 ```
 
-Creates a new string by concatenating the specified number of copies of the original. The
+## COMPARE()
+```rexx
+COMPARE(string1,string2,[pad])
+```
 
-number argument may be zero, in which case the null string is returned.
+Compares two strings and returns the index of the first position in which they differ, or `0` if the strings are identical. The shorter string is padded as required using the supplied character or blanks.
+
+```rexx
+say compare('abcde','abcce')        ==> 4
+say compare('abcde','abcde')        ==> 0
+say compare('abc++','abc+-','+')    ==> 5    
+```
+
+## COPIES()
+```rexx
+COPIES(string,number)
+```
+
+Creates a new string by concatenating the specified number of copies of the original. The `number` argument may be zero, in which case the null string is returned.
+
+```rexx
+say copies('abc',3)     ==> abcabcabc
+```
+
+## D2C()
+```rexx
+D2C(number)
+```
 
 Creates a string whose value is the binary (packed) representation of the given decimal number.
 
-d2c(31)
-
 ```rexx
-
-==> '1F'x
+d2c(31)                 ==> '1F'x
 ```
 
-If the *option * parameter is not specified, **DATATYPE()** tests whether the *string * parameter is a valid number and returns either NUM or CHAR. If an option keyword is given, the boolean re-turn indicates whether the string satisfied the requested test. The following option keywords are recognized:
-
-Table 6.1 **DATATYPEO** Options
-
-Alphanumeric Alphabetics (A-Z,a-z)
-
-or Numerics (0-9)
-
+## DATATYPE()
 ```rexx
-
-say datatype('123')
-say datatype('1a f2','x') say datatype('aBcde','L')
+DATATYPE(string,[option])
 ```
 
-Binary Digits String Lowercase Alphabetics (a-z) Mixed Upper/Lowercase Valid Numbers
+If the `option` parameter is not specified, `DATATYPE()` tests whether the `string` parameter is a valid number and returns either `NUM` or `CHAR`. If an option keyword is given, the boolean return indicates whether the string satisfied the requested test. The following option keywords are recognized:
 
-Valid REXX Symbols Uppercase Alphabetics (A-Z) Integer Numbers
+***Table 6.1 `DATATYPE()` Options***
+
+| Keyword      | Characters Accepted                     |
+| ------------ | --------------------------------------- |
+| Alphanumeric | Alphabetics (A-Z,a-z) or Numerics (0-9) |
+| Binary       | Binary Digits String                    |
+| Lowercase    | Lowercase Alphabetics (a-z)             |
+| Mixed        | Mixed Upper/Lowercase                   |
+| Numeric      | Valid Numbers                           |
+| Symbol       | Valid REXX Symbols                      |
+| Upper        | Uppercase Alphabetics (A-Z)             |
+| Whole        | Integer Numbers                         |
+| X            | Hex Digits String                       |
 
 ```rexx
-
-==> NUM
-==> 1
-==> 0
+say datatype('123')         ==> NUM
+say datatype('1a f2','x')   ==> 1
+say datatype('aBcde','L')   ==> 0
 ```
 
-Deletes the substring of the *string * argument beginning with the nth character for the specified *length* in characters. The default length is the remaining length of the string.
-
-Deletes the substring of the *string * argument beginning with the nth word for the specified *length* in words. The default length is the remaining length of the string. The deleted string includes any trailing blanks following the last word.
-
+## DELSTR()
 ```rexx
-
-say delword('Tell me a story',2,2) ==> 'Tell story' say delword('one two three',3) ==> 'one two '
+DELSTR(string,n,[length])
 ```
 
-Checks the specified logical file name and returns the boolean value 1 (True) if the end-of-
-
-:file has been reached, and O (False) otherwise. Example:
+Deletes the substring of the `string` argument beginning with the ***n***th character for the specified `length` in characters. The default length is the remaining length of the string.
 
 ```rexx
+say delstr('123456',2,3) ==> '156'
+```
 
-say eof(infile)
-==> 1
+# DELWORD()
+```rexx
+DELWORD(string,n,[length])
+```
+
+Deletes the substring of the `string` argument beginning with the ***n***th word for the specified `length` in words. The default length is the remaining length of the string. The deleted string includes any trailing blanks following the last word.
+
+```rexx
+say delword('Tell me a story',2,2)  ==> 'Tell story' 
+say delword('one two three',3)      ==> 'one two '
+```
+
+## EOF()
+```rexx
+EOF(file)
+```
+
+Checks the specified logical file name and returns the boolean value `1` (`True`) if the end-of-file has been reached, and `0` (`False`) otherwise. 
+
+```rexx
+say eof(infile)         ==> 1
+```
+
+## ERRORTEXT()
+```rexx
+ERRORTEXT(number)
 ```
 
 Returns the error message associated with the specified ARexx error code. The null string is returned if the number is not a valid error code.
 
 ```rexx
-
-say errortext(41) ==> Invalid expression
+say errortext(41)       ==> Invalid expression
 ```
 
-Tests whether an external file of the given *filename* exists. The name string may include device and directory specifications.
-
+## EXISTS()
 ```rexx
-
-say exists('df0:c/ed') ==> 1
+EXISTS(filename)
 ```
 
-Copies data from the (optional) string into a previously-allocated memory area, which must be specified as a 4-byte address. The *length * parameter specifies the maximum number of characters to be copied; the default is the length of the string. If the specified length is longer than the string, the remaining area is filled with the *pad* character or nulls ( '00 'x). The returned value is the number of characters copied.
-
-Caution is advised in using this function. Any area of memory can be overwritten, possibly causing a system crash. Task switching is forbidden while the copy is being done, so system performance may be degraded if long strings are copied.
+Tests whether an external file of the given `filename` exists. The name string may include device and directory specifications.
 
 ```rexx
-
-count = export('0004 OOOO'x,'The answer')
+say exists('df0:c/ed')  ==> 1
 ```
 
-Returns a block of memory of the given length to the interpreter's internal pool. The *address * argument must be a 4-byte string obtained by a prior call to **GETSPACE(),** the internal allocator. It is not always necessary to release internally-allocated memory, since it will be released to the system when the program terminates. However, if a very large block has been allocated, returning it to the pool may avoid memory space problems. The return value is a boolean success flag.
+## EXPORT()
+```rexx
+EXPORT(address,[string],[length],[pad])
+```
+Copies data from the (optional) string into a previously-allocated memory area, which must be specified as a 4-byte address. The `length` parameter specifies the maximum number of characters to be copied; the default is the length of the string. If the specified length is longer than the string, the remaining area is filled with the `pad` character or nulls (`'00'x`). The returned value is the number of characters copied.
+
+**Caution is advised in using this function.** Any area of memory can be overwritten, possibly causing a system crash. Task switching is forbidden while the copy is being done, so system performance may be degraded if long strings are copied.
+
+See Also: IMPORT(), STORAGE()
 
 ```rexx
+count = export('0004 0000'x,'The answer')
+```
 
+## FREESPACE()
+```rexx
+FREESPACE(address,length)
+```
+
+Returns a block of memory of the given length to the interpreter's internal pool. The `address` argument must be a 4-byte string obtained by a prior call to `GETSPACE()`, the internal allocator. It is not always necessary to release internally-allocated memory, since it will be released to the system when the program terminates. However, if a very large block has been allocated, returning it to the pool may avoid memory space problems. The return value is a boolean success flag.
+See Also: GETSPACE()
+
+```rexx
 say freespace('00042000'x,32) ==> 1
 ```
 
-Searches the Clip List for an entry matching the supplied *name* parameter, and returns the associated value string. The name-matching is case-sensitive, and the null string is returned if the name cannot be found. The usage and maintenance of Clip List entries is described in the Chapter 9.
-
+## GETCLIP()
 ```rexx
-
-f *Assume 'numbers' contains 'PI=3.14159'*' say getclip('numbers') ==> PI=3.14159
+GETCLIP(name)
 ```
 
-GETSPACE{)
-
-Allocates a block of memory of the specified length from the interpreter's internal pool. The returned value is the 4-byte address of the allocated block, which is not cleared or otherwise initialized. Internal memory is automatically returned to the system when the ARexx program terminates, so this function should not be used to allocate memory for use by external programs. The Support Library (described in Appendix D) includes the function ALLOCMEM() which to allocate memory from the system free list.
+Searches the Clip List for an entry matching the supplied `name` parameter, and returns the associated value string. The name-matching is case-sensitive, and the `null` string is returned if the name cannot be found. The usage and maintenance of Clip List entries is described in the Chapter 9.
+See Also: SETCLIP()
 
 ```rexx
+/* Assume 'numbers' contains 'PI=3.14159'*/
+say getclip('numbers')  ==> PI=3.14159
+```
 
-say c2x(getspace(32)) ==> '0003BF40'x
+## GETSPACE()
+```rexx
+GETSPACE(length)
+```
+
+Allocates a block of memory of the specified `length` from the interpreter's internal pool. The returned value is the 4-byte address of the allocated block, which is not cleared or otherwise initialized. Internal memory is automatically returned to the system when the ARexx program terminates, so this function should not be used to allocate memory for use by external programs. The Support Library (described in Appendix D) includes the function `ALLOCMEM()` which to allocate memory from the system free list.
+See Also: FREESPACE()
+
+```rexx
+say c2x(getspace(32))   ==> '0003BF40'x
+```
+
+## HASH()
+```rexx
+HASH(string)
 ```
 
 Returns the hash attribute of a string as a decimal number, and updates the internal hash value of the string.
 
 ```rexx
-
-==> 49
-say hash(' 1')
+say hash('1')           ==> 49
 ```
 
-Creates a string by copying data from the specified 4-byte address. If the length parameter is not supplied, the copy terminates when a null byte is found.
-
-extval *=* import('0004 OOOO'x,8)
-
-Searches for the first occurrence of the *pattern * argument in the *string * argument, beginning at the specified *start* position. The default start position is 1. The returned value is the index of the matched pattern, or O if the pattern was not found.
-
+## IMPORT()
 ```rexx
-
-say index("123456","23")
-say index("123456","77")
-say index("123123","23",3)
-==> 2
-==>
-==> 5
+IMPORT(address,[length])
 ```
 
-Inserts the *new * string into the *old * string after the specified *start * position. The default starting position is 0. The new string is truncated or padded to the specified *length* as required, using the supplied pad character or blanks. If the start position is beyond the end
-
-----.- of the old string, the old string is padded on the right.
+Creates a string by copying data from the specified 4-byte address. If the `length` parameter is not supplied, the copy terminates when a null byte is found.
 
 ```rexx
-
-say insert('ab','12345') *==>* ab12345 say insert('123','++',3,5,'-') *==>*++-123--
+extval = import('0004 0000'x,8)
 ```
 
-Searches backwards for the first occurrence of the *pattern * argument in the *string * argument, beginning at the specified *start* position. The default starting position is the end of the string. The returned value is the index of the matched pattern, or O if the pattern was not found.
-
+## INDEX()
 ```rexx
-
-say lastpos("123234","2") say lastpos("123234","5") say lastpos("123234","2",3)
-==> 4
-==>
-==> 2
+INDEX(string,pattern,[start])
 ```
 
-Returns the leftmost substring in the given *string * argument with the specified *length.*If the substring is shorter than the requested length, it is padded on the left with the supplied * pad*character or blanks.
+Searches for the first occurrence of the `pattern` argument in the `string` argument, beginning at the specified `start` position. The default start position is `1`. The returned value is the index of the matched pattern, or `0` if the pattern was not found.
 
 ```rexx
+say index("123456","23")    ==> 2
+say index("123456","77")    ==> 0
+say index("123123","23",3)  ==> 5
+```
 
-say left('123456',3)
-say left('123456',8,'+')
-say length('three')
-==> 123
-==> 123456++
-==> 5
+## INSERT()
+```rexx
+INSERT(new,old,[start],[length],[pad])
+```
+
+Inserts the `new` string into the `old` string after the specified `start` position. The default starting position is `0`. The new string is truncated or padded to the specified `length` as required, using the supplied pad character or blanks. If the start position is beyond the end of the old string, the old string is padded on the right.
+
+```rexx
+say insert('ab','12345')        ==> ab12345 
+say insert('123','++',3,5,'-')  ==> ++-123--
+```
+
+## LASTPOS()
+```rexx
+LASTPOS(string,pattern,[start])
+```
+
+Searches backwards for the first occurrence of the `pattern` argument in the `string` argument, beginning at the specified `start` position. The default starting position is the end of the string. The returned value is the index of the matched pattern, or `0` if the pattern was not found.
+
+```rexx
+say lastpos("123234","2")        ==> 4
+say lastpos("123234","5")        ==> 0
+say lastpos("123234","2",3)      ==> 2
+```
+
+## LEFT()
+```rexx
+LEFT(string,length,[pad])
+```
+
+Returns the leftmost substring in the given `string` argument with the specified `length`. If the substring is shorter than the requested length, it is padded on the left with the supplied `pad` character or blanks.
+
+```rexx
+say left('123456',3)            ==> 123
+say left('123456',8,'+')        ==> 123456++
+```
+## LENGTH()
+```rexx
+LENGTH(string)
+```
+Returns the number of characters in the `string` argument.
+
+```rexx
+say length('three')             ==> 5
+```
+
+## MAX()
+```rexx
+MAX(number,number,[,number,...])
 ```
 
 Returns the maximum of the supplied arguments, all of which must be numeric. At least two parameters must be supplied.
 
 ```rexx
+say max(2.1,3,-1)       ==> 3
+```
 
-say max(2.1,3,-1) ==> 3
+## MIN()
+```rexx
+MIN(number,number,[,number,...])
 ```
 
 Returns the minimum of the supplied arguments, all of which must be numeric. At least two parameters must be supplied.
 
 ```rexx
-
-say min(2.1,3,-1) ==> -1
+say min(2.1,3,-1)       ==> -1
 ```
 
-Opens an external file for the specified operation. The *file * argument defines the logical name by which the file will be referenced. The *filename* is the external name of the file, and may include device and directory specifications. The function returns a boolean value that indicates whether the operation was successful. There is no limit to the number of files that
-
+## OPEN()
+```rexx
+OPEN(file,filename,['Append'|'Read'|'Write'])
+```
+Opens an external file for the specified operation. The `file` argument defines the logical name by which the file will be referenced. The `filename` is the external name of the file, and may include device and directory specifications. The function returns a boolean value that indicates whether the operation was successful. There is no limit to the number of files that
 can be open simultaneously, and all open files are closed automatically when the program exits.
 
 ```rexx
-
-say open('MyCon','C0N:160/ 50/320/100/MyCon/cds') ==> 1 say open('outfile','ram:temp','W') ==> 1
+say open('MyCon','CON:160/50/320/100/MyCon/cds') ==> 1 
+say open('outfile','ram:temp','W')               ==> 1
 ```
 
-Overlays the *new * string onto the *old * string beginning at the specified *start * position, which must be positive. The default starting position is 1. The new string is truncated or padded to the specified *length * as required, using the supplied *pad* character or blanks. If the start position is beyond the end of the old string, the old string is padded on the right.
+## OVERLAY()
+```rexx
+OVERLAY(new,old,[start],[length],[pad])
+```
+
+Overlays the `new` string onto the `old` string beginning at the specified `start` position, which must be positive. The default starting position is `1`. The new string is truncated or padded to the specified `length` as required, using the supplied `pad` character or blanks. If the start position is beyond the end of the old string, the old string is padded on the right.
+
+```rexx
+say overlay('bb', 'abcd')       ==> bbcd
+say overlay('4','123',5,5,'-')  ==> 123--4----
+```
+
+## POS()
+```rexx
+POS(pattern,string,[start])
+```
+
+Searches for the first occurrence of the `pattern` argument in the `string` argument, beginning at the position specified by the `start` argument. The default starting position is `1`. The returned value is the index of the matched string, or `0` if the pattern wasn't found.
+
+```rexx
+say pos('23','123234')          ==> 2
+say pos('77','123234')          ==> 0
+say pos('23','123234',3)        ==> 4
+```
+
+## PRAGMA()
+```rexx
+PRAGMA(option,[value])
+```
+
+This function allows a program to change various attributes relating to the system environment within which the program executes. The `option` argument is a keyword that specifies an environmental attribute; the currently implemented options are `Directory` and `Priority`. The `value` argument supplies the new attribute value to be installed. The value returned by the function depends on the attribute selected. Some attributes return the previous value installed, while others may simply set a boolean success flag. The currently defined option keywords are listed below.
+
+* **`Directory`** Specifies a new "current" directory. The current directory is used as the "root" for filenames that do not explicitly include a device specification. The return value is a boolean success flag.
+
+* **`Priority`** Specifies a new task priority. The priority value must be an integer in the range `-128` to `127`, but the practical range is much more limited. ARexx programs should never be run at a priority higher than that of the resident process, which currently runs at `priority 4`. The returned value is the previous priority level.
+
+```rexx
+say pragma('priority',-5)  ==> 0
+call pragma 'Directory','df0:system'
+```
+
+## RANDOM()
+```rexx
+RANDOM([min],[max],[seed])
+```
+
+Returns a pseudorandom integer in the interval specified by the `min` and `max` arguments. The default minimum value is `0` and the default maximum value is `999`. The interval max-min must be less than or equal to `1000`. If a greater range of random integers is required, the values from the `RANDU()` function can be suitable scaled and translated.
+
+The `seed` argument can be supplied to initialize the internal state of the random number generator.
+See Also: RANDU()
 
 ```rexx
 
-say overlay('bb', 'abed') ==> bbcd
+thisroll = random(1,6)    /* might be 1 */
+nextroll = random(1,6)    /* snake eyes? */
 ```
 
-Searches for the first occurrence of the *pattern * argument in the *string * argument, beginning at the position specified by the *start* argument. The default starting position is 1. The returned value is the index of the matched string, or O if the pattern wasn't found.
-
+## RANDU()
 ```rexx
-
-say pos('23','123234')
-say pos('77','123234')
-say pos('23','123234',3)
-==> 2
-==> 0
-==> 4
+RANDU([seed])
 ```
 
-This function allows a program to change various attributes relating to the system environ-ment within which the program executes. The *option * argument is a keyword that specifies an environmental attribute; the currently implemented options are Directory and Pri-ority. The *value* argument supplies the new attribute value to be installed. The value returned by the function depends on the attribute selected. Some attributes return the previous value installed, while others may simply set a boolean success flag. The currently defined option keywords are listed below.
+Returns a uniformly-distributed pseudorandom number between `0` and `1`. The number of digits of precision in the result is always equal to the current Numeric Digits setting. With the choice of suitable scaling and translation values, `RANDU()` can be used to generate pseudorandom numbers on an arbitrary interval.
 
-Directory. Specifies a new "current" directory. The current directory is used as the "root" for filenames that do not explicitly include a device specification. The return value is a boolean success flag.
-
-Priority. Specifies a new task priority. The priority value must be an integer in the range -128 to 127, but the practical range is much more limited. ARexx pro-grams should never be run at a priority higher than that of the resident process, which currently runs at priority 4. The returned value is the previous priority level.
-
-Returns a pseudorandom integer in the interval specified by the *min * and *max* arguments. The default minimum value is 0 and the default maximum value is 999. The interval max-min must be less than or equal to 1000. If a greater range of random integers is required, the values from the RANDUO function can be suitable scaled and translated.
-
-The *seed* argument can be supplied to initialize the internal state of the random number generator.
-
-thisroll random(1,6) nextroll = random(1,6)
-
-U.,age: RANDU({.9eed})
+The optional `seed` argument is used to initialize the internal state ofthe random number generator.
 
 ```rexx
-
-I*might be 1*I I* snake eyes?*I
+firsttry = randu()          /* 0.371902021? */
+numeric digits 3
+tryagain = randu()          /* 0.873? */
 ```
 
-Returns a uniformly-distributed pseudorandom number between 0 and 1. The number of digits of precision in the result is always equal to the current Numeric Digits setting. With the choice of suitable scaling and translation values, RANDU() can be used to generate pseudorandom numbers on an arbitrary interval.
-
-The optional *seed* argument is used to initialize the internal state ofthe random number generator.
-
+## READCH()
 ```rexx
-
-firsttry = randu() numeric digits 3 tryagain = randu()
-```
-
-U.,age: READCH(file,length)
-
-```rexx
-
-I*0.371902021?*I
-I*0.873?*I
+READCH(file,length)
 ```
 
 Reads the specified number of characters from the given logical file into a string. The length of the returned string is the actual number of characters read, and may be less than the requested length if, for example, the end-of file was reached.
 
+```rexx
 instring readch('input',10)
+```
 
-Reads characters from the given logical file into a string until a "newline" character is found. The returned string does not include the "newline."
+## READLN()
+```rexx
+READLN(file)
+```
+
+Reads characters from the given logical file into a string until a "`newline`" character is found. The returned string does not include the "`newline`".
 
 ```rexx
-
 instring = readln('MyFile')
 ```
 
-Removes an entry with the given *name* from the Library List maintained by the resident process. The boolean return is 1 if the entry was found and successfully removed. Note that this function does not make a distinction between function libraries and function hosts, but simply removes a named entry.
-
+## REMLIB()
 ```rexx
-
-say remlib('MyLibrary .library') ==> 1
+REMLIB(name)
 ```
 
-Reverses the sequence of characters in the string. Example:
+Removes an entry with the given `name` from the Library List maintained by the resident process. The boolean return is `1` if the entry was found and successfully removed. Note that this function does not make a distinction between function libraries and function hosts, but simply removes a named entry.
 
 ```rexx
-
-say reverse('?ton yhw') ==> why not?
+say remlib('MyLibrary .library')    ==> 1
 ```
 
-Returns the rightmost substring in the given *string * argument with the specified *length.*If the substring is shorter than the requested length, it is padded on the left with the supplied pad character or blanks.
+## REVERSE()
+```rexx
+REVERSE(string)
+```
+
+Reverses the sequence of characters in the string. 
 
 ```rexx
-
-say right('123456' ,4) ==> 3456
-say right('123456' ,8,'+') ==> ++123456
+say reverse('?ton yhw')         ==> why not?
 ```
 
-Moves to a new position in the given logical file, specified as an offset from an anchor position. The default anchor is Current. The returned value is the new position relative to the start of the file.
+## RIGHT()
+```rexx
+RIGHT(string,length,[pad])
+```
+
+Returns the rightmost substring in the given `string` argument with the specified `length`.If the substring is shorter than the requested length, it is padded on the left with the supplied pad character or blanks.
 
 ```rexx
-
-say seek('input',10,'B')
-say seek('input',0,'E')
-==> 10
-==> 356 I*file length*I
+say right('123456',4)           ==> 3456
+say right('123456',8,'+')       ==> ++123456
 ```
 
-Adds a name-value pair to the Clip List maintained by the resident process. **If** an entry of the same name already exists, its value is updated to the supplied value string. Entries may
+## SEEK()
+```rexx
+SEEK(file,offset,['Begin'|'Current'|'End'])
+```
 
-be removed by specifying a null value. The function returns a boolean value that indicates whether the operation was successful.
+Moves to a new position in the given logical file, specified as an `offset` from an anchor position. The default anchor is `Current`. The returned value is the new position relative to the start of the file.
 
 ```rexx
-
-say setclip('path' ,'df0:s') say setclip('path')
-==> 1
-==> 1
+say seek('input',10,'B')        ==> 10
+say seek('input',0,'E')         ==> 356 /* file length */
 ```
 
-Returns the names in the resource list specified by the *option * argument, or tests to see whether an entry with the specified *name* is available. The currently implemented options keywords are Clip, Files, Libraries, and Ports, which are described below.
+## SETCLIP()
+```rexx
+SETCLIP(name,[value])
+```
 
-Clip. Examines the names in the Clip List.
-
-Files. Examines the names of the currently open logical file names.
-
-Libraries. Examines the names in the Library List, which are either function libraries or function hosts.
-
-Ports. Examines the names in the system Ports List.
-
-If the *name * argument is omitted, the function returns a string with the resource names separated by a blank space or the *pad * character, if one was supplied. **If ** the*name * argument is given, the returned boolean value indicates whether the name was found in the resource
-
-list. The name entries are case-sensitive.
-
-SIGN(}
-
-Returns 1 if the *number * argument is positive or zero, and -1 if *number* is negative. The argument must be numeric.
+Adds a name-value pair to the Clip List maintained by the resident process. If an entry of the same `name` already exists, its value is updated to the supplied `value` string. Entries may be removed by specifying a `null` value. The function returns a `boolean` value that indicates whether the operation was successful.
 
 ```rexx
-
-say sign(12) say sign(-33)
-==> 1
-==> -1
+say setclip('path' ,'df0:s')    ==> 1
+say setclip('path')             ==> 1
 ```
 
-Reformats the *string * argument so that there are *n * spaces (blank characters) between each pair of words. **If ** the*pad * character is specified, it is used instead of blanks as the separator character. Specifying n as O will remove all blanks from the string.
+## SHOW()
+```rexx
+SHOW(option,[name],[pad])
+```
+
+Returns the names in the resource list specified by the `option` argument, or tests to see whether an entry with the specified `name` is available. The currently implemented options keywords are `Clip`, `Files`, `Libraries`, and `Ports`, which are described below.
+
+* ***`Clip`*** Examines the names in the Clip List.
+
+* ***`Files`*** Examines the names of the currently open logical file names.
+
+* ***`Libraries`*** Examines the names in the Library List, which are either function libraries or function hosts.
+
+* ***`Ports`*** Examines the names in the system Ports List.
+
+If the `name` argument is omitted, the function returns a string with the resource names separated by a blank space or the `pad` character, if one was supplied. If the`name` argument is given, the returned boolean value indicates whether the name was found in the resource list. The name entries are case-sensitive.
+
+## SIGN()
+```rexx
+SIGN(number)
+```
+
+Returns `1` if the `number` argument is `positive` or `zero`, and `-1` if number is `negative`. The argument must be numeric.
 
 ```rexx
-
-say space('Now is the time',3) say space('Now is the tirne,O) say space('1 2 3',1,'+')
-==> 'Now is the
-==> 'Nowisthetirne'
-==> '1+2+3'
+say sign(12)            ==> 1
+say sign(-33)           ==> -1
 ```
 
-time'
+## SPACE()
+```rexx
+SPACE(string,n,[pad])
+```
 
-Calling **STORAGE()** with no arguments returns the available system memory. If the *address * argument is given, it must be a 4-byte string, and the function copies data from the (op-tional)*string * into the indicated memory area. The *length * parameter specifies the maximum number of bytes to be copied, and defaults to the length of the string. If the specified length is longer than the string, the remaining area is filled with the *pad * character or nulls ( '00'x.)
+Reformats the `string` argument so that there are `n` spaces (blank characters) between each pair of words. If the `pad` character is specified, it is used instead of blanks as the separator character. Specifying `n` as `0` will remove all blanks from the string.
+
+```rexx
+say space('Now is the time',3)      ==> 'Now   is   the   time'
+say space('Now is the time',0)      ==> 'Nowisthetime'
+say space('1 2 3',1,'+')            ==> '1+2+3'
+```
+
+## STORAGE()
+```rexx
+STORAGE([address],[string],[length],[pad])
+```
+
+Calling `STORAGE()` with no arguments returns the available system memory. If the `address` argument is given, it must be a 4-byte string, and the function copies data from the (optional) `string` into the indicated memory area. The `length` parameter specifies the maximum number of bytes to be copied, and defaults to the length of the string. If the specified length is longer than the string, the remaining area is filled with the `pad` character or nulls (`'00'x`)
 
 The returned value is the previous contents of the memory area. This can be used in a subsequent call to restore the original contents.
 
-Caution is advised in using this function. Any area of memory can be overwritten, possibly causing a system crash. Task switching is forbidden while the copy is being done, so system performance may be degraded if long strings are copied.
+**Caution is advised in using this function.** Any area of memory can be overwritten, possibly causing a system crash. Task switching is forbidden while the copy is being done, so system performance may be degraded if long strings are copied.
+See Also: EXPORT()
 
 ```rexx
-
-say storage() ==> 248400 oldval = storage('0004 0000'x,'The answer') call storage '0004 0000'x,,32,'+'
-say strip(' say what? ')
-say strip(' say what? ','L')
-say strip('++123+++','B','+')
-==> 'say what?'
-==> 'say what?
-==> '123'
+say storage() ==> 248400 
+oldval = storage('0004 0000'x,'The answer') 
+call storage '0004 0000'x,,32,'+'
 ```
 
-Returns the substring of the *string * argument beginning at the specified *start * position for the specified *length.* The starting position must be positive, and the default length is the remaining length of the string. **If ** the substring is shorter than the requested length, it is padded on the left with the blanks or the specified*pad * character.
-
+## STRIP()
 ```rexx
-
-say substr('123456',4,2) ==> 45
-say substr('myname',3,6,'=') ==> name==
+STRIP(string,[{'B' | 'L' | 'T'}],[pad])
 ```
 
-Returns the substring of the ***string *** argument beginning with the***nth *** word for the specified***length*** in words. The default length is the remaining length of the string. The returned string will never have leading or trailing blanks.
+Returns the substring of the `string` argument beginning at the specified `start` position for the specified `length`. The starting position must be positive, and the default length is the remaining length of the string. If the substring is shorter than the requested length, it is padded on the left with the blanks or the specified `pad` character.
 
 ```rexx
+say strip('  say what?  ')      ==> 'say what?'
+say strip('  say what?  ','L')  ==> 'say what?  '
+say strip('++123+++','B','+')   ==> '123'
+```
 
+## SUBSTR()
+```rexx
+SUBSTR(string,start,[length],[pad])
+```
+
+Returns the substring of the `string` argument beginning  at  the specified  `start` position for the specified  `length`.  The starting position must be  positive, and the default length is the remaining length of the string. If the substring is shorter than the requested length, it is padded on the left with the blanks or the specified pad character.
+
+```rexx
+say substr('123456',4,2)        ==> 45
+say substr('myname',3,6,'=')    ==> name==
+```
+
+## SUBWORD()
+```rexx
+SUBWORD(string,n,[length])
+```
+
+Returns the substring of the `string`  argument beginning with the `n`th word for the specified `length` in words. The default length is the remaining length of the string. The returned string will never have leading or trailing blanks.
+
+```rexx
 say subword('Now is the time ',2,2) ==> is the
 ```
 
-Tests whether the ***name*** argument is a valid REXX symbol. If the name is not a valid symbol, the function returns the string BAD. Otherwise, the returned string is LIT if the symbol is uninitialized and VAR if it has been assigned a value.
+## SYMBOL()
+```rexx
+SYMBOL(name)
+```
+
+Tests whether the `name` argument is a valid REXX symbol. If the name is not a valid symbol, the function returns the string `BAD`. Otherwise, the returned string is `LIT` if the symbol is uninitialized and `VAR` if it has been assigned a value.
 
 ```rexx
+say symbol('J')         ==> VAR
+say symbol('x')         ==> LIT
+say symbol('++')        ==> BAD
+```
 
-say symbol('J') say symbol('x') say symbol('++')
-==> VAR
-==> LIT
-==> BAD
+## TIME()
+```rexx
+TIME(option)
 ```
 
 Returns the current system time or controls the internal elapsed time counter. The valid option keywords are listed below.
 
-Table 6.2 TIME() Options
+***Table 6.2 TIME() Options***
 
-Elapsed time in seconds
+| Option Keyword | Description                            |
+| -------------- | -------------------------------------- |
+| Elapsed        | Elapsed time in seconds                |
+| Hours          | Current time in hours since midnight   |
+| Minutes        | Current time in minutes since midnight |
+| Reset          | Reset the elapsed time clock           |
+| Seconds        | Current time in seconds since midnight |
 
-Current time in hours since midnight Current time in minutes since midnight Reset the elapsed time clock
 
-Current time in seconds since midnight
-
-If no option is specified, the function returns the current system time in the form HH:MM: SS. Examples:
-
-```rexx
-
-I* Suppose that the time is
-say time('Hours')
-```
-
-1:02 AM
+If no option is specified, the function returns the current system time in the form `HH:MM:SS`.
 
 ```rexx
-
-==> 1
-say time('m')
-==> 62
-say time('S')
-==> 3720
-call time 'R'
-say time('E')
-I* reset timer
-==> .020
+/* Suppose that the time is */
+say time('Hours')   ==> 1
+say time('m')       ==> 62
+say time('S')       ==> 3720
+call time 'R'       /* reset timer */
+say time('E')       ==> .020
 ```
 
-Sets the tracing mode to that specified by the *option * keyword, which must be one of the valid alphabetic or prefix options. The tracing options are described in Chapter 7. The **TRACE()** function will alter the tracing mode even during interactive tracing, when **TRACE** instructions in the source program are ignored. The returned value is the mode in effect before the function call; this allows the previous trace mode to be restored later.
+## TRACE()
+```rexx
+TRACE(option)
+```
+
+Sets the tracing mode to that specified by the `option` keyword, which must be one of the valid `alphabetic` or `prefix` options. The tracing options are described in Chapter 7. The `TRACE()` function will alter the tracing mode even during interactive tracing, when `TRACE` instructions in the source program are ignored. The returned value is the mode in effect before the function call; this allows the previous trace mode to be restored later.
 
 ```rexx
-
-I* Assume tracing mode is ?ALL
-say trace('Results') ==> ?A
+/* Assume tracing mode is ?ALL */
+say trace('Results')    ==> ?A
 ```
 
-This function constructs a translation table and uses it to replace selected characters in the argument string. If only the *string * argument is given, it is translated to uppercase. If an *input * table is supplied, it modifies the translation table so that characters in the argument string that occur in the input table are replaced with the corresponding character in the *output* table. Characters beyond the end of the output table are replaced with the specified pad character or a blank.
+## TRANSLATE()
+```rexx
+TRANSLATE(string,[output],[input],[pad])
+```
+
+This function constructs a translation table and uses it to replace selected characters in the argument string. If only the `string` argument is given, it is translated to uppercase. If an `input` table is supplied, it modifies the translation table so that characters in the argument string that occur in the `input` table are replaced with the corresponding character in the `output` table. Characters beyond the end of the output table are replaced with the specified `pad` character or a blank.
 
 Note that the result string is always of the same length as the original string. The input and output tables may be of any length.
 
 ```rexx
-
-say translate("abcde", 11123","cbade","+") say translate("lov")
-say translate("0110","10","01")
+say translate("abcde","123","cbade","+")    ==> 321++
+say translate("low")                        ==> LOW
+say translate("0110","10","01")             ==> 1001
 ```
 
-Removes trailing blanks from the *string* argument. Example:
-
+## TRIM()
 ```rexx
-
-==> 321++
-==> LOW
-==> 1001
-==> 4
-say length(trim(' abc '))
+TRIM(string)
 ```
 
-Translates the *string* to uppercase. The action of this function is equivalent to that of
-
-TRANSLATE(string), but it is slightly faster for short strings. Example:
+Removes trailing blanks from the `string` argument.
 
 ```rexx
-
-say upper('One Fine Day') ==> ONE FINE DAY
+say length(trim(' abc '))   ==> 4
 ```
 
-Returns the value of the symbol represented by the *name* argument. Example:
-
+## UPPER()
 ```rexx
-
-I* Assume that J has the value 12
+UPPER(string)
 ```
 
-If the **Match ** argument is omitted, the function returns the index of the first character in the*string * argument which is not contained in the *list * argument, or O if all of the characters are in the list. If the Match keyword is supplied, the function returns the index of the first character which is in the list, or O if none of the characters are.
+Translates the `string` to uppercase. The action of this function is equivalent to that of `TRANSLATE(string)`, but it is slightly faster for short strings.
 
 ```rexx
-
-say verify('123456','0123456789')
-say verify('123a56','0123456789')
-say verify('123a45' ,'abcdefghij','m')
-==> 0
-==>
-==> 4
+say upper('One Fine Day')       ==> ONE FINE DAY
 ```
 
-Returns the nth word in the *string * argument, or the null string if there are fewer than *n*
-
-words. Example:
-
-',2)
-
+## VALUE()
 ```rexx
-
-say word('Now is the time
-==> is
+VALUE(name)
 ```
 
-Returns the starting position of the nth word in the argument string, or O if there are fewer than n words.
-
-',3)
+Returns the value of the symbol represented by the `name` argument.
 
 ```rexx
-
-say wordindex('Now is the time
-==> 8
+/* Assume that J has the value 12 */
+say value('J')          ==> 12
 ```
 
-Returns the length of the nth word in the *string* argument. Example:
-
+## VERIFY()
 ```rexx
-
-say wordlength('one two three',3) ==> 5
+VERIFY(string,list,['Match'])
 ```
 
-Returns the number of words in the *string* argument. Example:
+If the `Match` argument is omitted, the function returns the index of the first character in the `string` argument which is not contained in the `list` argument, or `0` if all of the characters are in the list. If the `Match` keyword is supplied, the function returns the index of the first character which is in the list, or `0` if none of the characters are.
 
 ```rexx
+say verify('123456','0123456789')       ==> 0
+say verify('123a56','0123456789')       ==> 4
+say verify('123a45' ,'abcdefghij','m')  ==> 4
+```
 
+## WORD()
+```rexx
+WORD(string,n)
+```
+
+Returns the `n`th word in the `string` argument, or the null string if there are fewer than `n` words. Example:
+
+```rexx
+say word('Now is the time ',2)      ==> is
+```
+
+## WORDINDEX()
+```rexx
+WORDINDEX(string,n)
+```
+
+Returns the starting position of the `n`th word in the argument string, or `0` if there are fewer than `n` words.
+
+```rexx
+say wordindex('Now is the time ',3)      ==> 8
+```
+
+## WORDLENGTH()
+```rexx
+WORDLENGTH(string,n)
+```
+
+Returns the length of the `n`th word in the `string` argument.
+
+```rexx
+say wordlength('one two three',3)       ==> 5
+```
+
+## WORDS()
+```rexx
+WORDS(string)
+```
+
+Returns the number of words in the `string` argument.
+
+```rexx
 say words("You don't say!") ==> 3
 ```
 
-Writes the *string* argument to the given logical file. The returned value is the actual number of characters written.
+## WRITECH()
+```rexx
+WRITECH(file,string)
+```
+Writes the `string` argument to the given logical `file`. The returned value is the actual number of characters written.
 
 ```rexx
-
-==> 7
-say writech('output' ,'Testing')
+say writech('output' ,'Testing')        ==> 7
 ```
 
-Writes the *string* argument to the given logical file with a "newline" appended. The returned value is the actual number of characters written.
+## WRITELN()
+```rexx
+WRITELN(file,string)
+```
+
+Writes the `string` argument to the given logical `file` with a "`newline`" appended. The returned value is the actual number of characters written.
 
 ```rexx
-
-say writeln('output' ,'Testing') ==> 8
+say writeln('output' ,'Testing')        ==> 8
 ```
 
-X2C{)
+## X2C()
+```rexx
+X2C(string)
+```
 
-Converts a string of hex digits into the (packed) character representation. Blank characters are permitted in the argument string at byte boundaries.
+Converts a `string` of hex digits into the (packed) character representation. Blank characters are permitted in the argument `string` at byte boundaries.
 
 ```rexx
-
-say x2c('12ab') say x2c('12 ab')
-==> '12ab'x
-==> '12ab'x
+say x2c('12ab')         ==> '12ab'x
+say x2c('12 ab')        ==> '12ab'x
 ```
 
-Generates a string consisting of all characters numerically between the specified *start * and *end * values. The default start character is '00'x, and the default end character is 'FF' x. Only the first character of the *start * and *end* arguments is significant.
+## XRANGE()
+```rexx
+XRANGE([start],[end])
+```
+
+Generates a string consisting of all characters numerically between the specified `start` and `end` values. The default start character is `'00'x`, and the default end character is `'FF'x`. Only the first character of the `start` and `end` arguments is significant.
 
 ```rexx
-
-say xrange()
-say xrange('a','f') say xrange(,'10'x)
-==> '00010203 ... FDFEFF'x
-==> 'abcdef'
-==> '0001020304050607080910'x
+say xrange()            ==> '00010203 ... FDFEFF'x
+say xrange('a','f')     ==> 'abcdef'
+say xrange(,'10'x)      ==> '0001020304050607080910'x
 ```
-
