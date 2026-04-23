@@ -2839,7 +2839,7 @@ All ARexx strings are maintained as **RexxArg** structures, which are diagrammed
 
 ***Table 10.1 The RexxArg Structure***
 
-```rexx
+```c
 STRUCTURE RexxArg,0
 LONG   ra_Size       ; allocated length
 UWORD  ra_Length     ; length of string
