@@ -14,6 +14,14 @@ This repository contains Amiga-related manuals and books converted from scanned 
 * Markdown is simple, clean, and future-proof
 * Also useful as a **dataset for AI models** (Amiga, ARexx, AmigaDOS, etc.)
 
+## How
+
+1. **OCR**: Use OCR software to extract text from scanned PDFs
+2. **Cleaning**: Manually clean up OCR errors, fix formatting, and structure the content
+3. **Markdown**: Convert the cleaned text into Markdown format for easy reading and editing
+
+<img src="assets/workspace.png" alt="Workspace" width="600">
+
 ## Work in Progress
 
 * ARexx User Guide

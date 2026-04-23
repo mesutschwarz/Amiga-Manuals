@@ -1,86 +1,92 @@
 ﻿# Chapter 6 Functions 
 The basic concept of a function is a program or group of statements that will be executed whenever the function name appears in a certain context. Functions are an important building block of most computer languages in that they allow ***modular programming-*** the ability to build a large program from a series of smaller, more easily developed modules. In ARexx a function may be defined as part of (internal to) a program, as part of a library, or as a separate external program.
 
-Syntax and Search Order
+## 6.1 Syntax and Search Order
 
-Function calls in an expression are defined syntactically as a symbol or string followed immediately by an open parenthesis. The symbol or string (taken as a literal) specifies the ***function name,*** and the open parenthesis begins the ***argument list.*** Between the opening and
+Function calls in an expression are defined syntactically as a symbol or string followed immediately by an open parenthesis. The symbol or string (taken as a literal) specifies the ***function name,*** and the open parenthesis begins the ***argument list.*** Between the opening and eventual dosing parentheses are zero or more argument expressions, separated by commas, that supply the data being passed to the function. For example,
+```rexx
+CENTER('title',20)
+ADDRESS()
+'AllocMem'(256*4,1)
+```
+are all valid function calls. Each argument expression is evaluated in turn and the resulting strings are passed as the argument list to the function. There is no limit to the number of arguments that may be passed to an internal function, but calls to Built-In or external functions are limited to a maximum of **15** arguments. Note that each argument expression, while often just a single literal value, can include arithmetic or string operations or even other function calls. Argument expressions are evaluated from left to right.
 
-~/ eventual dosing parentheses are zero or more argument expressions, separated by commas, that supply the data being passed to the function. For example,
+Functions can also be invoked using the `CALL` instruction. The syntax of this form is slightly different, and is described in Chapter 4. The`CALL` instruction can be used to invoke a function that may not return a value.
 
-CENTER('title',20) ADDRESS()
-
-'AllocMem'(256â€¢4,1)
-
-are all valid function calls. Each argument expression is evaluated in turn and the resulting strings are passed as the argument list to the function. There is no limit to the number of arguments that may be passed to an internal function, but calls to Built-In or external functions are limited to a maximum of 15 arguments. Note that each argument expression, while often just a single literal value, can include arithmetic or string operations or even other function calls. Argument expressions are evaluated from left to right.
-
-Functions can also be invoked using the **CALL ** instruction. The syntax of this form is slightly different, and is described in Chapter 4. The**CALL** instruction can be used to invoke a function that may not return a value.
+### Search Order
 
 Function linkages in ARexx are established dynamically at the time of the function call. A specific search order is followed until a function matching the name symbol or string is found. If the specified function cannot be located, an error is generated and the expression evaluation is terminated. The full search order is:
 
-Internal Functions. The program source is examined for a label that matches the function name. If a match is found, a new storage environment is created and control is transferred to the label.
+1. **Internal Functions** The program source is examined for a label that matches the function name. If a match is found, a new storage environment is created and control is transferred to the label.
 
-Built-In Functions. The Built-In function library is searched for the specified name. All of these functions are defined by uppercase names, and the library has been specially organized to make the search as efficient as possible.
+2. **Built-In Functions** The Built-In function library is searched for the specified name. All of these functions are defined by uppercase names, and the library has been specially organized to make the search as efficient as possible.
 
-External ARexx Programs. The final search step is to check for an external ARexx program file by sending an invocation message to the ARexx resident process. The search always begins in the current directory, and follows the same search path as the original ARexx program invocation. The name matching process is not case-sensitive.
+3. **Function Libraries and Function Hosts**. The available function libraries and function hosts are maintained in a prioritized list, which is searched starting at the highest priority until the requested function is found or the end of the list is reached. Each function library is opened and called at a special entry point to determine whether it contains a function matching the given name. Function hosts are called using a message-passing protocol similar to that used for commands, and may be used as gateways for remote procedure calls to other machines in a network. 
+
+4. **External ARexx Programs** The final search step is to check for an external ARexx program file by sending an invocation message to the ARexx resident process. The search always begins in the current directory, and follows the same search path as the original ARexx program invocation. The name matching process is not case-sensitive.
 
 Note that the function name-matching procedure may be case-sensitive for some of the search steps but not for others. The matching procedure used in a function library or function host is left to the discretion of the applications designer. Functions defined with mixed-case names must be called using a string token, since symbol names are always translated to uppercase.
 
 The full search order is followed whenever the function name is defined by a symbol token. However, the search for internal functions is bypassed if the name is specified by a string token. This allows internal functions to usurp the names of external functions, as in the following example:
 
 ```rexx
-
-arg string,length length= min(length,6O)
+CENTER:                             /* internal "CENTER" function */
+arg string,length                   /* get arguments */
+length=min(length,6O)               /* compute length */
 return 'CENTER'(string,length)
-f *internal "CENTER"* f f *get arguments*I I* compute length
 ```
 
-Here the Built-In function CENTER() has been replaced by an internal function of the same name, which calls the original function after modifying the length argument.
+Here the Built-In function `CENTER()` has been replaced by an internal function of the same name, which calls the original function after modifying the length argument.
 
-The interpreter creates a new storage environment when an internal function is called, so that the previous (caller's) environment is preserved. The new environment inherits the values from its predecessor, but subsequent changes to the environment variables do not affect the previous environment. The specific values that are preserved a.re:
+### Internal Functions
 
-The current and previous host addresses,
+The interpreter creates a new storage environment when an internal function is called, so that the previous (caller's) environment is preserved. The new environment inherits the values from its predecessor, but subsequent changes to the environment variables do not affect the previous environment. The specific values that are preserved are:
 
-The NUMERIC DIGITS, FUZZ, and FORM settings,
+* The current and previous host addresses,
+* The `NUMERIC DIGITS`, `FUZZ`, and `FORM` settings,
+* The trace option, inhibit flag, and interactive flag,
+* The state of the interrupt flags defined by the `SIGNAL` instruction, and
+* The current prompt string as set by the `OPTIONS PROMPT` instruction.
 
-The trace option, inhibit flag, and interactive flag,
+The new environment does not automatically get a new symbol table, so initially all of the variables in the previous environment are available to the called function. The `PROCEDURE` instruction can be used to create a new symbol table and thereby protect the caller's symbol values.
 
-The state of the interrupt flags defined by the SIGNAL instruction, and
+Execution of the internal function proceeds until a `RETURN` instruction is executed. At this point the new environment is dismantled and control resumes at the point of the function call. The expression supplied with the `RETURN` instruction is evaluated and passed back to the caller as the function result.
 
-The current prompt string as set by the OPTIONS PROMPT instruction.
-
-The new environment does not automatically get a new symbol table, so initially all of the variables in the previous environment are available to the called function. The PROCEDURE
-
-instruction can be used to create a new symbol table and thereby protect the ca.ller's symbol values.
-
-Execution of the internal function proceeds until a RETURN instruction is executed. At this point the new environment is dismantled and control resumes at the point of the function ca.11. The expression supplied with the RETURN instruction is evaluated and passed back to the caller as the function result.
+### Built-In Functions
 
 ARexx provides a substantial library of predefined functions as part of the language system. These functions are always available and have been optimized to work with the internal data structures. In general the Built-In functions execute much faster than an equivalent interpreted function, so their usage is strongly recommended.
 
 The Built-In Function Library is not user-extensible, but additional functions will be included in later releases.
 
-External function libraries provide a mechanism with which users and applications develop-ers can extend the functionality of ARexx. A function library is a collection of one or more functions together with a "query" entry point that serves to match a name string with the appropriate function. External function libraries are supported as standard Amiga shared libraries, and may be either memory or disk-resident. Disk-resident libraries are loaded and opened as needed.
+### Function Libraries
 
-The ARexx resident process maintains a list, called the *Library List,* of the currently available function libraries and function hosts. Applications programs can add or remove function libraries as required. The Library List is maintained as a priority-sorted queue, and entries can be added at an appropriate priority to control the function name resolution. Libraries with higher priorities are searched first; within a given priority level, those libraries added first are searched first.
+External function libraries provide a mechanism with which users and applications developers can extend the functionality of ARexx. A function library is a collection of one or more functions together with a "query" entry point that serves to match a name string with the appropriate function. External function libraries are supported as standard Amiga shared libraries, and may be either memory or disk-resident. Disk-resident libraries are loaded and opened as needed.
+
+The ARexx resident process maintains a list, called the ***Library List*** of the currently available function libraries and function hosts. Applications programs can add or remove function libraries as required. The Library List is maintained as a priority-sorted queue, and entries can be added at an appropriate priority to control the function name resolution. Libraries with higher priorities are searched first; within a given priority level, those libraries added first are searched first.
 
 During the search process the ARexx interpreter opens each library and calls its "query" entry point. The query function must then check to see whether the requested function name is in the library. ]f not, it returns a "function not found" error code and the search continues with the next library in the list. Function libraries are always dosed after being checked so that the operating system can reclaim the memory space if required. Once the requested function has been found, it is called with the arguments passed by the interpreter, and must return an error code and a result string.
 
-The ARexx language system includes an external function library in a file called "rexxsupport. library." It contains a number of Amiga-specific functions and is described in Appendix D. Chapter 10 provides information on designing and implementing function libraries.
+The ARexx language system includes an external function library in a file called `rexxsupport.library` It contains a number of Amiga-specific functions and is described in Appendix D. Chapter 10 provides information on designing and implementing function libraries.
+
+### Function Hosts
 
 Function hosts are called by sending a function invocation message packet to the public message port identified by the host's name. No constraints are imposed on the internal design of the host except that it must eventually return the invocation message with an appropriate return code and result string. The function call may result in a new program being loaded and run, or might even be sent to a network handler as a remote procedure call.
 
 The available function hosts, along with the function libraries, are contained in the Library List maintained by the resident process. This list provides a general mechanism for resolving function names in a priority-controlled manner.
 
-The ARexx resident process is an example of a function host. It is added to the Library List at a nominal priority of -60 when the resident process is started, using the same name ("REXX") that is used for command invocations. When it receives a function invocation packet, it searches for an external file matching the function name, just as it would for a command invocation of the same name. In particular, the search begins with the current directory and proceeds to the system REXX: directory. Two names are used in the search: the function name with the current file extension appended, and the name by itself. The name matching process is not case-sensitive, but is affected by the presence of explicit directory specifications or file extensions in the name string. The rules governing the search for external programs are covered in Chapter 9.
+The ARexx resident process is an example of a function host. It is added to the Library List at a nominal priority of -60 when the resident process is started, using the same name (`REXX`) that is used for command invocations. When it receives a function invocation packet, it searches for an external file matching the function name, just as it would for a command invocation of the same name. In particular, the search begins with the current directory and proceeds to the system `REXX:` directory. Two names are used in the search: the function name with the current file extension appended, and the name by itself. The name matching process is not case-sensitive, but is affected by the presence of explicit directory specifications or file extensions in the name string. The rules governing the search for external programs are covered in Chapter 9.
 
 External programs are always run as a separate process in the Amiga's multitasking system. The calling program "sleeps" until the called function finishes and the message packet returns. The result string and error code are returned in the packet.
 
+## 6.2 Built-In Function Library
+
 This section of the chapter is devoted to descriptions of the individual Built-In functions, which are listed alphabetically. Many of the functions have optional as well as required arguments. The optional arguments are shown in brackets, and generally have a default value that is used if the argument is omitted.
 
-Maximum Arguments. While internal functions can be called with any number of argu-ments, the Built-In functions ( and external functions as well) are limited to a maximum of 15 arguments.
+**Maximum Arguments.** While internal functions can be called with any number of argu-ments, the Built-In functions (and external functions as well) are limited to a maximum of 15 arguments.
 
-Pad and Option Characters. For functions that accept a "pad" character argument, only the first character of the argument string is significant. If a null string is supplied, the default padding character (usually a blank) will be used. Similarly, where an option keyword is specified as an argument, only the first character is significant. Option keywords may be given in uppercase or lowercase.
+**Pad and Option Characters.** For functions that accept a "pad" character argument, only the first character of the argument string is significant. If a null string is supplied, the default padding character (usually a blank) will be used. Similarly, where an option keyword is specified as an argument, only the first character is significant. Option keywords may be given in uppercase or lowercase.
 
-1/0 Support Functions. ARexx provides functions for creating and manipulating exter-nal DOS files. The functions available at the present time are OPEN(), CLOSE(), READCH(), READLN(), WRITECH O, WRITELN(), EDF(), SEEK(), and EXISTS(). Files are referenced by a "logical name," a case-sensitive name that is assigned to a file when it is first opened.
+**I/O Support Functions.** ARexx provides functions for creating and manipulating external DOS files. The functions available at the present time are `OPEN()`, `CLOSE()`, `READCH()`, `READLN()`, `WRITECH O`, `WRITELN()`, `EDF()`, `SEEK()`, and `EXISTS()`. Files are referenced by a "logical name," a case-sensitive name that is assigned to a file when it is first opened.
 
 There is no limit to the number of files that may be open simultaneously, and all open files are closed automatically when the program exits.
 
@@ -114,14 +120,14 @@ The function returns a boolean result that indicates whether the operation was s
 say addlib("rexxsupport.library",0,-30,0) ==> 1 call addlib 11 EtherNet 11,-20 I* a gate.ray*I
 ```
 
-Returns the current host address string. The host address is the message port to which commands will be sent. THe **SHOW()** function can be used to check whether the required external host is actually available.
+Returns the current host address string. The host address is the message port to which commands will be sent. The `SHOW()` function can be used to check whether the required external host is actually available.
 
 ```rexx
 
 say address() ==> REXX
 ```
 
-ARGO returns the number of arguments supplied to the current environment. If the *number * parameter alone is supplied, the corresponding argument string is returned. If a number and one of the keywords **Exists** or Omitted is given, the boolean return indicates the status of the corresponding argument. Note that the existence or omission test does not indicate whether the string has a null value, but only whether a string was supplied.
+ARGO returns the number of arguments supplied to the current environment. If the *number* parameter alone is supplied, the corresponding argument string is returned. If a number and one of the keywords **Exists** or Omitted is given, the boolean return indicates the status of the corresponding argument. Note that the existence or omission test does not indicate whether the string has a null value, but only whether a string was supplied.
 
 Converts a string of binary digits (0, 1) into the corresponding (packed) character repre-sentation. The conversion is the same as though the argument string had been specified as a literal binary string (e.g. '1010'B). Blanks are permitted in the string, but only at byte boundaries. This function is particularly useful for creating strings that are to be used as bit masks.
 
