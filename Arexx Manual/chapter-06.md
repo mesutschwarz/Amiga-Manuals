@@ -97,7 +97,7 @@ There is no limit to the number of files that may be open simultaneously, and al
  ABBREV(string1,string2,[length]) 
 ```
 
-Returns a boolean value that indicates whether ***string2*** is an abbreviation of ***string1*** with length greater than or equal to the specified ***length*** argument. The default length is 0, so the null string is an acceptable abbreviation.
+Returns a boolean value that indicates whether `string2` is an abbreviation of `string1` with length greater than or equal to the specified `length` argument. The default `length` is `0`, so the null string is an acceptable abbreviation.
 
 ```rexx
 say abbrev('fullname','ful')    ==> 1
@@ -109,7 +109,7 @@ say abbrev('any','')            ==> 1
 ```rexx
 ABS(number)
 ```
-Returns the absolute value of the ***number*** argument, which must be numeric. 
+Returns the absolute value of the `number` argument, which must be numeric. 
 
 ```rexx
 say abs(-5.35)      ==> 5.35
@@ -121,7 +121,7 @@ say abs(10)         ==> 10
 ADDLIB(name,priority,[offset,version])
 ```
 
-Adds a function library or a function host to the Library List maintained by the resident process. The ***name*** argument specifies either the name of a function library or the public message port associated with a function host. The name is case-sensitive, and any libraries thus declared should reside in the system `LIBS:` directory. The ***priority*** argument specifies the search priority and must be an integer between 100 and -100, inclusive. The ***offset*** and ***version*** arguments apply only to libraries. The ***offset*** is the integer offset to the library's "query" entry point, and the ***version*** is an integer specifying the minimum acceptable release level of the library.
+Adds a function library or a function host to the Library List maintained by the resident process. The `name` argument specifies either the name of a function library or the public message port associated with a function host. The name is case-sensitive, and any libraries thus declared should reside in the system `LIBS:` directory. The `priority` argument specifies the search priority and must be an integer between 100 and -100, inclusive. The `offset` and `version` arguments apply only to libraries. The `offset` is the integer offset to the library's "query" entry point, and the `version` is an integer specifying the minimum acceptable release level of the library.
 
 The function returns a boolean result that indicates whether the operation was successful. Note that if a library is specified, it is not actually opened at this time; similarly, no check is performed as to whether a specified function host port has been opened yet. 
 
@@ -146,13 +146,13 @@ say address()       ==> REXX
 ARG([number],['Exists'|'Omitted'])
 ```
 
-ARG() returns the number of arguments supplied to the current environment. If the ***number*** parameter alone is supplied, the corresponding argument string is returned. If a number and one of the keywords `Exists` or `Omitted` is given, the boolean return indicates the status of the corresponding argument. Note that the existence or omission test does not indicate whether the string has a null value, but only whether a string was supplied.
+`ARG()` returns the number of arguments supplied to the current environment. If the `number` parameter alone is supplied, the corresponding argument string is returned. If a number and one of the keywords `Exists` or `Omitted` is given, the boolean return indicates the status of the corresponding argument. Note that the existence or omission test does not indicate whether the string has a null value, but only whether a string was supplied.
 
 ```rexx
 /* Assume  arguments  were:  ('one',, 10)*/
-say  arg()  ==> 3 
-say  arg(1)  ==> one 
-say  arg(2, 'O')  ==> 1
+say  arg()              ==> 3 
+say  arg(1)             ==> one 
+say  arg(2, 'O')        ==> 1
 ```
 
 ## B2C()
@@ -160,7 +160,7 @@ say  arg(2, 'O')  ==> 1
 B2C(string)
 ```
 
-Converts a string of binary digits (0, 1) into the corresponding (packed) character representation. The conversion is the same as though the argument string had been specified as a literal binary string (e.g. `'1010'B`). Blanks are permitted in the string, but only at byte boundaries. This function is particularly useful for creating strings that are to be used as bit masks.
+Converts a string of binary digits (`0`, `1`) into the corresponding (packed) character representation. The conversion is the same as though the argument string had been specified as a literal binary string (e.g. `'1010'B`). Blanks are permitted in the string, but only at byte boundaries. This function is particularly useful for creating strings that are to be used as bit masks.
 
 ```rexx
 say b2c('00110011') ==> 3
@@ -172,7 +172,7 @@ say b2c('01100001') ==> a
 BITAND(string1,string2,[pad])
 ```
 
-The argument strings are logically ANDed together, with the length of the result being the longer of the two operand strings. If a pad character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
+The argument strings are logically ANDed together, with the length of the result being the longer of the two operand strings. If a `pad` character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
 
 ```rexx
 bitand('0313'x,'FFF0'x) ==> '0310'x
@@ -180,10 +180,10 @@ bitand('0313'x,'FFF0'x) ==> '0310'x
 
 ## BITCHG()
 ```rexx
-BITCHG(string,bitnumber)
+BITCHG(string,bit)
 ```
 
-Changes the state of the specified bit in the argument string. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
+Changes the state of the specified `bit` in the argument string. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
 
 ```rexx
 bitchg('0313'x,4) ==> '0303'x
@@ -191,10 +191,10 @@ bitchg('0313'x,4) ==> '0303'x
 
 ## BITCLR()
 ```rexx
-BITCLR(string,bitnumber)
+BITCLR(string,bit)
 ```
 
-Clears (sets to zero) the specified bit in the argument string. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
+Clears (sets to zero) the specified `bit` in the argument `string`. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the `string`.
 
 ```rexx
 bitclr('0313'x,4) ==> '0303'x
@@ -217,7 +217,7 @@ bitcomp('FF'x,'FF'x)    ==> -1
 BITOR(string1,string2,[pad])
 ```
 
-The argument strings are logically ORed together, with the length of the result being the longer of the two operand strings. If a ***pad*** character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
+The argument strings are logically ORed together, with the length of the result being the longer of the two operand strings. If a `pad` character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
 
 ```rexx
 bitor('0313'x,'003F'x)  ==> '033F'x
@@ -225,10 +225,10 @@ bitor('0313'x,'003F'x)  ==> '033F'x
 
 ## BITSET()
 ```rexx
-BITSET(string,bitnumber)
+BITSET(string,bit)
 ```
 
-Sets the specified bit in the argument string is `1`. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string. 
+Sets the specified `bit` in the argument `string` to `1`. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
 
 ```rexx
 bitset('0313'x,2)       ==> '0317'x
@@ -236,10 +236,10 @@ bitset('0313'x,2)       ==> '0317'x
 
 ## BITTST()
 ```rexx
-BITTST(string,bitnumber)
+BITTST(string,bit)
 ```
 
-The boolean return indicates the state of the specified bit in the argument string. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
+The boolean return indicates the state of the specified `bit` in the argument `string`. Bit numbers are defined such that bit `0` is the low-order bit of the rightmost byte of the string.
 
 ```rexx
 bittst('0313'x,4)       ==> 1 
@@ -249,7 +249,7 @@ bittst('0313'x,4)       ==> 1
 ```rexx
 BITXOR(string1,string2,[pad])
 ```
-The argument strings are logically exclusively-ORed together, with the length of the result being the longer of the two operand strings. If a ***pad*** character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
+The argument strings are logically exclusively-ORed together, with the length of the result being the longer of the two operand strings. If a `pad` character is supplied, the shorter string is padded on the right; otherwise, the operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
 
 ```rexx
 bitxor('0313'x,'001F'x) ==> '030C'x
@@ -260,7 +260,7 @@ bitxor('0313'x,'001F'x) ==> '030C'x
 C2B(string)
 ```
 
-Converts the character string into the equivalent string of binary digits. See Also: C2X
+Converts the character `string` into the equivalent string of binary digits. See Also: C2X
 
 ```rexx
 say c2b('abc') ==> 011000010110001001100011
@@ -271,7 +271,7 @@ say c2b('abc') ==> 011000010110001001100011
 C2D(string,[n])
 ```
 
-Converts the ***string*** argument from its character representation to the corresponding decimal number, expressed as ASCII digits (`0-9`). If ***n*** is supplied, the character string is considered to be a number expressed in ***n*** bytes. The string is truncated or padded with nulls on the left as required, and the sign bit is extended for the conversion.
+Converts the `string` argument from its character representation to the corresponding decimal number, expressed as ASCII digits (`0-9`). If `n` is supplied, the character string is considered to be a number expressed in `n` bytes. The string is truncated or padded with nulls on the left as required, and the sign bit is extended for the conversion.
 
 ```rexx
 say c2d('0020'x)        ==> 32 
@@ -285,7 +285,7 @@ say c2d('FF0100'x,2)    ==> 256
 C2X(string)
 ```
 
-Converts the ***string*** argument from its character representation to the corresponding hexadecimal number, expressed as the ASCII characters `0-9` and `A-F`.
+Converts the `string` argument from its character representation to the corresponding hexadecimal number, expressed as the ASCII characters `0-9` and `A-F`.
 
 ```rexx
 say c2x('abc')          ==> 616263
@@ -296,7 +296,7 @@ say c2x('abc')          ==> 616263
 CENTER(string,length,[pad]) or CENTRE(string,length,[pad])
 ```
 
-Centers the ***string*** argument in a string with the specified ***length***. If the length is longer than that of the string, ***pad*** characters or blanks are added as necessary.
+Centers the `string` argument in a string with the specified `length`. If the length is longer than that of the string, `pad` characters or blanks are added as necessary.
 
 ```rexx
 say center('abc',6)     ==> ' abc '
@@ -309,7 +309,7 @@ say center('123456',3)  ==> '234'
 CLOSE(file)
 ```
 
-Closes the file specified by the given logical name. The returned value is a boolean success flag, and will be `1` unless the specified file was not open.
+Closes the `file` specified by the given logical name. The returned value is a boolean success flag, and will be `1` unless the specified file was not open.
 
 ```rexx
 say close('input')      ==> 1
@@ -320,7 +320,7 @@ say close('input')      ==> 1
 COMPRESS(string,[list])
 ```
 
-If the ***list*** argument is omitted, the function removes leading, trailing, or embedded blank characters from the ***string*** argument. If the optional ***list*** is supplied, it specifies the characters to be removed from the string.
+If the `list` argument is omitted, the function removes leading, trailing, or embedded blank characters from the `string` argument. If the optional `list` is supplied, it specifies the characters to be removed from the string.
 
 ```rexx
 say compress(' why not ')       ==> whynot
@@ -356,7 +356,7 @@ say copies('abc',3)     ==> abcabcabc
 D2C(number)
 ```
 
-Creates a string whose value is the binary (packed) representation of the given decimal number.
+Creates a string whose value is the binary (packed) representation of the given decimal `number`.
 
 ```rexx
 d2c(31)                 ==> '1F'x
@@ -394,7 +394,7 @@ say datatype('aBcde','L')   ==> 0
 DELSTR(string,n,[length])
 ```
 
-Deletes the substring of the `string` argument beginning with the ***n***th character for the specified `length` in characters. The default length is the remaining length of the string.
+Deletes the substring of the `string` argument beginning with the `n`th character for the specified `length` in characters. The default length is the remaining length of the string.
 
 ```rexx
 say delstr('123456',2,3) ==> '156'
@@ -405,7 +405,7 @@ say delstr('123456',2,3) ==> '156'
 DELWORD(string,n,[length])
 ```
 
-Deletes the substring of the `string` argument beginning with the ***n***th word for the specified `length` in words. The default length is the remaining length of the string. The deleted string includes any trailing blanks following the last word.
+Deletes the substring of the `string` argument beginning with the `n`th word for the specified `length` in words. The default length is the remaining length of the string. The deleted string includes any trailing blanks following the last word.
 
 ```rexx
 say delword('Tell me a story',2,2)  ==> 'Tell story' 
@@ -417,7 +417,7 @@ say delword('one two three',3)      ==> 'one two '
 EOF(file)
 ```
 
-Checks the specified logical file name and returns the boolean value `1` (`True`) if the end-of-file has been reached, and `0` (`False`) otherwise. 
+Checks the specified logical `file` name and returns the boolean value `1` (`True`) if the end-of-file has been reached, and `0` (`False`) otherwise. 
 
 ```rexx
 say eof(infile)         ==> 1
@@ -428,7 +428,7 @@ say eof(infile)         ==> 1
 ERRORTEXT(number)
 ```
 
-Returns the error message associated with the specified ARexx error code. The null string is returned if the number is not a valid error code.
+Returns the error message associated with the specified ARexx error code. The null string is returned if the `number` is not a valid error code.
 
 ```rexx
 say errortext(41)       ==> Invalid expression
@@ -464,7 +464,7 @@ count = export('0004 0000'x,'The answer')
 FREESPACE(address,length)
 ```
 
-Returns a block of memory of the given length to the interpreter's internal pool. The `address` argument must be a 4-byte string obtained by a prior call to `GETSPACE()`, the internal allocator. It is not always necessary to release internally-allocated memory, since it will be released to the system when the program terminates. However, if a very large block has been allocated, returning it to the pool may avoid memory space problems. The return value is a boolean success flag.
+Returns a block of memory of the given `length` to the interpreter's internal pool. The `address` argument must be a 4-byte string obtained by a prior call to `GETSPACE()`, the internal allocator. It is not always necessary to release internally-allocated memory, since it will be released to the system when the program terminates. However, if a very large block has been allocated, returning it to the pool may avoid memory space problems. The return value is a boolean success flag.
 See Also: GETSPACE()
 
 ```rexx
@@ -512,7 +512,7 @@ say hash('1')           ==> 49
 IMPORT(address,[length])
 ```
 
-Creates a string by copying data from the specified 4-byte address. If the `length` parameter is not supplied, the copy terminates when a null byte is found.
+Creates a string by copying data from the specified 4-byte `address`. If the `length` parameter is not supplied, the copy terminates when a `null` byte is found.
 
 ```rexx
 extval = import('0004 0000'x,8)
