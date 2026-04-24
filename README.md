@@ -28,8 +28,8 @@ This repository contains Amiga-related manuals and books converted from scanned 
 
 ## Completed
 
-* [x] ARexx User's Reference Manual, 1987 *William S. Hawes* (2026-04-24)
-* [x] WShell – The Beachcomber's Guide to WShell Version 2.0, © 1988, 1991 *William S. Hawes* (2026-04-20)
+* [x] [ARexx User's Reference Manual](https://github.com/mesutschwarz/Amiga-Manuals/blob/main/Arexx%20User%20Reference%20Manual.md), 1987 *William S. Hawes* (2026-04-24)
+* [x] [WShell – The Beachcomber's Guide to WShell Version 2.0](https://github.com/mesutschwarz/Amiga-Manuals/blob/main/WShell%20v2.0%20Manual.md), © 1988, 1991 *William S. Hawes* (2026-04-20)
 
 ## Repo
 
