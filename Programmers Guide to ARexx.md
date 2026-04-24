@@ -9,9 +9,11 @@ West Chester, Pennsylvania
 
 **Written and designed by:** 
 Eric Giguère
+
 **Contributors:**
 William Hawes, Willy Langeveld, Mike Sinz, and Tom Rokicki
-**Editor: **
+
+**Editor:**
 Dan Baker
 
 Copyright © 1991 by Commodore Electronics Limited.
@@ -86,7 +88,7 @@ A few books on general REXX programming are also listed in the bibliography. Ple
 
 If you are not using Workbench 2.0, please ensure that you've upgraded to at least version 1.15 of ARexx. There are very few differences between this version of ARexx and the version that is distributed with Workbench 2.0.
 
-#### **C Skills**
+### **C Skills**
 
 Program examples in the C programming language are used extensively throughout this book. If you don't feel comfortable with the C language, there are many introductory books available on the market today. You will also need to purchase a C compiler and learn how to use it. The C compiler you use should support the major ANSI C features, as the examples in this book make extensive use of features such as function prototypes.
 
@@ -214,69 +216,71 @@ The appendices summarize some useful information for the ARexx programmer:
 
 # PART 1 **Using ARexx**
 
-# CHAPTER 2 **An ARexx Roadmap**
+# Chapter 2 **An ARexx Roadmap**
 
 This chapter provides an overview of the ARexx programming environment and describes the individual pieces that give ARexx its power and flexibility.
 
 ## The Amiga Environment
 
-As was mentioned in the introduction, this manual assumes that you have a certain level of experience in programming the Amiga. It's hard to be an expert at everything, though, so this section is intended to serve as a refresher on the Amiga environment. The emphasis is on *Exec,* the foundation of the operating system. For more information on the topics discussed in this section, please refer to the following books:
+As was mentioned in the introduction, this manual assumes that you have a certain level of experience in programming the Amiga. It's hard to be an expert at everything, though, so this section is intended to serve as a refresher on the Amiga environment. The emphasis is on ***Exec***, the foundation of the operating system. For more information on the topics discussed in this section, please refer to the following books:
 
 * *Amiga ROM Kernel Reference Manual: Libraries*
 * *The AmigaDOS Manual, 3rd Edition*
 
 ### Tasks and Processes
 
-A *task* is a program in execution. The Amiga is a *multitasking* system, capable of keeping multiple tasks in memory and scheduling the processor between them literally hundreds of times a second. It's this scheduling that allows programs to run seemingly simultaneously. Only one task is actually running at any given moment. This task is known as the *active*  or *running* task. All other tasks are either ready to be executed (*ready*) or waiting for an external event (*waiting* or *blocked*). 
+A ***task*** is a program in execution. The Amiga is a ***multitasking*** system, capable of keeping multiple tasks in memory and scheduling the processor between them literally hundreds of times a second. It's this scheduling that allows programs to run seemingly simultaneously. Only one task is actually running at any given moment. This task is known as the ***active***  or ***running*** task. All other tasks are either ready to be executed (*ready*) or waiting for an external event (*waiting* or *blocked*). 
 
-A *process* is a special kind of task. While they share all the usual properties of tasks, processes are the only tasks that can communicate with AmigaDOS. The functions described in *The AmigaDOS Manual* can only be accessed from a process. Because of this, most programs are run as processes and not as simple tasks. ARexx programs are all run as processes. (Note that in many operating system textbooks the words task and *process* are often used as synonyms. Remember that on the Amiga there *is* a difference.)
+A ***process*** is a special kind of task. While they share all the usual properties of tasks, processes are the only tasks that can communicate with AmigaDOS. The functions described in ***The AmigaDOS Manual*** can only be accessed from a process. Because of this, most programs are run as processes and not as simple tasks. ARexx programs are all run as processes. (Note that in many operating system textbooks the words task and ***process*** are often used as synonyms. Remember that on the Amiga there ***is*** a difference.)
 
-Each task or process has a *priority* associated with it. Generally, the higher the priority, the more often the task or process gets executed in any given time interval.
+Each task or process has a ***priority*** associated with it. Generally, the higher the priority, the more often the task or process gets executed in any given time interval.
 
-There are times when a task or process needs to be notified of an event, or to synchronize itself with another task. A *signal* can be sent to a task in such cases to notify it.
+There are times when a task or process needs to be notified of an event, or to synchronize itself with another task. A ***signal*** can be sent to a task in such cases to notify it.
 
 ### Inter-Process Communication
 
-Tasks and processes communicate through the Amiga's *inter-process communication* (IPC) facilities (actually, the term inter-task *communication* is more accurate, but IPC is the term in common use). Exec provides IPC support through the use of ports and messages.
+Tasks and processes communicate through the Amiga's ***inter-process communication*** (IPC) facilities (actually, the term inter-task ***communication*** is more accurate, but IPC is the term in common use). Exec provides IPC support through the use of ports and messages.
 
-A *message* is an arbitrary piece of data to which a special header is attached. The header contains the information that Exec needs to deliver the message to another task.
+A ***message*** is an arbitrary piece of data to which a special header is attached. The header contains the information that Exec needs to deliver the message to another task.
 
-A *port* is a queue to which messages are delivered. Any task that wishes to receive a message must create a port. Ports can be given names. When a message arrives at a port, the task that owns the port (a task may create more than one port) is usually notified by a signal. It is then up to the task to retrieve the message from the queue and interpret its contents.
+A ***port*** is a queue to which messages are delivered. Any task that wishes to receive a message must create a port. Ports can be given names. When a message arrives at a port, the task that owns the port (a task may create more than one port) is usually notified by a signal. It is then up to the task to retrieve the message from the queue and interpret its contents.
 
-Ports can be *public* or *private*. A public port is known to (and accessible by) all tasks on the system.
+Ports can be ***public*** or ***private***. A public port is known to (and accessible by) all tasks on the system.
 
-The task that sends a message to a port is known as the *sender*. The task that receives the message is the *receiver*. In many cases the receiver will send an answer or acknowledgement back to the sender as a *reply* message.
+The task that sends a message to a port is known as the *sender*. The task that receives the message is the ***receiver***. In many cases the receiver will send an answer or acknowledgement back to the sender as a ***reply*** message.
 
 ### Shared Libraries
 
-A *shared library* is a collection of routines that can be accessed by several tasks. The library is usually stored on disk and is only loaded into memory when a task requests it, and can be flushed from memory when no tasks require it. The main advantage of shared libraries is that only one copy of the library needs to be in memory even if several tasks are using the library. All Amiga system routines, including those of Intuition and AmigaDOS, are accessed through shared libraries. The ARexx interpreter is itself a shared library.
+A ***shared library*** is a collection of routines that can be accessed by several tasks. The library is usually stored on disk and is only loaded into memory when a task requests it, and can be flushed from memory when no tasks require it. The main advantage of shared libraries is that only one copy of the library needs to be in memory even if several tasks are using the library. All Amiga system routines, including those of Intuition and AmigaDOS, are accessed through shared libraries. The ARexx interpreter is itself a shared library.
 
-> A shared library differs from a compiler (or link) library. A compiler library is a set of routines to which you link your object files to create an executable file. Shared libraries are accessed dynamically, at run-time. Unless otherwise noted, the term *library* is used throughout this book to refer to shared libraries, not compiler libraries.
+> **Note**
+> 
+> A shared library differs from a compiler (or link) library. A compiler library is a set of routines to which you link your object files to create an executable file. Shared libraries are accessed dynamically, at run-time. Unless otherwise noted, the term ***library*** is used throughout this book to refer to shared libraries, not compiler libraries.
 
-## **The Resident Process**
+## The Resident Process
 
-The heart of ARexx is the *resident process,* the master ARexx control program. The resident process runs as a background process and manages the ARexx environment; it must be active before any ARexx programs can be executed.
+The heart of ARexx is the ***resident process***, the master ARexx control program. The resident process runs as a background process and manages the ARexx environment; it must be active before any ARexx programs can be executed.
 
-### **Duties of the Resident Process**
+### Duties of the Resident Process
 
 The resident process has two main duties:
 
 * **Program launching**. All ARexx programs are started by the resident process. The resident process creates a new process, loads the ARexx program into the new process, and invokes the ARexx interpreter.
 * **Resource management**. Besides keeping track of all currently-executing programs, the resident process also manages ARexx resources, including the Clip List and the Library List, both described in a later section. When an ARexx program terminates, the resident process ensures that the program's resources are returned to the system.
 
-Note that the resident process is also an ARexx *host application*, a program that can send and receive ARexx messages.
+Note that the resident process is also an ARexx ***host application***, a program that can send and receive ARexx messages.
 
 ### Finding the Resident Process
 
-On the typical Amiga system the ARexx resident process is always active, launched from within the system startup file using the rexxmast command. Sometimes this isn't the case. Your application programs should always ensure that the resident process is active before using or accessing the ARexx environment. The check is simple: the resident process is active if the "REXX" port can be found by Exec's FindPort() function.
+On the typical Amiga system the ARexx resident process is always active, launched from within the system startup file using the `rexxmast` command. Sometimes this isn't the case. Your application programs should always ensure that the resident process is active before using or accessing the ARexx environment. The check is simple: the resident process is active if the `REXX` port can be found by Exec's `FindPort()` function.
 
 If the resident process cannot be found, your application should disable its ARexx features. You may also wish to inform the user that ARexx is not available.
 
 ## ARexx Ports
 
-An ARexx port is a named, public port to which ARexx *messages* can be sent. An ARexx message is a message protocol (described later in the book) used by programs in the ARexx environment. It's an extension of the Exec message format.
+An ARexx port is a named, public port to which ARexx messages can be sent. An ARexx message is a message protocol (described later in the book) used by programs in the ARexx environment. It's an extension of the Exec message format.
 
-ARexx ports are defined using the Exec function CreatePort(). Note that a port name *must* be supplied. More details on ARexx port creation and naming can be found in Chapter 7.
+ARexx ports are defined using the Exec function `CreatePort()`. Note that a port name ***must*** be supplied. More details on ARexx port creation and naming can be found in Chapter 7.
 
 An ARexx port is typically used by a host application to send a command to the resident process. An ARexx macro program may be started in this fashion, and the results of the macro will be returned to the application via a reply message to its ARexx port.
 
@@ -288,21 +292,23 @@ ARexx's functionality can be easily expanded through the use of function hosts a
 
 ### Function Libraries
 
-An ARexx *function library* is a shared library containing one or more functions that can be accessed from ARexx. The function library includes a special *dispatch* entry point that is used to match a function name with a function in the library. Note that a function library is not an ARexx program, but a special Amiga shared library following the format described in *Amiga ROM Kernel Reference Manual: Libraries.* It is typically written in C or assembler (normally used only by ARexx. You cannot use a normal Exec library in this fasion). Function library creation is described in Chapter 12.
+An ARexx ***function library*** is a shared library containing one or more functions that can be accessed from ARexx. The function library includes a special ***dispatch*** entry point that is used to match a function name with a function in the library. Note that a function library is not an ARexx program, but a special Amiga shared library following the format described in ***Amiga ROM Kernel Reference Manual: Libraries.*** It is typically written in C or assembler (normally used only by ARexx. You cannot use a normal Exec library in this fasion). Function library creation is described in Chapter 12.
 
-To access the functions in a function library, the library is first added to the Library List (described below) using the ADDLIB() built-in function. See Chapter 3 for more information. The Library List entry for a function library includes its name, a search priority, the dispatch point offset and a version number. Note that the library itself must be stored as a file in the LIBS: directory, and the library name must match the filename.
+To access the functions in a function library, the library is first added to the Library List (described below) using the `ADDLIB()` built-in function. See Chapter 3 for more information. The Library List entry for a function library includes its name, a search priority, the dispatch point offset and a version number. Note that the library itself must be stored as a file in the `LIBS`: directory, and the library name must match the filename.
 
 The ARexx support library is an example of a function library. Other libraries are available from third-party sources.
 
 ### Function Hosts
 
-A *function host* is an application which will accept ARexx function calls. The function call is sent as a special ARexx message to the application's ARexx port. The application then processes the message to extract the function name and any arguments to that function. The result of the function call is returned as an ARexx message.
+A ***function host*** is an application which will accept ARexx function calls. The function call is sent as a special ARexx message to the application's ARexx port. The application then processes the message to extract the function name and any arguments to that function. The result of the function call is returned as an ARexx message.
 
 Unlike a function library, the internals of a function host are unknown to the resident process or any program that wishes to use it. A function host could conceivably link to another computer across a network in order to complete a request. Also, a function host does not have a dispatch point. It alone processes the messages at its port and decides whether or not it supports the requested function. Function host creation is discussed in Chapter 11.
 
-As with function libraries, a function host is added to the Library List (described below) using the ADDLIB() built-in function. See Chapter 3 for more information.
+As with function libraries, a function host is added to the Library List (described below) using the `ADDLIB()` built-in function. See Chapter 3 for more information.
 
-> The ARexx resident process is itself a function host, and is installed in the Library List with a priority of -60. It has two names: "REXX" and "AREXX". The use of these ports is discussed in Chapter 8.
+> **Note**
+> 
+> The ARexx resident process is itself a function host, and is installed in the Library List with a priority of `-60`. It has two names: "`REXX`" and "`AREXX`". The use of these ports is discussed in Chapter 8. 
 
 ## Public Resources
 
@@ -310,7 +316,7 @@ The resident process maintains public resources for use by all ARexx programs an
 
 ### The Library List
 
-The Library List is the list of function libraries and function hosts that are currently accessible. Entries in this list are ordered by priority. When a function call cannot be resolved within an ARexx program or with a built-in function (see page 18 for the search rules), the entries in the Library List are tried in order, starting with the highest priority entry. (Entries at the same priority level are searched in the order they were added to the Library List.) Function libraries are checked at their dispatch point and function hosts are sent a message. If the library or host has no function that matches the given name, the search continues with the next library or host in the list.
+The Library List is the list of function libraries and function hosts that are currently accessible. Entries in this list are ordered by priority. When a function call cannot be resolved within an ARexx program or with a built-in function (see Chapter 3 for the search rules), the entries in the Library List are tried in order, starting with the highest priority entry. (Entries at the same priority level are searched in the order they were added to the Library List.) Function libraries are checked at their dispatch point and function hosts are sent a message. If the library or host has no function that matches the given name, the search continues with the next library or host in the list.
 
 Libraries and hosts are added to the Library List with the ARexx `ADDLIB()` function and removed using the `REMLIB()` function. The Library List can be examined using the `SHOW()` function. See Chapter 3 for more details.
 
@@ -380,7 +386,7 @@ At this point the ARexx program terminates and returns an error code of 0 (no er
 
 This example was necessarily quite simple. ARexx macro invocation can be tricky, since an ARexx macro may send commands to other programs, including the application that started it. Error-handling can be non-trivial in such cases. See Chapters 7 and 8 for details.
 
-# CHAPTER 3 **Standard ARexx Functions**
+# Chapter 3 **Standard ARexx Functions**
 
 Function calls form the core of any non-trivial ARexx program. This chapter describes the standard ARexx functions — almost a hundred of them!
 
@@ -411,7 +417,7 @@ rx "call addlib 'rexxsupport.library', 0, -30, 0"
 
 The support library will be added automatically to the Library List when you boot your machine. For your convenience, the **rxlib** command will perform the same operation:
 
-```
+```shell
 rxlib rexxsupport.library 0 -30 0
 ```
 
@@ -429,7 +435,7 @@ if(~show('L','rexxsupport.library')) then do
 end
 ```
 
-The current support library functions are: `ALLOCMEM()`, `BADDR()`, `CLOSEPORT()`, `DELAY()`, `DELETE()`, `FORBID()`, `FREEMEM()`, `GETARG()`, `GETPKT()`, `MAKEDIR()`, `NEXT()`, `NULL()`, `OFFSET()`, `OPENPORT()`, `PERMIT()`, `RENAME()`, `REPLY()`, `SHOWDIR()`, `SHOWLIST()`, `STATEF()` and `WAITPKT()`. In the function descriptions that follow, support library functions are marked with a dagger (+). All other functions are built-in functions.
+The current support library functions are: `ALLOCMEM()`, `BADDR()`, `CLOSEPORT()`, `DELAY()`, `DELETE()`, `FORBID()`, `FREEMEM()`, `GETARG()`, `GETPKT()`, `MAKEDIR()`, `NEXT()`, `NULL()`, `OFFSET()`, `OPENPORT()`, `PERMIT()`, `RENAME()`, `REPLY()`, `SHOWDIR()`, `SHOWLIST()`, `STATEF()` and `WAITPKT()`. In the function descriptions that follow, support library functions are marked with a dagger [+]. All other functions are built-in functions.
 
 ## **Search Order**
 
@@ -447,7 +453,7 @@ If the function is not found, an error is generated and the evaluation of the cu
 
 Note that the name matching may be case-sensitive for some of the search steps but not for others. In particular, the matching procedure used in a function library or function host is left to the discretion of the library/host designer.
 
-Important: Functions defined with mixed-case names must be called using a string for the function name, since symbol names are always translated to uppercase before the function search begins.
+**Important:** Functions defined with mixed-case names must be called using a string for the function name, since symbol names are always translated to uppercase before the function search begins.
 
 Internal functions can only be defined using symbol names. If a string is used as a function name, the first step in the search order will be skipped. This allows internal functions to use the names of external or built-in functions while still being able to access those functions, as in the following example:
 
@@ -463,7 +469,7 @@ Remember that the case of a function name is important when using strings to cal
 
 The rest of this chapter lists the various ARexx built-in and support functions. Some general conventions:
 
-Arguments are shown with emphasis within the text and the syntax description:
+**Arguments** are shown with emphasis within the text and the syntax description:
 
 ```rexx
 ABS(number)
@@ -504,278 +510,223 @@ abbrev('almost', 'alm', 4)        returns 0
 abbrev('any', '')                 returns 1
 ```
 
-#### ABS
-
-#### ABS( number )
-
-#### Summary
-
-Returns the absolute value of number, which must be numeric.
-
-#### Examples
-
-```
-abs(-5.35) returns 5.35
-abs(10) returns 10
+## ABS
+```rexx
+ABS(number)
 ```
 
-See Also: MAX(), MIN(), SIGN()
+Returns the absolute value of `number`, which must be numeric.
 
-## **ADDLIB**
-
-```
-ADDLIB( name, priority ) 
-                     or 
-ADDLIB( name, priority, offset, version )
+```rexx
+abs(-5.35)                        returns 5.35
+abs(10)                           returns 10
 ```
 
-#### Summary
+See Also: `MAX()`, `MIN()`, `SIGN()`
 
-Adds a function library or a function host to the Library List maintained by the resident process. The name argument is case-sensitive and specifies the name of a function library or the name of the public message port associated with a function host. Libraries must be located in the LIBS: directory to be found by the system. The library or host will be added to the Library List with the search priority specified by *priority,* which must be an integer between -100 and 100 inclusive.
-
-Function hosts only require that *name* and *priority* be specified.
-
-Function libraries must be added using the second form of ADDLIB(). The *offset* is the integer offset to the library's dispatch entry point and *version* is an integer specifying the minimum acceptable release level of the library.
-
-ADDLIB() returns 1 if the operation was successful. If a library is specified, the library is not actually opened until it is required. Similarly, function hosts are not accessed until required.
-
-#### Examples
-
+## ADDLIB
+```rexx
+ADDLIB(name, priority) 
 ```
-addlib( "rexxsupport.library", 0, -30, 0 ) returns 1 
+
+```rexx
+ADDLIB(name, priority, offset, version)
+```
+
+Adds a function library or a function host to the Library List maintained by the resident process. The `name` argument is case-sensitive and specifies the name of a function library or the name of the public message port associated with a function host. Libraries must be located in the `LIBS:` directory to be found by the system. The library or host will be added to the Library List with the search priority specified by `priority`, which must be an integer between `-100 and 100` inclusive.
+
+Function hosts only require that `name` and `priority` be specified.
+
+Function libraries must be added using the second form of `ADDLIB()`. The `offset` is the integer offset to the library's dispatch entry point and `version` is an integer specifying the minimum acceptable release level of the library.
+
+`ADDLIB()` returns 1 if the operation was successful. If a library is specified, the library is not actually opened until it is required. Similarly, function hosts are not accessed until required.
+
+```rexx
+addlib( "rexxsupport.library", 0, -30, 0 )     returns 1 
 call addlib "EtherNet", -20
 ```
 
-#### Notes
+> Notes
+>
+> The correct `offset` value for a function library is not necessarily `-30`, as it is for the ARexx support library. Use the value supplied in the library documentation.
+>
+>
 
-The correct *offset* value for a function library is not necessarily -30, as it is for the ARexx support library. Use the value supplied in the library documentation.
+See Also: `REMLIB()`, `SHOW()`, `SHOWLIST()`
 
-See Also: REMLIB(), SHOW(), SHOWLIST()
-
-## **ADDRESS**
-
-## ADDRESS()
-
-#### Summary
-
-Returns the current host address string. The host address is the message port to which commands will be sent. ADDRESS() does not check the validity of the host address — use SHOW() to list known hosts.
-
-#### Examples
-
-address() *returns '*REXX *'* 
-
-#### Notes
-
-The resident process' host addresses are "REXX" and **"AREXX".** 
-
-**See Also: SHOW(), SHOWLIST()** 
-
-## **ALLOCMEM+**
-
-```
-ALLOCMEM( length, [ attribute ] )
+## ADDRESS
+```rexx
+ADDRESS()
 ```
 
-#### **Summary**
+Returns the current `host address` string. The host address is the message port to which commands will be sent. `ADDRESS()` does not check the validity of the host address — use `SHOW()` to list known hosts.
 
-Allocates a block of memory of the specified *length* from the system's memory pool and returns its address as a 4-byte string. The optional *attribute* must be a standard Exec memory allocation flag, supplied as a 4-byte string:
+```rexx
+address()                         returns 'REXX'
+```
 
-> PUBLIC **'0000 0001'x CHIP '0000 0002'x**  FAST '0000 **0004'x CLEAR '0001 0000'x**
+The resident process' host addresses are `REXX` and `AREXX`.
 
-The default attribute is for PUBLIC memory (not cleared). **ALLOCMEM()** returns '00'x if the allocation request failed.
+See Also: `SHOW()`, `SHOWLIST()`
+
+## ALLOCMEM [+]
+```
+ALLOCMEM(length,[attribute])
+```
+
+Allocates a block of memory of the specified `length` from the system's memory pool and returns its address as a 4-byte string. The optional `attribute` must be a standard Exec memory allocation flag, supplied as a 4-byte string:
+
+> ```rexx
+> PUBLIC '0000 0001'x
+> CHIP   '0000 0002'x
+> FAST   '0000 0004'x
+> CLEAR  '0001 0000'x
+> ```
+
+The default attribute is for PUBLIC memory (not cleared). `ALLOCMEM()` returns `'00'x` if the allocation request failed.
 
 This function should be used whenever memory is allocated for use by external programs. It is the programmer's responsibility to release the memory space when it is no longer needed.
 
-#### **Examples**
-
-```
-mem = allocmem( 1000 ) 
-chip = allocmem( 50, '0000 0003'x )
+```rexx
+mem  = allocmem(1000) 
+chip = allocmem(50,'0000 0003'x)
 ```
 
-#### **Notes**
+`ALLOCMEM()` is a support library function. See, Chapter 3 Support Functions.
 
-**+ALLOCMEM() is** a support library function. See page 17.
+**Use caution with this function!** Unless you need **CHIP** or **PUBLIC** memory, it is best to use `GETSPACE()` to allocate memory for use by your ARexx program, as this memory will be freed automatically when your program calls `FREEMEM()`. If your program calls `ALLOCMEM()` and terminates before calling `FREEMEM()`, the memory that was allocated will be lost until the system is rebooted.
 
-**Use caution with this function!** Unless you need CHIP or PUBLIC memory, it is best to use **GETSPACE()** to allocate memory for use by your ARexx program, as this memory will be freed automatically when your program FFREEMEM(), s. If your program calls **ALLOCMEM()**  and terminates before calling **FREEMEM(),** he memory that was allocated will be lost until the system is rebooted.
+See Also: `GETSPACE()`, `FREEMEM()`, `FREESPACE()`, `STORAGE()`
 
-**See Also: GETSPACE(), FREEMEM(), FREESPACE(), STORAGE()** 
+## ARG
 
-#### ARG
-
-```
+```rexx
 ARG()
-
-or
-
-ARG( number )
-
-or
-
-ARG( number, 'Exists' ⇔'Omitted')
+```
+```rexx
+ARG(number)
+```
+```rexx
+ARG(number, 'Exists' ⇔'Omitted')
 ```
 
-#### Summary
+The first form of `ARG()` simply returns the number of arguments supplied to the current environment. This number includes omitted arguments.
 
-The first form of ARG() simply returns the number of arguments supplied to the current environment. This number includes omitted arguments.
+The second form of `ARG(number)` returns the string corresponding to argument number `number`. Argument numbering starts at 1.
 
-The second form of ARG() returns the string corresponding to argument number number. Argument numbering starts at 1.
+The third form of `ARG(number, 'Exists' ⇔'Omitted')` checks for the existence or omission of a given argument. The "**Exists**" option will return `1` if a string for argument number was supplied. The "**Omitted**" option will return `0` if a string was not supplied.
 
-The third form of ARG() checks for the existence or omission of a given argument. The "Exists" option will return 1 if a string for argument number was supplied. The "Omitted" option will return 1 if a string was not supplied.
-
-#### Examples
-
-```
-n = arg()
+```rexx
+n=arg()
 say "Arguments:" n
-do i = 1 to n
-    if( arg( i, 'e' ) = 1 )then
-        say "Argument" i "is: '" || arg( i ) || "'"
+do i=1 to n
+    if (arg(i,'e')=1) then
+       say "Argument" i "is: '"||arg(i)||"'"
     else
-        say "Argument" i "was omitted"\nend
+       say "Argument" i "was omitted"
+end
 ```
-
-#### Notes
-
 A null string does not necessarily imply that an argument was omitted.
 
-## **BADDR**†
-
+## BADDR [+]
+```rexx
+BADDR(bptr)
 ```
-BADDR( bptr )
-```
-
-#### Summary
 
 Converts a BCPL-style pointer (BPTR) into a C-style pointer.
 
-#### Notes
+`BADDR()` is a support library function. See, Chapter 3 Support Functions.
 
-†BADDR() is a support library function. See page 17.
-
-## **B2C**
-
-*B2C( string )* 
-
-#### **Summary**
-
-Converts a string of binary digits (0,1) into the corresponding (packed) character representation. The conversion is the same as though the argument string had been specified as a literal binary string (e.g. '1010'B). Blanks are permitted in the string, but only at byte boundaries.
-
-#### **Examples**
-
-```
-b2c( '00110011' ) 
-b2c( '01100001' ) 
-                                         returns 3 
-                                         returns a
+## B2C
+```rexx
+B2C(string)
 ```
 
-#### **Notes**
+Converts a `string of binary digits` (`0`,`1`) into the corresponding (packed) character representation. The conversion is the same as though the argument string had been specified as a literal binary string (e.g. '1010'B). Blanks are permitted in the string, but only at byte boundaries.
+
+```rexx
+b2c('00110011')         /* returns 3 */
+b2c('01100001')         /* returns a */
+```
 
 This function is particularly useful for creating strings that are to be used as bitmasks.
 
-**See Also: C2B(), X2C()** 
+See Also: `C2B()`, `X2C()`
 
-## **BITAND**
-
-```
-BITAND( string1 , string2, [ pad ] )
-```
-
-#### **Summary**
-
-Returns the bit-by-bit logical AND of *string1* and *string2,* with the result length being the longer of the two operand strings. The shorter string is padded on the right with pad, if present; otherwise the AND operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
-
-#### **Examples**
-
-```
-bitand( '0313'x, 'FFFO'x ) 
-bitand( '13'x, '5555'x, '74'x ) 
-bitand( 'abcd', ", 'DF'x ) 
-                                       returns '0310'x 
-                                       returns '1154'x 
-                                       returns 'ABCD'
+## BITAND
+```rexx
+BITAND(string1,string2,[pad])
 ```
 
-**See Also: BITCMP(), BITOR(), BITXOR()** 
+Returns the bit-by-bit logical AND of `string1` and `string2`, with the result length being the longer of the two operand strings. The shorter string is padded on the right with pad, if present; otherwise the AND operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
 
-## **BITCHG**
-
-**BITCHG(** *string, bit )* 
-
-Changes (flips) the state of the specified *bit* in the argument *string.* Bit numbers are defined such that bit 0 is the low-order bit of the rightmost byte of the string.
-
-#### **Examples**
-
-```
-bitchg( '0313'x, 4 ) returns '00303'x 
-See Also: BITCLR(), BITSET(), BITTST()
+```rexx
+bitand('0313'x,'FFFO'x)         /* returns '0310'x */
+bitand('13'x,'5555'x,'74'x)     /* returns '1154'x */
+bitand('abcd','','DF'x)         /* returns 'ABCD'  */
 ```
 
-## **BITCLR**
+See Also: `BITCMP()`, `BITOR()`, `BITXOR()`
 
+## BITCHG
+```rexx
+BITCHG(string,bit)
 ```
+Changes (flips) the state of the specified `bit` in the argument `string`. Bit numbers are defined such that `bit 0` is the low-order bit of the rightmost byte of the string.
+
+```rexx
+bitchg('0313'x,4)               /* returns '00303'x */
+```
+
+See Also: `BITCLR()`, `BITSET()`, `BITTST()`
+
+## BITCLR
+```rexx
 BITCLR( string, bit )
 ```
 
-#### Summary
+Clears (sets to zero) the specified `bit` in the argument `string`. Bit numbers are defined such that `bit 0` is the low-order bit of the rightmost byte of the string.
 
-Clears (sets to zero) the specified *bit* in the argument *string.* Bit numbers are defined such that bit 0 is the low-order bit of the rightmost byte of the string.
-
-#### **Examples**
-
-```
-bitclr( '0313'x, 4 ) returns '0303'x
+```rexx
+bitclr('0313'x,4)               /* returns '0303'x */
 ```
 
-**See Also:** BITCHG(), BITSET(), BITTST()
+See Also: `BITCHG()`, `BITSET()`, `BITTST()`
 
-## **BITCOMP**
-
-```
-BITCOMP ( string1 , string2, [ pad ] )
-```
-
-#### Summary
-
-Compares *string1* to *string2* bit-by-bit, starting at bit number 0 (the low-order bit of the rightmost byte). The returned value is the bit number of the first bit in which the strings differ or -1 if the strings are identical.
-
-#### **Examples**
-
-```
-bitcomp( '7F'x, 'FF'x ) returns 7
-bitcomp( 'FF'x, 'FF'x ) returns -1
+## BITCOMP
+```rexx
+BITCOMP(string1,string2,[pad])
 ```
 
-**See Also: BITAND(),BITOR(),BITXOR()** 
+Compares `string1` to `string2` bit-by-bit, starting at bit number 0 (the low-order bit of the rightmost byte). The returned value is the bit number of the first bit in which the strings differ or -1 if the strings are identical.
 
-## **BITOR**
-
-```
-BITOR( string1 , string2, [ pad ] )
-```
-
-#### Summary
-
-Returns the bit-by-bit logical OR of *string1* and *string2,* with the result length being the longer of the two operand strings. The shorter string is padded on the right with pad, if present; otherwise the OR operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
-
-#### Examples
-
-```
-bitand( '0313'x, '003F'x ) returns '033F'x
+```rexx
+bitcomp('7F'x,'FF'x)            /* returns 7  */
+bitcomp('FF'x,'FF'x)            /* returns -1 */
 ```
 
-See Also: BITAND(),BITCMP(),BITXOR()
+See Also: `BITAND()`, `BITOR()`, `BITXOR()`
 
-## **BITSET**
+## BITOR
+```rexx
+BITOR(string1,string2,[pad])
+```
 
-#### BITSET( *string, bit )*
+Returns the bit-by-bit logical OR of `string1` and `string2`, with the result length being the longer of the two operand strings. The shorter string is padded on the right with `pad`, if present; otherwise the OR operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
 
-#### Summary
+```rexx
+bitand('0313'x,'003F'x)         /* returns '033F'x */
+```
 
-Sets the specified *bit* in the argument *string.* Bit numbers are defined such that bit 0 is the low-order bit of the rightmost byte of the string.
+See Also: `BITAND()`, `BITCMP()`, `BITXOR()`
 
-#### Examples
+## BITSET
+```rexx
+BITSET(string,bit)
+```
+
+Sets the specified `bit` in the argument `string`. Bit numbers are defined such that `bit 0` is the low-order bit of the rightmost byte of the string.
+
 
 ```
 bitset( '0313'x, 2 ) returns '0313'x
