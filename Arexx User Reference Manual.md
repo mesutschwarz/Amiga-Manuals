@@ -3975,7 +3975,7 @@ See Also: `DeleteDOSPkt()`
 ## CreateRexxMsg()
 > allocate an ARexx message packet 
 ```rexx
-msgptr = CreateR.exxMsg(replyport,extension,host)
+msgptr = CreateRexxMsg(replyport,extension,host)
   D0                       A0         A1     D0
   A0
  (CCR)
@@ -4116,8 +4116,8 @@ Writes a `buffer` of the specified `length` to a DOS `filehandle`. The returned 
 ## Error Msg()
 >  find the message associated with an error code 
 ```rexx
-Usage: (boolean,ss) = ErrorMsg(code) 
-         D0     A0              D0
+(boolean,ss) = ErrorMsg(code) 
+  D0     A0              D0
 ```
 
 Returns the error message (as a pointer to a string structure) associated with the specified ARexx error code. The `boolean` return will be `-1` if the supplied `code` was a valid ARexx error code, and `0` otherwise.
@@ -4161,7 +4161,7 @@ Scans the DOS DeviceList for a device node of the specified type matching the nu
 
 ## FindRsrcNode()
 >  locate a resource node with the given name.
-```
+```rexx
 node = FindRsrcNode(list,name,type)
  D0                  A0   A1   D0
  A0
