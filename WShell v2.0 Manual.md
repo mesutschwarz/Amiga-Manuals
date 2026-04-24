@@ -869,7 +869,7 @@ You can create a background shell by using the runwsh command, which is analogou
 
 If you want to run several commands with a background shell, the commands can be strung together by ending each line with a `+` character. For example, the sequence,
 ```
-1\> runwsh cd df1:+
+1> runwsh cd df1:+
 list quick
 ```
 would first execute the `cd` command and then execute the `list quick` command. As always, the WShell exits after exhausting its input stream.
@@ -992,16 +992,16 @@ All other names will behave as a `CON:` device.
 
 Examples:
 ```
-1\> DHOpts CNC: PIP: MENU S:Display/CNC-Menus
-1\> DHOpts MENU S:Display/CNC-Menus NAME MyMenu REPLACE
+1> DHOpts CNC: PIP: MENU S:Display/CNC-Menus
+1> DHOpts MENU S:Display/CNC-Menus NAME MyMenu REPLACE
 ```
 
 ### Replacing Existing Devices
 
 `DHOpts` will not allow existing device names to be overridden; these must be dismounted explicitly if you wish to redefine a device. For example, to redefine `CON:`  you must first issue the appropriate command
 ```
-1\> assign CON: remove  ; under 1.3 OS
-1\> assign CON: dismount ; under 2.0 OS
+1> assign CON: remove  ; under 1.3 OS
+1> assign CON: dismount ; under 2.0 OS
 ```
 and then run the `DHOpts` program.  `DHOpts` ignores requests to mount devices already assigned to the  DisplayHandler.
 
@@ -1015,7 +1015,7 @@ The default string is processed just as a device name would be and will set valu
 
 Example:
 ```
-1\> DHOpts CNC:0/11/640/100/New/CLOSE	; define CNC:  defaults
+1> DHOpts CNC:0/11/640/100/New/CLOSE	; define CNC:  defaults
 ```
 
 ## 4.4 Console Option Keywords
@@ -1309,9 +1309,9 @@ Windows are automatically resized when jumping to a screen of a different size. 
 
 Examples:
 ```
-1\> jump next popup	; jump to next and move it the front
-1\> jump auto		; stay here, but auto-open
-1\> jump Workbench	; go to Workbench screen
+1> jump next popup	; jump to next and move it the front
+1> jump auto		; stay here, but auto-open
+1> jump Workbench	; go to Workbench screen
 ```
 
 # Chapter 5 Line Editing and Command History
@@ -2003,7 +2003,7 @@ R(20);Workbench:>
 ```
 PROMPT prompt-string
 ```
-This command defines a string of characters to be used as your "prompt" the indication that the WShell is awaiting your next command. In the simplest case the prompt can be just a `1\>` reminder like the standard CLI, but WShell provides greatly enhanced prompting capabilities. The prompt can consist of plain text and special keywords, identified by a preceding `%` character, that are substituted with their current value at the time that the prompt is displayed. For example, the `%t` keyword indicates the time-of-day, so entering the command `prompt "It's %t>"` might prompt with `It's 02:38:14>`
+This command defines a string of characters to be used as your "prompt" the indication that the WShell is awaiting your next command. In the simplest case the prompt can be just a `1>` reminder like the standard CLI, but WShell provides greatly enhanced prompting capabilities. The prompt can consist of plain text and special keywords, identified by a preceding `%` character, that are substituted with their current value at the time that the prompt is displayed. For example, the `%t` keyword indicates the time-of-day, so entering the command `prompt "It's %t>"` might prompt with `It's 02:38:14>`
 
 Because of the expanded functionality of the WShell prompts, a separate chapter has been devoted to the subject. Refer to Chapter 8 for more information.
 
@@ -3197,60 +3197,60 @@ The escape sequences and their associated actions are listed in the table below.
 
 | Escape Sequence | Default Key       | Action                      |
 |-----------------|------------------|-----------------------------|
-| <ESC>[16]       | Up-Arrow         | Previous History Line       |
-| <ESC>[17]       | Down-Arrow       | Next History Line           |
-| <ESC>[18]       | Right-Arrow      | Cursor Right                |
-| <ESC>[19]       | Left-Arrow       | Cursor Left                 |
-| <ESC>[20]       | Shift-Up-Arrow   | First History Line          |
-| <ESC>[21]       | Shift-Down-Arrow | Last History Line           |
-| <ESC>[22]       | Shift-Right-Arrow| Cursor Right Word           |
-| <ESC>[23]       | Shift-Left-Arrow | Cursor Left Word            |
-| <ESC>[24]       | Shift-Tab        | (unassigned)                |
-| <ESC>[25]       | DEL              | Delete Character            |
-| <ESC>[26]       | Help             | (unassigned)                |
-| <ESC>[27]       | (none)           | Window Bounds Report        |
-| <ESC>[28]       | (none)           | Cursor Position             |
-| <ESC>[29]       | (none)           | Paste Request               |
-| <ESC>[30]       | (none)           | Insert Character            |
-| <ESC>[31]       | (none)           | (unassigned)                |
-| <ESC>[76]       | ALT-CTRL-L       | (unassigned)                |
-| <ESC>[77]       | ALT-CTRL-M       | (unassigned)                |
-| <ESC>[78]       | ALT-CTRL-N       | (unassigned)                |
-| <ESC>[79]       | ALT-CTRL-O       | Skip Back Name              |
-| <ESC>[80]       | ALT-CTRL-P       | (unassigned)                |
-| <ESC>[81]       | ALT-CTRL-Q       | (unassigned)                |
-| <ESC>[82]       | ALT-CTRL-R       | (unassigned)                |
-| <ESC>[83]       | ALT-CTRL-S       | (unassigned)                |
-| <ESC>[84]       | ALT-CTRL-T       | (unassigned)                |
-| <ESC>[85]       | ALT-CTRL-U       | Delete Back Name            |
-| <ESC>[86]       | ALT-CTRL-V       | (unassigned)                |
-| <ESC>[87]       | ALT-CTRL-W       | Copy Region                 |
-| <ESC>[88]       | ALT-CTRL-X       | Cut Region                  |
-| <ESC>[89]       | ALT-CTRL-Y       | Delete Forward Name         |
-| <ESC>[90]       | ALT-CTRL-Z       | (unassigned)                |
-| <ESC>[91]       | ALT-CTRL-[       | CSI                         |
-| <ESC>[92]       | ALT-CTRL-\       | (unassigned)                |
-| <ESC>[93]       | ALT-CTRL-]       | (unassigned)                |
-| <ESC>[94]       | ALT-CTRL-^       | (unassigned)                |
-| <ESC>[95]       | ALT-CTRL-_       | (unassigned)                |
-| <ESC>[96]       | F1               | Shrink Window (toggle)      |
-| <ESC>[97]       | F2               | Zoom Window (toggle)        |
-| <ESC>[98]       | F3               | Bottom of Session           |
-| <ESC>[99]       | F4               | Top of Session              |
-| <ESC>[100]      | F5               | Search Down                 |
-| <ESC>[101]      | F6               | Search Up                   |
-| <ESC>[102]      | F7               | Session Line Down           |
-| <ESC>[103]      | F8               | Session Line Up             |
-| <ESC>[104]      | F9               | Screen Front/Back           |
-| <ESC>[105]      | F10              | Window Front/Back           |
-| <ESC>[106]      | Shift-F1         | (unassigned)                |
-| <ESC>[107]      | Shift-F2         | (unassigned)                |
-| <ESC>[108]      | Shift-F3         | Skip Left Name              |
-| <ESC>[109]      | Shift-F4         | Skip Right Name             |
-| <ESC>[110]      | Shift-F5         | (unassigned)                |
-| <ESC>[111]      | Shift-F6         | (unassigned)                |
-| <ESC>[112]      | Shift-F7         | Session Page Down           |
-| <ESC>[113]      | Shift-F8         | Session Page Up             |
-| <ESC>[114]      | Shift-F9         | (unassigned)                |
-| <ESC>[115]      | Shift-F10        | (unassigned)                |
+| \<ESC>[16]       | Up-Arrow         | Previous History Line       |
+| \<ESC>[17]       | Down-Arrow       | Next History Line           |
+| \<ESC>[18]       | Right-Arrow      | Cursor Right                |
+| \<ESC>[19]       | Left-Arrow       | Cursor Left                 |
+| \<ESC>[20]       | Shift-Up-Arrow   | First History Line          |
+| \<ESC>[21]       | Shift-Down-Arrow | Last History Line           |
+| \<ESC>[22]       | Shift-Right-Arrow| Cursor Right Word           |
+| \<ESC>[23]       | Shift-Left-Arrow | Cursor Left Word            |
+| \<ESC>[24]       | Shift-Tab        | (unassigned)                |
+| \<ESC>[25]       | DEL              | Delete Character            |
+| \<ESC>[26]       | Help             | (unassigned)                |
+| \<ESC>[27]       | (none)           | Window Bounds Report        |
+| \<ESC>[28]       | (none)           | Cursor Position             |
+| \<ESC>[29]       | (none)           | Paste Request               |
+| \<ESC>[30]       | (none)           | Insert Character            |
+| \<ESC>[31]       | (none)           | (unassigned)                |
+| \<ESC>[76]       | ALT-CTRL-L       | (unassigned)                |
+| \<ESC>[77]       | ALT-CTRL-M       | (unassigned)                |
+| \<ESC>[78]       | ALT-CTRL-N       | (unassigned)                |
+| \<ESC>[79]       | ALT-CTRL-O       | Skip Back Name              |
+| \<ESC>[80]       | ALT-CTRL-P       | (unassigned)                |
+| \<ESC>[81]       | ALT-CTRL-Q       | (unassigned)                |
+| \<ESC>[82]       | ALT-CTRL-R       | (unassigned)                |
+| \<ESC>[83]       | ALT-CTRL-S       | (unassigned)                |
+| \<ESC>[84]       | ALT-CTRL-T       | (unassigned)                |
+| \<ESC>[85]       | ALT-CTRL-U       | Delete Back Name            |
+| \<ESC>[86]       | ALT-CTRL-V       | (unassigned)                |
+| \<ESC>[87]       | ALT-CTRL-W       | Copy Region                 |
+| \<ESC>[88]       | ALT-CTRL-X       | Cut Region                  |
+| \<ESC>[89]       | ALT-CTRL-Y       | Delete Forward Name         |
+| \<ESC>[90]       | ALT-CTRL-Z       | (unassigned)                |
+| \<ESC>[91]       | ALT-CTRL-[       | CSI                         |
+| \<ESC>[92]       | ALT-CTRL-\       | (unassigned)                |
+| \<ESC>[93]       | ALT-CTRL-]       | (unassigned)                |
+| \<ESC>[94]       | ALT-CTRL-^       | (unassigned)                |
+| \<ESC>[95]       | ALT-CTRL-_       | (unassigned)                |
+| \<ESC>[96]       | F1               | Shrink Window (toggle)      |
+| \<ESC>[97]       | F2               | Zoom Window (toggle)        |
+| \<ESC>[98]       | F3               | Bottom of Session           |
+| \<ESC>[99]       | F4               | Top of Session              |
+| \<ESC>[100]      | F5               | Search Down                 |
+| \<ESC>[101]      | F6               | Search Up                   |
+| \<ESC>[102]      | F7               | Session Line Down           |
+| \<ESC>[103]      | F8               | Session Line Up             |
+| \<ESC>[104]      | F9               | Screen Front/Back           |
+| \<ESC>[105]      | F10              | Window Front/Back           |
+| \<ESC>[106]      | Shift-F1         | (unassigned)                |
+| \<ESC>[107]      | Shift-F2         | (unassigned)                |
+| \<ESC>[108]      | Shift-F3         | Skip Left Name              |
+| \<ESC>[109]      | Shift-F4         | Skip Right Name             |
+| \<ESC>[110]      | Shift-F5         | (unassigned)                |
+| \<ESC>[111]      | Shift-F6         | (unassigned)                |
+| \<ESC>[112]      | Shift-F7         | Session Page Down           |
+| \<ESC>[113]      | Shift-F8         | Session Page Up             |
+| \<ESC>[114]      | Shift-F9         | (unassigned)                |
+| \<ESC>[115]      | Shift-F10        | (unassigned)                |
 
