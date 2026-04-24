@@ -2,6 +2,11 @@
 
 This repository contains Amiga-related manuals and books converted from scanned PDFs into clean, readable Markdown.
 
+## Completed Manuals
+
+* [x] [ARexx User's Reference Manual](https://github.com/mesutschwarz/Amiga-Manuals/blob/main/Arexx%20User%20Reference%20Manual.md), 1987 *William S. Hawes* (2026-04-24)
+* [x] [WShell – The Beachcomber's Guide to WShell Version 2.0](https://github.com/mesutschwarz/Amiga-Manuals/blob/main/WShell%20v2.0%20Manual.md), © 1988, 1991 *William S. Hawes* (2026-04-20)
+
 ## What
 
 * Scanned paper manuals → OCR
@@ -26,17 +31,7 @@ This repository contains Amiga-related manuals and books converted from scanned 
 
 * [ ] AMIGA Programmer's Guide to ARexx
 
-## Completed
-
-* [x] [ARexx User's Reference Manual](https://github.com/mesutschwarz/Amiga-Manuals/blob/main/Arexx%20User%20Reference%20Manual.md), 1987 *William S. Hawes* (2026-04-24)
-* [x] [WShell – The Beachcomber's Guide to WShell Version 2.0](https://github.com/mesutschwarz/Amiga-Manuals/blob/main/WShell%20v2.0%20Manual.md), © 1988, 1991 *William S. Hawes* (2026-04-20)
-
-## Repo
-
-[https://github.com/mesutschwarz/Amiga-Manuals](https://github.com/mesutschwarz/Amiga-Manuals)
-
 ## Notes
 
 * If you want support the project, please send DM
-* OCR is not perfect; some errors may remain
 * Documents are continuously improved
