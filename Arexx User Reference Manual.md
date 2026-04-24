@@ -6,6 +6,27 @@ The REXX Language for the Amiga
 Copyright © 1987 William S. Hawes 
 All Rights Reserved
 
+
+# **ARexx Version 1.0**
+
+ARexx is a multitasking implementation of the REXX language, an elegant high-level language designed for macro-processing and general programming tasks. Its clean, simple syntax makes REXX easy to learn ..an ideal “first language.” And the powerful language features will appeal to experienced programmers as well!
+
+* Interpreted operation — no compile-link-run steps
+* Exceptional String-Handling Facilities
+* Built-In Source-Level Debugger
+* Over 75 Built-In Functions
+* Supports External Function Libraries
+* Compact, Reentrant Code — Only 32K
+
+
+ARexx macro programs can interact with other software products that include an ARexx command interface, allowing you to extend and customize your software and to build integrated applications. The growing list of software products supporting the ARexx command interface includes TxEd-Plus from MicroSmiths, C.A.P.E.68K from Inovatronics, and Amiga TEX from Radical Eye Software.
+
+Look also for WShell, our companion Amiga software product. WShell is a CLI-compatible command shell with the features you've always wanted in a command environment - command aliases, resident and built-in commands, prompt string/window titlebar variables, concurrent piping, and many more. With its ARexx command interface, WShell provides transparent support for REXX macros as well as the standard "execute" scripts (including support for the new "script bit".)
+
+Developed and supported by: William S. Hawes P.O. Box 308 Maynard, MA 01754
+
+System requirements: Amiga 500/1000/2000 with Vl.2 OS Amiga is a trademark of Commodore-Amiga, Inc.
+
 ### Copyright Notice
 
 ARexx software and documentation are Copyright @1987 by William S. Hawes. No part of the software or documentation may be reproduced, transmitted, translated into other languages, posted to a network, or distributed in any way without the express written permission of the author.
@@ -23,11 +44,413 @@ Please direct orders or inquiries about this product to the above address. Site 
 
 ### About
 
-ARexx was developed on an Amiga 1000 computer with 512K bytes of memory and two floppy disk drives. The language prototype was developed in C using Lattice C, and the production version was written in assembly-language using the Metacomco Assembler. The documention was created using the TxEd editor, and was set in T£X using AmigaT£X. This is a 100% Amiga product.
+ARexx was developed on an Amiga 1000 computer with 512K bytes of memory and two floppy disk drives. The language prototype was developed in C using Lattice C, and the production version was written in assembly-language using the Metacomco Assembler. The documention was created using the TxEd editor, and was set in TEX using AmigaTEX. This is a 100% Amiga product.
 
-###Trademarks
+### Trademarks
 
 Amiga, Amiga WorkBench, and Intuition are trademarks of Commodore-Amiga, Inc.
+
+# Table of Contents
+
+- [ARexx User's Reference Manual](#arexx-users-reference-manual)
+- [**ARexx Version 1.0**](#arexx-version-10)
+    - [Copyright Notice](#copyright-notice)
+    - [Disclaimer](#disclaimer)
+    - [Distribution](#distribution)
+    - [About](#about)
+    - [Trademarks](#trademarks)
+- [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+  - [1. Organization of this Document](#1-organization-of-this-document)
+    - [Using this Manual](#using-this-manual)
+    - [Typographic Conventions](#typographic-conventions)
+  - [2. Future Directions](#2-future-directions)
+- [Chapter 1 **What is ARexx?**](#chapter-1-what-is-arexx)
+  - [1.1 Language Features](#11-language-features)
+    - [Typeless Data](#typeless-data)
+    - [Command Interface](#command-interface)
+    - [Tracing and Debugging.](#tracing-and-debugging)
+    - [Interpreted Execution.](#interpreted-execution)
+    - [Function Libraries.](#function-libraries)
+    - [Automatic Resource Management.](#automatic-resource-management)
+  - [1.2 ARexx on the Amiga](#12-arexx-on-the-amiga)
+  - [1.3 Further Information](#13-further-information)
+- [Chapter 2 **Getting Acquainted**](#chapter-2-getting-acquainted)
+  - [2.1 Installing ARexx](#21-installing-arexx)
+    - [ARexx and WorkBench](#arexx-and-workbench)
+    - [Installation](#installation)
+    - [Single-Drive Systems.](#single-drive-systems)
+    - [Starting the Resident Process](#starting-the-resident-process)
+    - [Naming Conventions](#naming-conventions)
+- [Chapter 3 **Elements of the Language**](#chapter-3-elements-of-the-language)
+  - [3.1 Format](#31-format)
+  - [3.2 Tokens](#32-tokens)
+    - [Comment Tokens](#comment-tokens)
+    - [Symbol Tokens](#symbol-tokens)
+    - [String Tokens](#string-tokens)
+    - [Operators](#operators)
+    - [Special Character Tokens](#special-character-tokens)
+  - [3.3 Clauses](#33-clauses)
+    - [Null Clauses](#null-clauses)
+    - [Label Clauses](#label-clauses)
+    - [Assignment Clauses](#assignment-clauses)
+    - [Instruction Clauses](#instruction-clauses)
+    - [Command Clauses](#command-clauses)
+    - [Clause Classification](#clause-classification)
+  - [3.4 Expressions](#34-expressions)
+    - [Symbol Resolution](#symbol-resolution)
+    - [Order of Evaluation](#order-of-evaluation)
+  - [3.5 Numbers and Numeric Precision](#35-numbers-and-numeric-precision)
+    - [Boolean Values.](#boolean-values)
+    - [Numeric Precision](#numeric-precision)
+  - [3.6 Operators](#36-operators)
+    - [Arithmetic Operators](#arithmetic-operators)
+    - [Concatenation Operators](#concatenation-operators)
+    - [Comparison Operators](#comparison-operators)
+    - [Logical (Boolean) Operators](#logical-boolean-operators)
+  - [3.7 Stems and Compound Symbols](#37-stems-and-compound-symbols)
+  - [3.8 The Execution Environment](#38-the-execution-environment)
+    - [The External Environment](#the-external-environment)
+    - [The Internal Environment](#the-internal-environment)
+    - [Input and Output](#input-and-output)
+    - [Resource Tracking](#resource-tracking)
+- [Chapter 4 **Instructions**](#chapter-4-instructions)
+  - [ADDRESS](#address)
+  - [ARG](#arg)
+  - [BREAK](#break)
+  - [CALL](#call)
+  - [DO](#do)
+  - [DROP](#drop)
+  - [ECHO](#echo)
+  - [ELSE](#else)
+  - [END](#end)
+  - [EXIT](#exit)
+  - [IF](#if)
+  - [INTERPRET](#interpret)
+  - [ITERATE](#iterate)
+  - [LEAVE](#leave)
+  - [NOP](#nop)
+  - [NUMERIC](#numeric)
+  - [OPTIONS](#options)
+  - [OTHERWISE](#otherwise)
+  - [PARSE](#parse)
+    - [Input Sources.](#input-sources)
+    - [Templates.](#templates)
+      - [Parsing by Tokenization](#parsing-by-tokenization)
+      - [Parsing by Position](#parsing-by-position)
+      - [Parsing with Patterns](#parsing-with-patterns)
+  - [PROCEDURE](#procedure)
+  - [PULL](#pull)
+  - [PUSH](#push)
+  - [QUEUE](#queue)
+  - [RETURN](#return)
+  - [SAY](#say)
+  - [SELECT](#select)
+  - [SHELL](#shell)
+  - [SIGNAL](#signal)
+  - [THEN](#then)
+  - [TRACE](#trace)
+  - [UPPER](#upper)
+  - [WHEN](#when)
+- [Chapter 5 **Commands**](#chapter-5-commands)
+  - [5.1 Command Clauses](#51-command-clauses)
+  - [5.2 Host Addresses](#52-host-addresses)
+  - [5.3 Command Interfaces](#53-command-interfaces)
+  - [5.4 Using Commands in Macro Programs](#54-using-commands-in-macro-programs)
+  - [5.5 Using ARexx with Command Shells](#55-using-arexx-with-command-shells)
+  - [5.6 Command Inhibition](#56-command-inhibition)
+- [Chapter 6 **Functions**](#chapter-6-functions)
+  - [6.1 Syntax and Search Order](#61-syntax-and-search-order)
+    - [Search Order](#search-order)
+    - [Internal Functions](#internal-functions)
+    - [Built-In Functions](#built-in-functions)
+    - [Function Libraries](#function-libraries-1)
+    - [Function Hosts](#function-hosts)
+  - [6.2 Built-In Function Library](#62-built-in-function-library)
+  - [ABBREV()](#abbrev)
+  - [ABS()](#abs)
+  - [ADDLIB()](#addlib)
+  - [ADDRESS()](#address-1)
+  - [ARG()](#arg-1)
+  - [B2C()](#b2c)
+  - [BITAND()](#bitand)
+  - [BITCHG()](#bitchg)
+  - [BITCLR()](#bitclr)
+  - [BITCOMP()](#bitcomp)
+  - [BITOR()](#bitor)
+  - [BITSET()](#bitset)
+  - [BITTST()](#bittst)
+  - [BITXOR()](#bitxor)
+  - [C2B()](#c2b)
+  - [C2D()](#c2d)
+  - [C2X()](#c2x)
+  - [CENTER() or CENTRE()](#center-or-centre)
+  - [CLOSE()](#close)
+  - [COMPRESS()](#compress)
+  - [COMPARE()](#compare)
+  - [COPIES()](#copies)
+  - [D2C()](#d2c)
+  - [DATATYPE()](#datatype)
+  - [DELSTR()](#delstr)
+  - [DELWORD()](#delword)
+  - [EOF()](#eof)
+  - [ERRORTEXT()](#errortext)
+  - [EXISTS()](#exists)
+  - [EXPORT()](#export)
+  - [FREESPACE()](#freespace)
+  - [GETCLIP()](#getclip)
+  - [GETSPACE()](#getspace)
+  - [HASH()](#hash)
+  - [IMPORT()](#import)
+  - [INDEX()](#index)
+  - [INSERT()](#insert)
+  - [LASTPOS()](#lastpos)
+  - [LEFT()](#left)
+  - [LENGTH()](#length)
+  - [MAX()](#max)
+  - [MIN()](#min)
+  - [OPEN()](#open)
+  - [OVERLAY()](#overlay)
+  - [POS()](#pos)
+  - [PRAGMA()](#pragma)
+  - [RANDOM()](#random)
+  - [RANDU()](#randu)
+  - [READCH()](#readch)
+  - [READLN()](#readln)
+  - [REMLIB()](#remlib)
+  - [REVERSE()](#reverse)
+  - [RIGHT()](#right)
+  - [SEEK()](#seek)
+  - [SETCLIP()](#setclip)
+  - [SHOW()](#show)
+  - [SIGN()](#sign)
+  - [SPACE()](#space)
+  - [STORAGE()](#storage)
+  - [STRIP()](#strip)
+  - [SUBSTR()](#substr)
+  - [SUBWORD()](#subword)
+  - [SYMBOL()](#symbol)
+  - [TIME()](#time)
+  - [TRACE()](#trace-1)
+  - [TRANSLATE()](#translate)
+  - [TRIM()](#trim)
+  - [UPPER()](#upper-1)
+  - [VALUE()](#value)
+  - [VERIFY()](#verify)
+  - [WORD()](#word)
+  - [WORDINDEX()](#wordindex)
+  - [WORDLENGTH()](#wordlength)
+  - [WORDS()](#words)
+  - [WRITECH()](#writech)
+  - [WRITELN()](#writeln)
+  - [X2C()](#x2c)
+  - [XRANGE()](#xrange)
+- [Chapter 7: **Tracing and Interrupts**](#chapter-7-tracing-and-interrupts)
+  - [7.1 Tracing Options](#71-tracing-options)
+  - [7.2 Display Formatting](#72-display-formatting)
+    - [Tracing Output](#tracing-output)
+    - [Command Inhibition](#command-inhibition)
+  - [7.3 Interactive Tracing](#73-interactive-tracing)
+    - [Error Processing](#error-processing)
+    - [The External Tracing Flag](#the-external-tracing-flag)
+  - [7.4 Interrupts](#74-interrupts)
+- [Chapter 8 **Parsing and Templates**](#chapter-8-parsing-and-templates)
+  - [8.1 Template Structure](#81-template-structure)
+    - [Template Objects](#template-objects)
+    - [The Scanning Process](#the-scanning-process)
+  - [8.2 Templates in Action](#82-templates-in-action)
+    - [Parsing by Tokenization](#parsing-by-tokenization-1)
+    - [Pattern Parsing](#pattern-parsing)
+    - [Positional Markers](#positional-markers)
+    - [Multiple Templates](#multiple-templates)
+- [Chapter 9 **The ARexx Resident Process**](#chapter-9-the-arexx-resident-process)
+  - [9.1 Command Utilities](#91-command-utilities)
+    - [HI](#hi)
+    - [RX](#rx)
+    - [RXSET](#rxset)
+    - [RXC](#rxc)
+    - [TCC](#tcc)
+    - [TCO](#tco)
+    - [TE](#te)
+    - [TS](#ts)
+  - [9.2 Resource Management](#92-resource-management)
+    - [The Global Tracing Console](#the-global-tracing-console)
+    - [The Library List](#the-library-list)
+    - [The Clip List](#the-clip-list)
+- [Chapter 10 **Interfacing to ARexx**](#chapter-10-interfacing-to-arexx)
+  - [10.1 Basic Structures](#101-basic-structures)
+    - [Argstrings](#argstrings)
+    - [Message Packets](#message-packets)
+    - [Resource Nodes](#resource-nodes)
+  - [10.2 Designing a Command Interface](#102-designing-a-command-interface)
+    - [Receiving Command Messages](#receiving-command-messages)
+    - [Result Fields](#result-fields)
+    - [Multiple Host Processes](#multiple-host-processes)
+  - [10.3 Invoking ARexx Programs](#103-invoking-arexx-programs)
+    - [Message Packets](#message-packets-1)
+    - [Command Invocations](#command-invocations)
+    - [Function Invocations](#function-invocations)
+    - [Search Order](#search-order-1)
+    - [Extension Fields](#extension-fields)
+    - [Interpreting the Result Fields](#interpreting-the-result-fields)
+  - [10.4 Communicating with the Resident Process](#104-communicating-with-the-resident-process)
+    - [Command (Action) Codes](#command-action-codes)
+      - [RXADDCON](#rxaddcon)
+      - [RXADDFH](#rxaddfh)
+      - [RXADDLIB](#rxaddlib)
+      - [RXCOMM](#rxcomm)
+      - [RXFUNC](#rxfunc)
+      - [RXREMCON](#rxremcon)
+      - [RXREMLIB](#rxremlib)
+      - [RXTCCLS](#rxtccls)
+      - [RXTCOPN](#rxtcopn)
+    - [Modifier Flags](#modifier-flags)
+    - [Result Fields](#result-fields-1)
+  - [10.5 External Function Libraries](#105-external-function-libraries)
+    - [Design Considerations](#design-considerations)
+    - [Calling Convention](#calling-convention)
+    - [Parameter Conversion](#parameter-conversion)
+    - [Returned Values](#returned-values)
+  - [10.6 Direct Manipulation of Data Structures](#106-direct-manipulation-of-data-structures)
+- [Appendix A **Error Messages**](#appendix-a-error-messages)
+    - [Error: **1** Severity: **5** Message: **Program not found**](#error-1-severity-5-message-program-not-found)
+    - [Error: **2** Severity: **10** Message: **Execution halted**](#error-2-severity-10-message-execution-halted)
+    - [Error: **3** Severity: **20** Message: **Insufficient memory**](#error-3-severity-20-message-insufficient-memory)
+    - [Error: **4** Severity: **10** Message: **Invalid character**](#error-4-severity-10-message-invalid-character)
+    - [Error: **5** Severity: **10** Message: **Unmatched quote**](#error-5-severity-10-message-unmatched-quote)
+    - [Error: **6** Severity: **10** Message: **Unterminated comment**](#error-6-severity-10-message-unterminated-comment)
+    - [Error: **7** Severity: **10** Message: **Clause too long**](#error-7-severity-10-message-clause-too-long)
+    - [Error: **8** Severity: **10** Message: **Invalid token**](#error-8-severity-10-message-invalid-token)
+    - [Error: **9** Severity: **10** Message: **Symbol or string too long**](#error-9-severity-10-message-symbol-or-string-too-long)
+    - [Error: **10** Severity: **10** Message: **Invalid message packet**](#error-10-severity-10-message-invalid-message-packet)
+    - [Error: **11** Severity: **10** Message: **Command string error**](#error-11-severity-10-message-command-string-error)
+    - [Error: **12** Severity: **10** Message: **Error return from function**](#error-12-severity-10-message-error-return-from-function)
+    - [Error: **13** Severity: **10** Message: **Host environment not found**](#error-13-severity-10-message-host-environment-not-found)
+    - [Error: **14** Severity: **10** Message: **Requested library not found**](#error-14-severity-10-message-requested-library-not-found)
+    - [Error: **15** Severity: **10** Message: **Function not found**](#error-15-severity-10-message-function-not-found)
+    - [Error: **16** Severity: **10** Message: **Function did not return value**](#error-16-severity-10-message-function-did-not-return-value)
+    - [Error: **17** Severity: **10** Message: **Wrong number of arguments**](#error-17-severity-10-message-wrong-number-of-arguments)
+    - [Error: **18** Severity: **10** Message: **Invalid argument to function**](#error-18-severity-10-message-invalid-argument-to-function)
+    - [Error: **19** Severity: **10** Message: **Invalid PROCEDURE**](#error-19-severity-10-message-invalid-procedure)
+    - [Error: **20** Severity: **10** Message: **Unexpected THEN or WHEN**](#error-20-severity-10-message-unexpected-then-or-when)
+    - [Error: **21** Severity: **10** Message: **Unexpected ELSE or OTHERWISE**](#error-21-severity-10-message-unexpected-else-or-otherwise)
+    - [Error: **22** Severity: **10** Message: **Unexpected BREAK, LEAVE, or ITERATE**](#error-22-severity-10-message-unexpected-break-leave-or-iterate)
+    - [Error: **23** Severity: **10** Message: **Invalid statement in SELECT**](#error-23-severity-10-message-invalid-statement-in-select)
+    - [Error: **24** Severity: **10** Message: **Missing or multiple THEN**](#error-24-severity-10-message-missing-or-multiple-then)
+    - [Error: **25** Severity: **10** Message: **Missing OTHERWISE**](#error-25-severity-10-message-missing-otherwise)
+    - [Error: **26** Severity: **10** Message: **Missing or unexpected END**](#error-26-severity-10-message-missing-or-unexpected-end)
+    - [Error: **27** Severity: **10** Message: **Symbol mismatch**](#error-27-severity-10-message-symbol-mismatch)
+    - [Error: **28** Severity: **10** Message: **Invalid DO syntax**](#error-28-severity-10-message-invalid-do-syntax)
+    - [Error: **29** Severity: **10** Message: **Incomplete IF or SELECT**](#error-29-severity-10-message-incomplete-if-or-select)
+    - [Error: **30** Severity: **10** Message: **Label not found**](#error-30-severity-10-message-label-not-found)
+    - [Error: **31** Severity: **10** Message: **Symbol expected**](#error-31-severity-10-message-symbol-expected)
+    - [Error: **32** Severity: **10** Message: **Symbol or string expected**](#error-32-severity-10-message-symbol-or-string-expected)
+    - [Error: **33** Severity: **10** Message: **Invalid keyword**](#error-33-severity-10-message-invalid-keyword)
+    - [Error: **34** Severity: **10** Message: **Required keyword missing**](#error-34-severity-10-message-required-keyword-missing)
+    - [Error: **35** Severity: **10** Message: **Extraneous characters**](#error-35-severity-10-message-extraneous-characters)
+    - [Error: **36** Severity: **10** Message: **Keyword conflict**](#error-36-severity-10-message-keyword-conflict)
+    - [Error: **37** Severity: **10** Message: **Invalid template**](#error-37-severity-10-message-invalid-template)
+    - [Error: **38** Severity: **10** Message: **Invalid TRACE request**](#error-38-severity-10-message-invalid-trace-request)
+    - [Error: **39** Severity: **10** Message: **Uninitialized variable**](#error-39-severity-10-message-uninitialized-variable)
+    - [Error: **40** Severity: **10** Message: **Invalid variable name**](#error-40-severity-10-message-invalid-variable-name)
+    - [Error: **41** Severity: **10** Message: **Invalid expression**](#error-41-severity-10-message-invalid-expression)
+    - [Error: **42** Severity: **10** Message: **Unbalanced parentheses**](#error-42-severity-10-message-unbalanced-parentheses)
+    - [Error: **43** Severity: **43** Message: **Nesting limit exceeded**](#error-43-severity-43-message-nesting-limit-exceeded)
+    - [Error: **44** Severity: **10** Message: **Invalid expression result**](#error-44-severity-10-message-invalid-expression-result)
+    - [Error: **45** Severity: **10** Message: **Expression required**](#error-45-severity-10-message-expression-required)
+    - [Error: **46** Severity: **10** Message: **Boolean value not 0 or 1**](#error-46-severity-10-message-boolean-value-not-0-or-1)
+    - [Error: **47** Severity: **10** Message: **Arithmetic conversion error**](#error-47-severity-10-message-arithmetic-conversion-error)
+    - [Error: **48** Severity: **10** Message: **Invalid operand**](#error-48-severity-10-message-invalid-operand)
+- [Appendix B **Limits and Compatibility**](#appendix-b-limits-and-compatibility)
+  - [B-1 **Limits**](#b-1-limits)
+  - [B-2 **Compatibility**](#b-2-compatibility)
+- [Appendix C **The ARexx Systems Library**](#appendix-c-the-arexx-systems-library)
+  - [C-1 Functional Groups](#c-1-functional-groups)
+  - [C-2 Library Functions](#c-2-library-functions)
+  - [AddClipNode()](#addclipnode)
+  - [AddRsrcNode()](#addrsrcnode)
+  - [ClearMem()](#clearmem)
+  - [ClearRexxMsg()](#clearrexxmsg)
+  - [CloseF()](#closef)
+  - [ClosePublicPort()](#closepublicport)
+  - [CmpString()](#cmpstring)
+  - [CreateArgstring()](#createargstring)
+  - [CreateDOSPkt()](#createdospkt)
+  - [CreateRexxMsg()](#createrexxmsg)
+  - [CVa2i()](#cva2i)
+  - [CVc2x()](#cvc2x)
+  - [CVi2a()](#cvi2a)
+  - [CVi2arg()](#cvi2arg)
+  - [CVi2az()](#cvi2az)
+  - [CVs2i()](#cvs2i)
+  - [CVx2c()](#cvx2c)
+  - [CurrentEnv()](#currentenv)
+  - [DeleteArgstring()](#deleteargstring)
+  - [DeleteDOSPkt()](#deletedospkt)
+  - [DeleteRexxMsg()](#deleterexxmsg)
+  - [DOSRead()](#dosread)
+  - [DOSWrite()](#doswrite)
+  - [Error Msg()](#error-msg)
+  - [ExistF()](#existf)
+  - [FillRexxMsg()](#fillrexxmsg)
+  - [FindDevice()](#finddevice)
+  - [FindRsrcNode()](#findrsrcnode)
+  - [FreePort()](#freeport)
+  - [FreeSpace()](#freespace-1)
+  - [GetSpace()](#getspace-1)
+  - [InitList()](#initlist)
+  - [InitPort()](#initport)
+  - [IsRexxMsg()](#isrexxmsg)
+  - [IsSymbol()](#issymbol)
+  - [ListNames()](#listnames)
+  - [LockRexxBase()](#lockrexxbase)
+  - [OpenF()](#openf)
+  - [OpenPublicPort()](#openpublicport)
+  - [QueueF()](#queuef)
+  - [ReadF()](#readf)
+  - [ReadStr()](#readstr)
+  - [RemClipNNode()](#remclipnnode)
+  - [RemRsrcList()](#remrsrclist)
+  - [RemRsrcNode()](#remrsrcnode)
+  - [SeekF()](#seekf)
+  - [StackF()](#stackf)
+  - [StcToken()](#stctoken)
+  - [StrcpyA()](#strcpya)
+  - [StrcpyN()](#strcpyn)
+  - [StrcpyU()](#strcpyu)
+  - [StrflipN()](#strflipn)
+  - [Strlen()](#strlen)
+  - [StrcmpN()](#strcmpn)
+  - [ToUpper()](#toupper)
+  - [UnlockRexxBase()](#unlockrexxbase)
+  - [WriteF()](#writef)
+- [Appendix D **The ARexx Support Library**](#appendix-d-the-arexx-support-library)
+  - [ALLOCMEM()](#allocmem)
+  - [CLOSEPORT()](#closeport)
+  - [FREEMEM()](#freemem)
+  - [GETARG()](#getarg)
+  - [GETPKT()](#getpkt)
+  - [OPENPORT()](#openport)
+  - [REPLY()](#reply)
+  - [SHOWDIR()](#showdir)
+  - [SHOWLIST()](#showlist)
+  - [STATEF()](#statef)
+  - [WAITPKT()](#waitpkt)
+- [Appendix E **Distribution Files**](#appendix-e-distribution-files)
+  - [E-1 Directories](#e-1-directories)
+    - [The `:C` Directory](#the-c-directory)
+    - [The `:INCLUDE` Directory](#the-include-directory)
+    - [The `:LIBS` Directory](#the-libs-directory)
+    - [The `:REXX` Directory](#the-rexx-directory)
+    - [The `:TOOLS` Directory](#the-tools-directory)
+    - [Miscellaneous Files](#miscellaneous-files)
+  - [E-2 Listings of Header Files](#e-2-listings-of-header-files)
+    - [storage.h](#storageh)
+    - [rxslib.h](#rxslibh)
+    - [rexxio.h](#rexxioh)
+    - [errors.h](#errorsh)
+- [Glossary](#glossary)
+
 
 # Introduction
 
@@ -37,41 +460,41 @@ Welcome to ARexx, an implementation of the REXX language for the Amiga computer.
 
 This document will attempt to fill the roles of User's Manual, Language Reference, and Programmer's Guide. The chapters that follow have been organized to provide a gentle introduction to the language.
 
-* Chapter l, ***What is ARexx?,*** gives an overview of the ARexx language and its implementation on the Amiga.
+* Chapter 1, ***[What is ARexx?](#chapter-1-what-is-arexx)***, gives an overview of the ARexx language and its implementation on the Amiga.
 
-* Chapter 2, ***Getting Acquainted,*** tells how to install ARexx on your Amiga and presents several example programs to illustrate the features of the language.
+* Chapter 2, ***[Getting Acquainted](#chapter-2-getting-acquainted)***, tells how to install ARexx on your Amiga and presents several example programs to illustrate the features of the language.
 
-* Chapter 3, ***Elements of the Language,*** introduces the language structure and syntax.
+* Chapter 3, ***[Elements of the Language](#chapter-3-elements-of-the-language)***, introduces the language structure and syntax.
 
-* Chapter 4, ***Instructions,*** describes the action statements of ARexx.
+* Chapter 4, ***[Instructions](#chapter-4-instructions)***, describes the action statements of ARexx.
 
-* Chapter 5, ***Commands,*** describes the program statements used to communicate with external programs.
+* Chapter 5, ***[Commands](#chapter-5-commands)***, describes the program statements used to communicate with external programs.
 
-* Chapter 6, ***Functions,*** explains how functions are called and documents the Built-In Function library.
+* Chapter 6, ***[Functions](#chapter-6-functions)***, explains how functions are called and documents the Built-In Function library.
 
-* Chapter 7, ***Tracing and Interrupts,*** describes the source-level debugging features useful for developing and testing programs.
+* Chapter 7, ***[Tracing and Interrupts](#chapter-7-tracing-and-interrupts)***, describes the source-level debugging features useful for developing and testing programs.
 
-* Chapter 8, ***Parsing and Templates,*** describes the instructions used to extract words or fields from strings.
+* Chapter 8, ***[Parsing and Templates](#chapter-8-parsing-and-templates)***, describes the instructions used to extract words or fields from strings.
 
-* Chapter 9, ***The Resident Process,*** describes the capabilities of the global communications and resources manager.
+* Chapter 9, ***[The Resident Process](#chapter-9-the-resident-process)***, describes the capabilities of the global communications and resources manager.
 
-* Chapter 10, ***Interfacing to ARexx,*** describes how to design and implement an interface between ARexx and an external program.
+* Chapter 10, ***[Interfacing to ARexx](#chapter-10-interfacing-to-arexx)***, describes how to design and implement an interface between ARexx and an external program.
 
-* Appendix A, ***Error Messages,*** lists the error messages issued by the interpreter.
+* Appendix A, ***[Error Messages](#appendix-a-error-messages)***, lists the error messages issued by the interpreter.
 
-* Appendix B, ***Limits and Compatibility,*** discusses the compatibility of ARexx with the language standard.
+* Appendix B, ***[Limits and Compatibility](#appendix-b-limits-and-compatibility)***, discusses the compatibility of ARexx with the language standard.
 
-* Appendix C, ***The ARexx Systems Library,*** documents the functions in the ARexx systems library.
+* Appendix C, ***[The ARexx Systems Library](#appendix-c-the-arexx-systems-library)***, documents the functions in the ARexx systems library.
 
-* Appendix D, ***The Support Library,*** documents the library of Amiga-specific functions.
+* Appendix D, ***[The Support Library](#appendix-d-the-support-library)***, documents the library of Amiga-specific functions.
 
-* Appendix E, ***Distribution Files,*** lists the files on the distribution disk.
+* Appendix E, ***[Distribution Files](#appendix-e-distribution-files)***, lists the files on the distribution disk.
 
 Finally, a Glossary and an Index are provided.
 
 ### Using this Manual
 
-If you are new to the REXX language, or perhaps to programming itself, you should review chapters 1 through 4 and then play with ARexx by running some of the sample programs given in chapter 2. Further examples are available in the **:rexx** directory of the distribution disk.
+If you are new to the REXX language, or perhaps to programming itself, you should review chapters 1 through 4 and then play with ARexx by running some of the sample programs given in chapter 2. Further examples are available in the `:rexx` directory of the distribution disk.
 
 If you are already familiar with REXX you may wish to skip directly to chapter 5, which begins to present some of the system-dependent features of this implementation. A summary of the compatibility of ARexx with the language definition is contained in Appendix B.
 
@@ -85,7 +508,7 @@ ARexx, like most software products, will probably evolve somewhat over the next 
 
 The author sincerely hopes that other software developers will consider using ARexx with their products. The advantages of having a rich variety of software products sharing a common user interface and a common procedural interface cannot be overstated. This is the underlying promise of the Amiga's multitasking capability, and that which most sets it apart from other inexpensive computers.
 
-Example Programs. One of the best ways to learn a computer language is to study examples written by more experienced programmers. The ARexx distribution disk includes a few example programs in the : rexx directory, and more programs will be added in future releases.
+**Example Programs.** One of the best ways to learn a computer language is to study examples written by more experienced programmers. The ARexx distribution disk includes a few example programs in the `:rexx` directory, and more programs will be added in future releases.
 
 If you have written a REXX language program (for any computer) that you think would be of interest to a more general audience, please send it to the author for consideration. Programs should be of interest either in terms of their specific functionality or as an example of programming technique. Each program submitted should include an author credit and a few lines of commentary on its intended function.
 
@@ -168,7 +591,7 @@ ARexx programs are launched by a background program called the *resident process
 
 After the resident process has been loaded, ARexx: programs can be run from the CLI by typing the command `rx` followed by the program name and any arguments. For example, the sample program `calc.rexx`, which evaluates an expression, could be run by typing "`rx :rexx/calc 1+1`"
 
-You may not need to start up the resident process if you are using a software package that starts it automatically. Applications that use ARexx can test whether the resident process is active by checking for a public message port named "REXX." If the port hasn't been opened, the program can issue the `rexxmast` command directly.
+You may not need to start up the resident process if you are using a software package that starts it automatically. Applications that use ARexx can test whether the resident process is active by checking for a public message port named "`REXX.`" If the port hasn't been opened, the program can issue the `rexxmast` command directly.
 
 The resident process can be closed using the command `rxc`; it will then exit as soon as the last ARexx: program finishes execution. Unless you are very short on memory space, there is usually no reason to close ARexx, as it simply waits in the background for the next program to run.
 
@@ -184,17 +607,17 @@ These short programs can be created using any text editor and then run from the 
 
 We'll begin with a "Hello, World" program that simply displays a message on the console screen.
 ```rexx
-/*A simple program*/
+/* A simple program*/
 say 'Hello, World'
 ```
 This program consists of a ***comment*** line that describes the program and an ***instruction*** that displays text on the console. For historical reasons, ARexx programs begin with a comment line; the initial `/*` says "**I'm an ARexx program**" to the interpreter when it searches for a program.
 
-Instructions are language statements that denote a certain action to be performed, and always start with a ***symbol***, in this case the word `say`. Symbols are translated to uppercase when the program is run, so the symbol `say` here is equivalent to `SAY`. Following `say` is an example of a ***string,*** which is a series of characters surrounded by quotes (' '). Double quotes (" ") could also have been used to define the string.
+Instructions are language statements that denote a certain action to be performed, and always start with a ***symbol***, in this case the word `say`. Symbols are translated to uppercase when the program is run, so the symbol `say` here is equivalent to `SAY`. Following `say` is an example of a ***string,*** which is a series of characters surrounded by quotes (`' '`). Double quotes (`" "`) could also have been used to define the string.
 
 In the next program we'll display a prompt for input and then read some information from the user.
 
 ```rexx
-/*Calculate age in days*/
+/* Calculate age in days*/
 say 'Please enter your age'
 pull age
 say 'You are about' age*365 'days old'
@@ -207,10 +630,10 @@ Note that the variable `age` did not have to be declared as a number; instead, i
 The next program introduces the do instruction, which allows program statements to be executed repeatedly. It also illustrates the ***exponentiation*** operator, which is used to raise a number to an integral power.
 
 ```rexx
-/*Calculate some squares and cubes */
+/* Calculate some squares and cubes      */
 do i = 1 to 10          /* 10 iterations */
-    say i i**2 i**3     /* calculations */
-end                     /* end of loop */
+    say i i**2 i**3     /* calculations  */
+end                     /* end of loop   */
 say 'all done'
 ```
 
@@ -227,18 +650,18 @@ do i = 1 to 10
 end
 ```
 
-This example introduces the `//` arithmetic operator, which calculates the remainder after a division operation. The if instruction tests whether the remainder is 0 and executes the `then` branch if it is, thereby setting the variable `type` to "`even`". If the remainder was not 0, the alternative `else` branch is executed and `type` is set to "`odd`".
+This example introduces the `//` arithmetic operator, which calculates the remainder after a division operation. The if instruction tests whether the remainder is `0` and executes the `then` branch if it is, thereby setting the variable `type` to "`even`". If the remainder was `not 0`, the alternative `else` branch is executed and `type` is set to "`odd`".
 
 The next example introduces the concept of a ***function,*** which is a group of statements that can be executed by mentiouing the function name in a suitable context. Functions are an important part of most programming languages, as they allow large, complex programs to be built from smaller modules. Functions are specified in an expression as a name followed by an open parenthesis. One or more expressions called ***arguments*** may follow the parenthesis; these are used to pass information to the function for processing.
 
 ```rexx
-/* Defining and calling a function */
+/* Defining and calling a function              */
 do i = 1 to 5
-    say i square(i)     /* call square */ 
+    say i square(i)     /* call square          */ 
 end
-exit                    /* all done */
+exit                    /* all done             */
 
-square:                 /* function name */
+square:                 /* function name        */
 arg X                   /* get the 'X' argument */
 return x **2            /* square it and return */
 ```
@@ -248,7 +671,7 @@ The function ***square*** is defined in the lines following the ***label*** `squ
 One final example will suffice for now. A new instruction called `trace` is used here to activate the tracing features of ARexx.
 
 ```rexx
-/*Demonstrate "results" tracing*/
+/* Demonstrate "results" tracing*/
 trace results
 sum=0; sumsq=0; 
 do i = 1 to 5
@@ -302,10 +725,10 @@ the variable name itself.
 
 Examples:
 ```rexx
-123.45      /* a fixed symbol */
-MyName      /* same as MYNAME */
-a.          /* a stem symbol */
-a.1.Index   /* a compound symbol */
+123.45        /* a fixed symbol    */
+MyName        /* same as MYNAME    */
+a.            /* a stem symbol     */
+a.1.Index     /* a compound symbol */
 ```
 
 ### String Tokens
@@ -317,10 +740,10 @@ Strings followed immediately by an "`X`" or "`B`" character that is not part of 
 Examples:
 ```rexx
 "Nov is the time"       /* a simple example */
-""                      /* a null string */
-'Can''t you see??'      /* Can't you see?? */
-'4A 3B C0'X             /* a hex string */
-'00110111'b             /* binary for '7' */
+""                      /* a null string    */
+'Can''t you see??'      /* Can't you see??  */
+'4A 3B C0'X             /* a hex string     */
+'00110111'b             /* binary for '7'   */
 ```
 
 ### Operators
@@ -328,7 +751,8 @@ The characters `~ + - * / = > < & | ^`    may be combined in the sequences shown
 
 Each operator has an associated priority that determines the order in which operations will be performed in an expression. Operators with higher priorities are performed before those with lower priorites.
 
-**Table 3.1 Operator Sequences**
+***Table 3.1 Operator Sequences***
+
 | Sequence | Priority | Operator Definition              |
 |----------|----------|----------------------------------|
 | ~        | 8        | Logical NOT                      |
@@ -451,7 +875,7 @@ For example, the expression `J 'factorial is' fact(J)` is composed of a symbol `
 
 Before the evaluation of an expression can proceed, the interpreter must obtain a value for each symbol in the expression. For fixed symbols the value is just the symbol name itself, but variable symbols must be looked up in the current symbol table. In the example above, the expression after symbol resolution would be `3 'factorial is' FACT(3)`, assuming that the symbol `J` had the value `3`.
 
-Suppose that the example above had been "`FACT(J) 'is' J 'factorial'.`" Would the second occurrence of symbol `J` still resolve to `3` in this case? In general, function calls may have "side effects" that include altering the values of variables, so the value of `J` might have been changed by the call to `FACT`. In order to avoid ambiguities in the values assigned to symbols during the resolution process, ARexx guarantees a strict left-to-right resolution order. Symbol resolution proceeds irrespective of operator priority or parenthetical grouping; if a function call is found, the resolution is suspended while the function is evaluated. Note that it is possible for the same symbol to have more than one value in an expression.
+Suppose that the example above had been "`FACT(J) 'is' J 'factorial'`". Would the second occurrence of symbol `J` still resolve to `3` in this case? In general, function calls may have "side effects" that include altering the values of variables, so the value of `J` might have been changed by the call to `FACT`. In order to avoid ambiguities in the values assigned to symbols during the resolution process, ARexx guarantees a strict left-to-right resolution order. Symbol resolution proceeds irrespective of operator priority or parenthetical grouping; if a function call is found, the resolution is suspended while the function is evaluated. Note that it is possible for the same symbol to have more than one value in an expression.
 
 ### Order of Evaluation
 
@@ -510,7 +934,7 @@ Operators can be grouped into four categories:
 
 The arithmetic operators are listed in Table 3.2 below. Note the inclusion of the integer division `%` and remainder `//` operators, along with the usual arithmetic operations. The result of an arithmetic operation is always formatted based on the current Numeric Digits setting, and will never have leading or trailing blanks.
 
-Table 3.2 Arithmetic Operators
+***Table 3.2 Arithmetic Operators***
 
 | Sequence | Priority | Operation            |
 |----------|----------|----------------------|
@@ -524,21 +948,21 @@ Table 3.2 Arithmetic Operators
 | +        | 5        | Addition             |
 | -        | 5        | Subtraction          |
 
-**Prefix Conversion** `+` This unary operator converts the operand to and internal numeric form and formats the result based on the current Numeric Digits settings. This causes any leading and trailing blanks to be removed, and may result in a loss of precision.
+**Prefix Conversion `+`** This unary operator converts the operand to and internal numeric form and formats the result based on the current Numeric Digits settings. This causes any leading and trailing blanks to be removed, and may result in a loss of precision.
 
 ```rexx
 '  3.12  '  ==> 3.12
 1.5001      ==> 1.500   /* If digits =3 */
 ```
 
-**Prefix Negation** `-` This unary operator negates the operand. The result is formatted based on the current Numeric Digits setting.
+**Prefix Negation `-`** This unary operator negates the operand. The result is formatted based on the current Numeric Digits setting.
 
 ```rexx
 -'  3.12  ' ==> -3.12
 -1.5E2      ==> -150
 ```
 
-**Exponentiation** `**` The left operand is raised to the power specified by the right operand, which must be an integer. The number of decimal places for the result is the product of the exponent and the number of decimal places in the base.
+**Exponentiation `**`** The left operand is raised to the power specified by the right operand, which must be an integer. The number of decimal places for the result is the product of the exponent and the number of decimal places in the base.
 
 ```rexx
 2**3        ==> 8
@@ -546,27 +970,27 @@ Table 3.2 Arithmetic Operators
 0.5**3      ==> 0.125
 ```
 
-**Multiplication** `*` The product of two numbers is computed. The number of decimal places for the result is the sum of the decimal places of the operands.
+**Multiplication `*`** The product of two numbers is computed. The number of decimal places for the result is the sum of the decimal places of the operands.
 
 ```rexx
 12 * 3      ==> 36
 1.5 * 1.50  ==> 2.250
 ```
-**Division** `/` The quotient of two numbers is computed. The number of decimal places for the result depends on the current setting of the numeric **DIGITS** variable; the number is formatted to the maximum precision required.
+**Division `/`** The quotient of two numbers is computed. The number of decimal places for the result depends on the current setting of the numeric **DIGITS** variable; the number is formatted to the maximum precision required.
 
 ```rexx
 6 / 3       ==> 2
 8 / 3       ==> 2.666666667
 ```
 
-**Integer Division** `%` The quotient of two numbers is computed, and the integer part of the quotient is used as the result.
+**Integer Division `%`** The quotient of two numbers is computed, and the integer part of the quotient is used as the result.
 
 ```rexx
 5 % 3       ==> 1
 -8 % 3      ==> -2
 ```
 
-**Remainder** `//` The result is the remainder after the two operands are divided. The remainder for "`a//b`" is calculated as "`a-(a%b)*b`" If both operands are positive integers, this operation yields the usual "modulo" result.
+**Remainder `//`** The result is the remainder after the two operands are divided. The remainder for `a//b` is calculated as `a-(a%b)*b` If both operands are positive integers, this operation yields the usual "modulo" result.
 
 ```rexx
 5 // 3      ==> 2
@@ -574,14 +998,14 @@ Table 3.2 Arithmetic Operators
 5.1 // 0.2  ==> 0.1
 ```
 
-**Addition** `+` The sum of two numbers is computed. The number of decimal places for the result is the larger of the decimal places of the operands.
+**Addition `+`** The sum of two numbers is computed. The number of decimal places for the result is the larger of the decimal places of the operands.
 
 ```rexx
 12 + 3      ==> 15
 3.1 + 4.05  ==> 7.15
 ```
 
-**Subtraction** `-` The difference of two numbers is computed. As in the case of addition, the number of decimal places for the result is the larger ofthe decimal places ofthe operands. 
+**Subtraction `-`** The difference of two numbers is computed. As in the case of addition, the number of decimal places for the result is the larger ofthe decimal places ofthe operands. 
 
 ```rexx
 12 - 3      ==> 9
@@ -602,7 +1026,7 @@ one'two'three           ==> QNEtwoTHREE
 
 ### Comparison Operators
 
-Comparisons are performed in one of three modes, and always result in a boolean value (0 or 1.)
+Comparisons are performed in one of three modes, and always result in a boolean value (`0` or `1`)
 
 * ***Exact*** comparisons proceed character-by-character, including any leading blanks that may be present.
 
@@ -612,7 +1036,7 @@ Comparisons are performed in one of three modes, and always result in a boolean 
 
 Except for the exact equality and exact inequality operators, all comparison operators dynamically determine whether a string or numeric comparison is to be performed. A numeric comparison is performed if both operands are valid numbers; otherwise, the operands are compared as strings.
 
-**Table 3.3 Comparison Operators**
+***Table 3.3 Comparison Operators***
 
 | Sequence | Priority | Operation                     | Mode            |
 |----------|----------|-------------------------------|-----------------|
@@ -629,7 +1053,7 @@ Except for the exact equality and exact inequality operators, all comparison ope
 
 ARexx defines the four logical operations NOT, AND, OR, and Exclusive OR, all of which require boolean operands and produce a boolean result. Boolean operands must have values of either 0 **(False)** or 1 **(True)** An attempt to perform a logical operation on a non-boolean operand will generate an error.
 
-**Table 3.4 Logical Operators**
+***Table 3.4 Logical Operators***
 
 | Sequence | Priority | Operation        |
 |----------|----------|------------------|
@@ -1198,16 +1622,15 @@ SIGNAL [value] expression
 There are two forms of the `SIGNAL` instruction. The first form illustrated controls the state of the internal interrupt flags. Interrupts allow a program to detect and retain control when certain errors occur, and are discussed in Chapter 7. In this form `SIGNAL` must be followed by one of the keywords `ON` or `OFF` and one of the condition keywords listed below. The interrupt flag specified by the condition symbol is then set to the indicated state. The valid signal conditions are:
 
 
-* `BREAK_C` A "Control C" break was detected.
-
-* `BREAK_D` A "Control D" break was detected.
-* `BREAK_E` A "Control E" break was detected.
-* `BREAK_F` A "Control F" break was detected.
-* `ERROR` A host command returned a non-zero code.
-* `HALT` An external HALT request was detected.
-* `IOERR` An error was detected by the I/O system.
-* `NOVALUE` An uninitialized variable was used.
-* `SYNTAX` A syntax or execution error was detected.
+* **`BREAK_C`** A "Control C" break was detected.
+* **`BREAK_D`** A "Control D" break was detected.
+* **`BREAK_E`** A "Control E" break was detected.
+* **`BREAK_F`** A "Control F" break was detected.
+* **`ERROR`** A host command returned a non-zero code.
+* **`HALT`** An external HALT request was detected.
+* **`IOERR`** An error was detected by the I/O system.
+* **`NOVALUE`** An uninitialized variable was used.
+* **`SYNTAX`** A syntax or execution error was detected.
 
 The condition keywords are interpreted as labels to which control will be transferred if the selected condition occurs. For example, if the `ERROR` interrupt is enabled and a command returns a non-zero code, the interpreter will transfer control to the label `ERROR:`. The condition label must of course be defined in the program; otherwise, an immediate `SYNTAX` error results and the program exits.
 
@@ -1432,7 +1855,7 @@ External function libraries provide a mechanism with which users and application
 
 The ARexx resident process maintains a list, called the ***Library List*** of the currently available function libraries and function hosts. Applications programs can add or remove function libraries as required. The Library List is maintained as a priority-sorted queue, and entries can be added at an appropriate priority to control the function name resolution. Libraries with higher priorities are searched first; within a given priority level, those libraries added first are searched first.
 
-During the search process the ARexx interpreter opens each library and calls its "query" entry point. The query function must then check to see whether the requested function name is in the library. ]f not, it returns a "function not found" error code and the search continues with the next library in the list. Function libraries are always dosed after being checked so that the operating system can reclaim the memory space if required. Once the requested function has been found, it is called with the arguments passed by the interpreter, and must return an error code and a result string.
+During the search process the ARexx interpreter opens each library and calls its "query" entry point. The query function must then check to see whether the requested function name is in the library. If not, it returns a "function not found" error code and the search continues with the next library in the list. Function libraries are always dosed after being checked so that the operating system can reclaim the memory space if required. Once the requested function has been found, it is called with the arguments passed by the interpreter, and must return an error code and a result string.
 
 The ARexx language system includes an external function library in a file called `rexxsupport.library` It contains a number of Amiga-specific functions and is described in Appendix D. Chapter 10 provides information on designing and implementing function libraries.
 
@@ -1442,7 +1865,7 @@ Function hosts are called by sending a function invocation message packet to the
 
 The available function hosts, along with the function libraries, are contained in the Library List maintained by the resident process. This list provides a general mechanism for resolving function names in a priority-controlled manner.
 
-The ARexx resident process is an example of a function host. It is added to the Library List at a nominal priority of -60 when the resident process is started, using the same name (`REXX`) that is used for command invocations. When it receives a function invocation packet, it searches for an external file matching the function name, just as it would for a command invocation of the same name. In particular, the search begins with the current directory and proceeds to the system `REXX:` directory. Two names are used in the search: the function name with the current file extension appended, and the name by itself. The name matching process is not case-sensitive, but is affected by the presence of explicit directory specifications or file extensions in the name string. The rules governing the search for external programs are covered in Chapter 9.
+The ARexx resident process is an example of a function host. It is added to the Library List at a nominal priority of -60 when the resident process is started, using the same name (`REXX.`) that is used for command invocations. When it receives a function invocation packet, it searches for an external file matching the function name, just as it would for a command invocation of the same name. In particular, the search begins with the current directory and proceeds to the system `REXX:` directory. Two names are used in the search: the function name with the current file extension appended, and the name by itself. The name matching process is not case-sensitive, but is affected by the presence of explicit directory specifications or file extensions in the name string. The rules governing the search for external programs are covered in Chapter 9.
 
 External programs are always run as a separate process in the Amiga's multitasking system. The calling program "sleeps" until the called function finishes and the message packet returns. The result string and error code are returned in the packet.
 
@@ -1822,7 +2245,7 @@ Copies data from the (optional) string into a previously-allocated memory area, 
 
 **Caution is advised in using this function.** Any area of memory can be overwritten, possibly causing a system crash. Task switching is forbidden while the copy is being done, so system performance may be degraded if long strings are copied.
 
-See Also: IMPORT(), STORAGE()
+See Also: `IMPORT()`, `STORAGE()`
 
 ```rexx
 count = export('0004 0000'x,'The answer')
@@ -2139,13 +2562,13 @@ SHOW(option,[name],[pad])
 
 Returns the names in the resource list specified by the `option` argument, or tests to see whether an entry with the specified `name` is available. The currently implemented options keywords are `Clip`, `Files`, `Libraries`, and `Ports`, which are described below.
 
-* ***`Clip`*** Examines the names in the Clip List.
+* **`Clip`** Examines the names in the Clip List.
 
-* ***`Files`*** Examines the names of the currently open logical file names.
+* **`Files`** Examines the names of the currently open logical file names.
 
-* ***`Libraries`*** Examines the names in the Library List, which are either function libraries or function hosts.
+* **`Libraries`** Examines the names in the Library List, which are either function libraries or function hosts.
 
-* ***`Ports`*** Examines the names in the system Ports List.
+* **`Ports`** Examines the names in the system Ports List.
 
 If the `name` argument is omitted, the function returns a string with the resource names separated by a blank space or the `pad` character, if one was supplied. If the`name` argument is given, the returned boolean value indicates whether the name was found in the resource list. The name entries are case-sensitive.
 
@@ -2525,7 +2948,6 @@ ARexx maintains an internal interrupt system that can be used to detect and trap
 The interrupts supported by ARexx are described below. The name assigned to each is actually the label to which control will be transferred. Thus, a `SYNTAX` interrupt will transfer control to the label `SYNTAX:`. Interrupts can be enabled or disabled using the `SIGNAL` instruction. For example, the instruction `SIGNAL ON SYNTAX` would enable the `SYNTAX` interrupt.
 
 * **`BREAK_C`** This interrupt will trap a `Control C` break request generated by DOS. If the interrupt is not enabled, the program terminates immediately with the error message "Execution halted" and returns with the error code set to 2.
-  
 * **`BREAK_D`** The interrupt will detect and trap a `Control D` break request issued by DOS. The break request is ignored if the interrupt is not enabled.
 * **`BREAK_E`** The interrupt will detect and trap a `Control E` break request issued by DOS. The break request is ignored if the interrupt is not enabled.
 * **`BREAK_F`** The interrupt will detect and trap a `Control F` break request issued by DOS. The break request is ignored if the interrupt is not enabled.
@@ -2615,7 +3037,7 @@ Templates are scanned from left to right with the initial scan index set to 1, t
 
 The scan continues until all of the objects in the template have been used. Note that every target will be assigned a value; once the parse string has been exhausted, the null string is assigned to any remaining targets.
 
-## 8-2 Templates in Action
+## 8.2 Templates in Action
 
 The preceding section is rather abstract, so let's look now at some examples of parsing with templates.
 
@@ -3266,7 +3688,7 @@ An invalid token was found in a context where only a symbol or string is valid.
 
 A symbol token in an instruction clause was identified as a keyword, but was invalid in the specific context.
 
-#### Error: **34** Severity: **10** Message: **Required keyword missing**
+### Error: **34** Severity: **10** Message: **Required keyword missing**
 
 An instruction clause required a specific keyword token to be present, but it was not supplied. For example, this message will be issued if a `SIGNAL` `ON` instruction is not followed by one of the interrupt keywords ( e.g. `SYNTAX`.)
 
@@ -3314,11 +3736,11 @@ The result of an expression was not valid within its context. For example, this 
 
 An expression was omitted in a context where one is required. For example, the `SIGNAL` instruction, if not followed by the keywords `ON` or `OFF`, must be followed by an expression.
 
-### Error: **46** Severity: **10** Message: **Boolean value not O or 1**
+### Error: **46** Severity: **10** Message: **Boolean value not 0 or 1**
 
 An expression result was expected to yield a boolean result, but evaluated to something other than `O` or `1`.
 
-#### Error: **47** Severity: **10** Message: **Arithmetic conversion error**
+### Error: **47** Severity: **10** Message: **Arithmetic conversion error**
 
 A non-numeric operand was used in a operation requiring numeric operands. This message will also be generated by an invalid hex or binary string.
 
@@ -3440,11 +3862,14 @@ The library functions can be grouped into ***Conversion***, ***Input/Output***, 
 | ToUpper            | Conversion  | ASCII to uppercase                     |
 | WriteF             | Input/Output| Write to a file buffer                 |
 
-## C-2 **Library Functions**
+## C-2 Library Functions
 
 The following descriptions of the ARexx Systems Library functions are listed alphabetically. The required arguments and register assignments are shown in parentheses after the function name. Multiple returns are shown in parentheses on the left-hand side of the call.
 
-### **AddClipNode()** allocate and link a Clip node 
+
+
+## AddClipNode()
+> allocate and link a Clip node
 ```rexx
 node= AddClipNode(list,name,length,value) 
  D0                A0   A1     D0   D1 
@@ -3452,13 +3877,14 @@ node= AddClipNode(list,name,length,value)
 (CCR)
 ```
 
-Allocates and links a Clip node into the specified list. Clip nodes are resource nodes containing a name and value string, and include an "auto-delete" function for simple maintenance. The *list* argument must point to a properly-initialized EXEC list header. The *name* argument points to a null-terminated name string, the *value* argument is a pointer to a storage area, and the *length* argument is its length in bytes. The returned value is a pointer to the allocated node, or 0 if the allocation failed.
+Allocates and links a Clip node into the specified list. Clip nodes are resource nodes containing a name and value string, and include an "auto-delete" function for simple maintenance. The `list` argument must point to a properly-initialized EXEC list header. The `name` argument points to a null-terminated name string, the `value` argument is a pointer to a storage area, and the `length` argument is its length in bytes. The returned `value` is a pointer to the allocated `node`, or `0` if the allocation failed.
 
 The **`RemClipNode()`** function is installed as the "auto-delete" function for each node. Clip nodes can be intermixed with other resource nodes in a list and then released with a single call to **`RemRsrcList()`** 
 
 See Also: `RemClipNode()`, `RemRsrcList()`, `RemRsrcNode()`
 
-### **AddRsrcNode()** allocate and link a resource node 
+## AddRsrcNode()
+> allocate and link a resource node 
 ```rexx
 node= AddRsrcNode(list,name,length) 
  D0                A0   A1    D0 
@@ -3466,19 +3892,21 @@ node= AddRsrcNode(list,name,length)
 (CCR)
 ```
 
-Allocates and links a resource node ( a `RexxRsrc` structure) to the specified ***list*** The ***name*** argument is a pointer to a null-terminated string, a copy of which is installed in the node structure. The length argument is the total length for the node; this length is saved within the node so that it may be released later. The returned value is a pointer to the allocated node, or 0 if the allocation failed.
+Allocates and links a resource node ( a `RexxRsrc` structure) to the specified `list` The `name` argument is a pointer to a null-terminated string, a copy of which is installed in the node structure. The `length` argument is the total length for the node; this length is saved within the node so that it may be released later. The returned value is a pointer to the allocated `node`, or `0` if the allocation failed.
 
 See Also: `RemRsrcList()`, `RemRsrcNode()`
 
-### **ClearMem()** clear a block of memory
+## ClearMem()
+> clear a block of memory
 ```rexx
 ClearMem(address,length)
            A0      D0
 ```
 
-Clears a block of memory beginning at the given address for the specified length in bytes. The address must be word-aligned and the length must be a multiple of 4 bytes; all structures allocated by ARexx meet these restrictions. Register A0 is preserved.
+Clears a block of memory beginning at the given `address` for the specified `length` in bytes. The address must be word-aligned and the length must be a multiple of 4 bytes; all structures allocated by ARexx meet these restrictions. Register `A0` is preserved.
 
-### **ClearRexxMsg()**  release argument strings
+## ClearRexxMsg()
+> release argument strings
 ```rexx
 ClearRexxMsg(msgptr,count)
                A0     D0
@@ -3488,7 +3916,8 @@ Releases one or more argstrings from a message packet and clears the correspondi
 
 See Also: `FillRexxMsg()`
 
-### **CloseF()** close a file buffer
+## CloseF()
+> close a file buffer
 ```rexx
 boolean = CloseF(IoBuff)
   D0               A0
@@ -3496,55 +3925,60 @@ boolean = CloseF(IoBuff)
 
 Releases the `IoBuff` structure and closes the associated DOS file. `CloseF()` is the "auto-delete" function for the `IoBuff` structure, so an entire list of file buffers can be closed with a single call to `RemRsrcList()`.
 
-### **ClosePublicPort()**  close a port resource node
+## ClosePublicPort()
+>close a port resource node
 ```rexx
 ClosePublicPort(node)
                  A0
 ```
 
-Unlinks and closes the message port and releases the resource node structure. The node must have been allocated by the `OpenPublicPort()` function.
+Unlinks and closes the message port and releases the resource `node` structure. The node must have been allocated by the `OpenPublicPort()` function.
 
 See Also: `OpenPublicPort()`
 
-### **CmpString()** compare string structures for equality
+## CmpString()
+> compare string structures for equality
 ```rexx
 test=CmpString(ss1,ss2)
  D0             A0  A1
-CCR 
+(CCR)
 ```
 
 The arguments `ss1` and `ss2` must be pointers to ARexx string structures and are compared for equality. String structures include the length and hash code of the string, so the actual strings are not compared unless the lengths and hash codes match. The return value sets the `CCR` and will be `-1` (**True**) if the strings match and `0` (**False**) otherwise.
 
-### **CreateArgstring()** create an argument string structure 
+## CreateArgstring()
+> create an argument string structure 
 ```rexx
 argstring = CreateArgstring(string,length) 
     D0                        A0     D0 
     A0
-    CCR
+   (CCR)
 ```
 
-Allocates a `RexxArg` structure and copies the supplied string into it. The `argstring` return is a pointer to the string buffer of the structure, and can be treated like an ordinary string pointer. The `RexxArg` structure stores the structure size and string length at negative offsets to the string pointer. The string pointer can be set to `NULL` if only an uninitialized structure is required.
+Allocates a `RexxArg` structure and copies the supplied `string` into it. The `argstring` return is a pointer to the string buffer of the structure, and can be treated like an ordinary string pointer. The `RexxArg` structure stores the structure size and string `length` at negative offsets to the string pointer. The string pointer can be set to `NULL` if only an uninitialized structure is required.
 
 See Also: `DeleteArgstring()`
 
-### **CreateDOSPkt()** allocate and initialize a DOS standardPacket.
+## CreateDOSPkt()
+> allocate and initialize a DOS standardPacket.
 ```rexx
 packet= CreateDOSPkt() 
           D0 
           A0 
-          CCR
+         (CCR)
 ```
 
 Allocates a DOS **StandardPacket** structure and initializes it by interlinking the EXEC message and the DOS packet substructures. No replyport is installed in either the message or the packet, as these fields are generally filled in just before the message is sent.
 
 See Also: `DeleteDOSPkt()`
 
-### **CreateRexxMsg()** allocate an ARexx message packet 
+## CreateRexxMsg()
+> allocate an ARexx message packet 
 ```rexx
 msgptr = CreateR.exxMsg(replyport,extension,host)
   D0                       A0         A1     D0
   A0
-  CCR
+ (CCR)
 ```
 
 This functions allocates an ARexx message packet from the system free memory list. The message packet consists of a standard EXEC message structure extended to include space for function arguments, returned results, and internal defaults. The `replyport` argument points to a public or private message port and must be supplied, as it is required to return the message packet to the sender. The `extension` and `host` arguments are pointers to nullterminated strings that provide values for the default file extension and the initial host address, respectively. Additional override fields in the extended packet may be filled in after the packet has been allocated.
@@ -3554,7 +3988,8 @@ The interpreter preserves all of the fields in the message packet except for the
 See Also: `DeleteRexxMsg()` 
 
 
-### **CVa2i()** convert from ASCII to integer
+## CVa2i()
+> convert from ASCII to integer
 ```rexx
 (digits,value)= CVa2i(buffer) 
    D0    D1             A0
@@ -3562,65 +3997,73 @@ See Also: `DeleteRexxMsg()`
 
 Converts the `buffer` of ASCII characters to a signed long value. The scan proceeds until a non-digit character is found or until an overflow is detected. The function returns both the number of digits scanned and the converted value.
 
-### **CVc2x()** convert (unpack) from character string to hex or binary digits.
+## CVc2x()
+> convert (unpack) from character string to hex or binary digits.
 ```rexx
  error = CVc2x(outbuff,string,length,mode)
    D0              A0    A1     D0    D1
 ```
 Converts the `string` argument to a string of hex (`0-9`, `A-F`) or binary (`0`,`1`) digits.
 
-### **CVi2a()** convert from integer to ASCII
+## CVi2a()
+> convert from integer to ASCII
 ```rexx
 (length,pointer) = CVi2a(buffer,value,digits)
    D0      A0              A0     D0    D1
 ```
-Converts the signed integer value argument to ASCII characters using the supplied buffer pointer. The digits argument specifies the maximum number of characters that will be copied to the buffer. The returned length is the actual number of characters copied. The pointer return is the new buffer pointer.
+Converts the signed integer `value` argument to ASCII characters using the supplied `buffer pointer`. The `digits` argument specifies the maximum number of characters that will be copied to the `buffer`. The returned `length` is the actual number of characters copied. The `pointer` return is the new `buffer pointer`.
 
 See Also: `CVi2az()`
 
-### **CVi2arg()** convert from integer to argstring
+## CVi2arg()
+> convert from integer to argstring
 ```rexx
 argstring = CVi2arg(value,digits)
     D0                D0    D1
     A0
-    CCR           
+   (CCR)           
 ```
 
-Converts the signed long integer value argument to ASCII characters, and installs them in an argstring (a `RexxArg` structure). The returned value is an argstring pointer or 0 if the allocation failed. The allocated structure can be released using `DeleteArgstring()`.
+Converts the signed long integer `value` argument to ASCII characters, and installs them in an `argstring` (a `RexxArg` structure). The returned value is an `argstring pointer` or `0` if the allocation failed. The allocated structure can be released using `DeleteArgstring()`.
 
-### **CVi2az()** convert from integer to ASCII with leading zeroes
+## CVi2az()
+> convert from integer to ASCII with leading zeroes
 ```rexx
 (length,pointer) = CVi2az(buffer,value,digits)
    D0      A0              A0     D0    D1
 ```
-Converts the signed long integer value argument to ASCII characters in the supplied buffer, with leading zeroes to fill out the requested number of digits. This function is identical to CVi2a except that leading zeroes are supplied.
+Converts the signed long integer `value` argument to ASCII characters in the supplied `buffer`, with leading zeroes to fill out the requested number of `digits`. This function is identical to `CVi2a` except that leading zeroes are supplied.
 
 See Also: `CVi2a()`
 
-### **CVs2i()** convert from string structure to integer
+## CVs2i()
+> convert from string structure to integer
 ```rexx
 (error,value) = CVs2i(ss)
   D0    D1            A0
 ```
 
-The `ss` argument must be a pointer to a string structure. It is converted to a signed long integer value return. The ***error*** return code is `47` ("Arithmetic conversion error") if the string is not a valid number.
+The `ss` argument must be a pointer to a string structure. It is converted to a signed long integer `value` return. The `error` return code is `47` ("Arithmetic conversion error") if the string is not a valid number.
 
-### **CVx2c()** convert from hex or binary digits to (packed) string 
+## CVx2c()
+> convert from hex or binary digits to (packed) string 
 ```rexx
 error = CVx2c(outbuff,string,length,mode) 
   D0             A0     A1     D0    D1
 ```
 
-Converts the `string` argument of hex (`0-9`, `A-F`) or binary (`0`, `1`) digits to the packed binary representation. The `mode` argument specifies the (hex or binary) conversion mode, and must be set to `-1` for hex strings or `0` for binary strings. Blank characters may be embedded in the string for readability, but only at byte boundaries. The ***error*** return code is `47` if the string is not a valid hex or binary string.
+Converts the `string` argument of hex (`0-9`, `A-F`) or binary (`0`, `1`) digits to the packed binary representation. The `mode` argument specifies the (hex or binary) conversion mode, and must be set to `-1` for hex strings or `0` for binary strings. Blank characters may be embedded in the string for readability, but only at byte boundaries. The `error` return code is `47` if the string is not a valid hex or binary string.
 
-### **CurrentEnv()** return the current storage environment
+## CurrentEnv()
+> return the current storage environment
 ```rexx
 envptr = CurrentEnv(rxtptr)
   D0                  A0
 ```
-Returns a pointer to the current storage environment associated with an executing ARexx program. The `rxtptr` argument is a pointer to the `RexxTask` structure, and may be obtained from the message packet sent to an external application.
+Returns a `pointer` to the current storage environment associated with an executing ARexx program. The `rxtptr` argument is a pointer to the `RexxTask` structure, and may be obtained from the message packet sent to an external application.
 
-### **DeleteArgstring()** delete (release) an argstring structure 
+## DeleteArgstring()
+> delete (release) an argstring structure 
 ```rexx
 DeleteArgstring(argstring)
                    A0
@@ -3629,7 +4072,8 @@ Releases an `argstring` (`RexxArg`) structure. The `RexxArg` structure contains 
 
 See Also: `CreateArgstring()`
 
-### **DeleteDOSPkt()** release a DOS StandardPacket structure.
+## DeleteDOSPkt()
+> release a DOS StandardPacket structure.
 ```rexx
 DeleteDOSPkt(message)
                A0
@@ -3638,7 +4082,8 @@ Releases a DOS **StandardPacket** structure, typically obtained by a prior call 
 
 See Also: `CreateDOSPkt()` 
 
-### **DeleteRexxMsg()** delete (release) an ARexx message packet
+## DeleteRexxMsg()
+> delete (release) an ARexx message packet
 ```rexx
 DeleteRexxMsg(packet)
                 A0
@@ -3648,53 +4093,55 @@ Releases an ARexx message packet to the system free-memory list. The internal `M
 
 See Also: `CreateRexxMsg()` 
 
-### **DOSRead()** read from a DOS file 
+## DOSRead()
+> read from a DOS file 
 ```rexx
-count= DOSRead{filehandle,buffer,length) 
-  D0               A0       Al     D0 
-  CCR
+count= DOSRead(filehandle,buffer,length) 
+  D0               A0       A1     D0 
+ (CCR)
 ```
 
-Reads one or more characters from a DOS filehandle into the supplied buffer. The `length` argument specifies the maximum number of characters that will be read. The returned `count` is the actual number of bytes transferred, or `-1` if an error occurred.
+Reads one or more characters from a DOS `filehandle` into the supplied `buffer`. The `length` argument specifies the maximum number of characters that will be read. The returned `count` is the actual number of bytes transferred, or `-1` if an error occurred.
 
-### **DOSWrite()** write to a DOS file 
+## DOSWrite()
+> write to a DOS file 
 ```rexx
 count= DOSWrite(filehandle,buffer,length) 
   D0                A0       A1     D0 
-  CCR
+ (CCR)
 ```
 
-Writes a buffer of the specified length to a DOS filehandle. The returned `count` is the actual number of bytes written, or `-1` if an error occurred.
+Writes a `buffer` of the specified `length` to a DOS `filehandle`. The returned `count` is the actual number of bytes written, or `-1` if an error occurred.
 
-
-### **Error Msg()**  find the message associated with an error code 
+## Error Msg()
+>  find the message associated with an error code 
 ```rexx
 Usage: (boolean,ss) = ErrorMsg(code) 
          D0     A0              D0
 ```
 
-Returns the error message (as a pointer to a string structure) associated with the specified ARexx error code. The boolean return will be -1 if the supplied code was a valid ARexx error code, and O otherwise.
+Returns the error message (as a pointer to a string structure) associated with the specified ARexx error code. The `boolean` return will be `-1` if the supplied `code` was a valid ARexx error code, and `0` otherwise.
 
-
-### **ExistF()** check whether an external file exists 
+## ExistF()
+> check whether an external file exists 
 ```rexx
 boolean = ExistF(filename)
   D0                A0 
-  CCR
+ (CCR)
 ```
 
-Tests whether an external file currently exists by attempting to obtain a read lock on the file. The boolean return indicates whether the operation succeeded, and the lock is released.
+Tests whether an external `file` currently exists by attempting to obtain a read lock on the file. The `boolean` return indicates whether the operation succeeded, and the lock is released.
 
 
-### **FillRexxMsg()** convert and install arguments in message packet. 
-
+## FillRexxMsg()
+> convert and install arguments in message packet. 
 ```rexx
 boolean= FillRexxMsg(msgptr,count,mask) 
   D0                   A0     D0   D1 
-  CCR
+ (CCR)
 ```
 
-This function can be used to convert and install up to 16 argument strings in a `RexxMsg` structure. The message packet must be allocated and the argument fields of interest set to either a pointer to a null-terminated string or an integer value. The `count` argument specifies the number of fields, beginning with `ARG0`, to be converted into argstrings and installed into the argument slot. Bits 0-15 of the `mask` argument specify whether the corresponding argument is a string pointer (bit clear) or an integer value (bit set).
+This function can be used to convert and install up to 16 argument strings in a `RexxMsg` structure. The message packet must be allocated and the argument fields of interest set to either a pointer to a null-terminated string or an integer value. The `count` argument specifies the number of fields, beginning with `ARG0`, to be converted into `argstrings` and installed into the argument slot. Bits `0-15` of the `mask` argument specify whether the corresponding argument is a string pointer (bit clear) or an integer value (bit set).
 
 The `count` argument is normally set to the exact number of strings to be passed. By setting this count to less than 16, a number of the slots can be reserved for private uses.
 
@@ -3702,437 +4149,520 @@ The returned value is `-1` (`True`) if all of the arguments were successfully co
 
 See Also: `ClearRexxMsg()`
 
-### **FindDevice()** check whether a DOS device exists.
+## FindDevice()
+> check whether a DOS device exists.
 ```rexx
 device = FindDevice(devicename,type)
   D0                    A0      D0
   A0
-  CCR
+ (CCR)
 ```
-Scans the DOS DeviceList for a device node of the specified type matching the null-terminated name string. The acceptable values for the *type* argument are the constants `DLT_DEVICE`, `DLT_DIRECTORY`, or `DLT_VOLUME` defined in the DOS INCLUDE files. Device names are converted to uppercase before checking for a match. The returned value is a pointer to the matched device node, or 0 if the device was not found.
+Scans the DOS DeviceList for a device node of the specified type matching the null-terminated `name` string. The acceptable values for the `type` argument are the constants `DLT_DEVICE`, `DLT_DIRECTORY`, or `DLT_VOLUME` defined in the DOS INCLUDE files. Device names are converted to uppercase before checking for a match. The returned value is a pointer to the matched `device node`, or `0` if the device was not found.
 
-### **FindRsrcNode()**  locate a resource node with the given name.
-
+## FindRsrcNode()
+>  locate a resource node with the given name.
 ```
-Usage: node = FindRsrcNode(list,name,type)
-
-DO AO A1 DO
-AO (CCR)
-```
-
-Searchs the specified list for the first node of the selected type with the given name. The *list* argument must be a pointer to a properly-initialized EXEC list header. The *name* argument is a pointer to a null-terminated string. If the *type* argument is 0, all nodes are selected; otherwise, the supplied type must match the LN\_TYPE field of the node. The returned value is a pointer to the node or 0 if no matching node was found.
-
-FreePort()- release resources associated with a message port
-Usage: FreePort(port)
-
-This function deallocates the signal bit associated with a message port and marks the port as "closed." The task calling FreePort() must be the same one that initialized the port, since signal bit allocations are specific to a task. The memory space associated with the port is not released.
-
-See Also: InitPort()
-
-FreeSpace()- releases space to the internal memory allocator.
-
-```
-Usage: FreeSpace(envptr,block,length)
-
-AO A1 DO
+node = FindRsrcNode(list,name,type)
+ D0                  A0   A1   D0
+ A0
+(CCR)
 ```
 
-Returns a block of memory to the internal allocator, which must have been obtained from a call to GetSpace(). The *envptr* argument is a pointer to the base or current storage
+Searchs the specified `list` for the `first node` of the selected `type` with the given `name`. The `list` argument must be a pointer to a properly-initialized EXEC list header. The `name` argument is a pointer to a null-terminated string. If the `type` argument is `0`, all nodes are selected; otherwise, the supplied type must match the `LN_TYPE` field of the node. The returned value is a `pointer to the node` or `0` if no matching node was found.
 
-environment.
+## FreePort()
+>release resources associated with a message port
+```rexx
+FreePort(port)
+```
 
-See Also: **CurrentEnv(), GetSpace()** 
+This function deallocates the signal bit associated with a `message port` and marks the `port` as `closed`. The task calling `FreePort()` must be the same one that initialized the `port`, since signal bit allocations are specific to a task. The memory space associated with the `port` is not released.
 
-**GetSpace()-** allocate memory using the internal allocator.
+See Also: `InitPort()`
 
-Usage: block GetSpace(envptr,length) DO AO DO AO **(CCR)** 
+## FreeSpace()
+>releases space to the internal memory allocator.
+```rexx
+FreeSpace(envptr,block,length)
+            A0     A1    D0
+```
 
-Allocates a block of memory using the internal allocator. The memory is obtained from an internal pool managed by the interpreter and is returned to the operating system when the ARexx program terminates. The *envptr* argument is a pointer to the base or current storage environment for the program.
+Returns a block of memory to the internal allocator, which must have been obtained from a call to `GetSpace()`. The `envptr*` argument is a pointer to the base or current storage environment.
+
+See Also: `CurrentEnv()`, `GetSpace()` 
+
+## GetSpace()
+> allocate memory using the internal allocator.
+```rexx
+block=GetSpace(envptr,length) 
+ D0              A0     D0 
+ A0 
+(CCR)
+```
+
+Allocates a block of memory using the internal allocator. The memory is obtained from an internal pool managed by the interpreter and is returned to the operating system when the ARexx program terminates. The `envptr*` argument is a pointer to the base or current storage environment for the program.
 
 The internal allocator must be used to allocate strings for use as values for symbols, and is convenient for obtaining small blocks of memory whose lifetime will not exceed that of the ARexx program.
 
-See Also: **CurrentEnv(), FreeSpace()** 
+See Also: `CurrentEnv()`, `FreeSpace()` 
 
-InitList()- initialize a list header Usage: InitList(list) AO
-
-Initializes an EXEC list header structure.
-
-InitPort()- initialize a previously-allocated message port. Usage: (signal,port) = InitPort(port,name)
-
-DO A1 AO A1
-
-Initializes a message port structure for which memory space has been previously allocated, typically as part of a larger structure or as static storage in a program. It installs the task ID ( of the task calling the function) into the MP ..SI GT ASK field and allocates a signal bit. The *name* parameter must be a pointer to a null-terminated string. The *signal* return is the signal bit that was allocated for the port. In the event that a signal could not be assigned, a value of -1 is returned.
-
-Note that the port is not linked into the system Ports List. If the port is to be made public, this can be done after the function returns. The port address is returned in the correct register (Al) for a subsequent call to the EXEC function AddPort O. See Also: **FreePort()** 
-
-**IsRexxMsg()-** check whether a message came from ARexx.
-
-Usage: boolean= IsRexxMsg(msgptr) DO AO
-
-Tests whether the message packet specified by the *msgptr* argument came from an ARexx program. ARexx marks its messages with a pointer to a static string "REXX" in the
-
-120 Appendix C
-
-LN....NAME field. The returned value is either -1 **(True)** if the message came from ARexx or **0 (False)** otherwise.
-
-**IsSymbol()-** check whether a string is a valid symbol.
-
+## InitList()
+> initialize a list header
+```rexx
+InitList(list)
+          A0
 ```
+
+Initializes an `EXEC list` header structure.
+
+## InitPort()
+> initialize a previously-allocated message port.
+```rexx
+(signal,port) = InitPort(port,name)
+  D0     A1               A0   A1
+```
+
+Initializes a `message port` structure for which memory space has been previously allocated, typically as part of a larger structure or as static storage in a program. It installs the task ID (of the task calling the function) into the `MP_SIGTASK` field and allocates a `signal bit`. The `name` parameter must be a pointer to a null-terminated string. The `signal` return is the `signal bit` that was allocated for the port. In the event that a `signal` could not be assigned, a value of `-1` is returned.
+
+Note that the `port` is not linked into the system **Ports List**. If the `port` is to be made public, this can be done after the function returns. The `port address` is returned in the correct register (`A1`) for a subsequent call to the EXEC function `AddPort()`. See Also: `FreePort()`
+
+## IsRexxMsg()
+> check whether a message came from ARexx.
+```rexx
+boolean= IsRexxMsg(msgptr) 
+  D0                 A0
+```
+
+Tests whether the message packet specified by the `msgptr` argument came from an ARexx program. ARexx marks its messages with a pointer to a static string "REXX" in the `LN_NAME` field. The returned value is either `-1` **(True)** if the message came from ARexx or `0` **(False)** otherwise.
+
+## IsSymbol()
+> check whether a string is a valid symbol.
+```rexx
 Usage: (code,length) = IsSymbol(string) 
-      DO D1 AO
+      D0 D1 A0
 ```
 
-Scans the supplied string pointer for ARexx symbol characters. The *code* return is the symbol type if a symbol was found, or O if the string did not start with a symbol character. The *length* return is the total length of the symbol.
+Scans the supplied string pointer for ARexx symbol characters. The `code` return is the symbol type if a symbol was found, or `0` if the string did not start with a symbol character. The `length` return is the total length of the symbol.
 
-**ListNames()-** build a string of names from a list.
-
+## ListNames()
+> build a string of names from a list.
+```rexx
+argstring = ListNames(list,separator) 
+   D0                  A0   D0[0:7] 
+   A0 
+  (CCR)
 ```
-Usage: argstring = ListNames(list,separator) 
-         DO AO D0[0:7] 
-         AO 
-        (CCR)
+
+Scans the specified list and copies the name strings into an `argstring`. The `list` argument must be a pointer to an initialized EXEC `list header`. The `separator` argument is the character, possibly a null, to be placed as a delimiter between the node names.
+
+The list is traversed inside a `Forbid()` exclusion and so may be used with shared or system lists. The returned argstring can be released using `DeleteArgstring()` after the names are no longer needed.
+
+See Also: `DeleteArgstring()`
+
+## LockRexxBase()
+> lock a shared resource.
+```rexx
+LockRexxBase(resource)
+                D0
 ```
 
-Scans the specified list and copies the name strings into an argstring. The *list* argument must be a pointer to an initialized EXEC list header. The *separator* argument is the character, possibly a null, to be placed as a delimiter between the node names.
-
-The list is traversed inside a Forbid() exclusion and so may be used with shared or system lists. The returned argstring can be released using DeleteArgstringO after the names are no longer needed.
-
-See Also: **DeleteArgstring()** 
-
-**LockRexxBase()-** lock a shared resource.
-
-Usage: LockRexxBase(resource)
-
-DO
-
-Secures the specified resource in the ARexx Systems Library base for read access. The *resource* argument is a manifest constant for the required resource, or zero to lock the entire structure.
+Secures the specified resource in the ARexx Systems Library base for read access. The `resource` argument is a manifest constant for the required resource, or zero to lock the entire structure.
 
 Note that write access to shared resources is normally mediated by the ARexx resident process, which operates at an elevated priority, to gain exclusive access. Locking a resource should not be attempted from a process operating at a priority higher than the resident process.
 
-See Also: **U nlockRexxBase()** 
+See Also: `UnlockRexxBase()` 
 
-```
-OpenF()- open a file buffer
-```
-
-```
-Usage: IoBuff = OpenF(list,filename,mode,logical) 
-        DO AO A1 DO D1 
-        AO 
-       (CCR)
+## OpenF()
+> open a file buffer
+```rexx
+IoBuff = OpenF(list,filename,mode,logical)
+  D0            A0     A1     D0     D1 
+  A0 
+ (CCR)
 ```
 
-Attempts to open an external file in the specified mode, which should be one of the constants RXIO\_READ, RXIO\_\IRITE, or RXIO..APPEND defined in the ARexx INCLUDE files. If successful,
+Attempts to open an external file in the specified mode, which should be one of the constants `RXIO_READ`, `RXIO_WRITE`, or `RXIO_APPEND` defined in the ARexx INCLUDE files. If successful, an `IoBuff` structure is allocated and linked into the specified list. The `list` argument must be a pointer to a properly-initialized EXEC list header.
 
-an **IoBuff** structure is allocated and linked into the specified list. The *list* argument must be a pointer to a properly-initialized EXEC list header.
+The optional `logical` argument is the logical name for the `file`, and must be either a pointer to a null-terminated string or zero (NULL) if a name is not required. 
 
-The optional *logical* argument is the logical name for the file, and must be either a pointer to a null-terminated string or zero (HULL) if a name is not required. See Also: CloseF()
+See Also: `CloseF()`
 
-```
-OpenPublicPort()- open a public message port 
-Usage: node= OpenPublicPort(list,name) 
-       DO AO Al 
-       AO 
-      (CCR)
-```
 
-Allocates a message port as an "auto-delete" resource node and links it into the specified list. The *list* argument must point to a properly initialized EXEC list header. The message port is initialized with the given name and linked into the system Ports List.
-
-See Also: **ClosePublicPort()** 
-
-```
-QueueF()- queue a line to a file buffer. 
-Usage: count= QueueF(IoBuff,buffer,length) 
-        DO AO Al DO
+## OpenPublicPort()
+>open a public message port
+```rexx
+node = OpenPublicPort(list,name) 
+ D0                    A0   Al 
+ AO 
+(CCR)
 ```
 
-Queues a buffer of characters in the stream associated with the **IoBuff** structure. The stream must be managed by a **DOS** handler that supports the ACTION..QUEUE packet.
+Allocates a message port as an "auto-delete" resource node and links it into the specified list. The `list*` argument must point to a properly initialized EXEC list header. The message port is initialized with the given `name` and linked into the system Ports List.
 
-Queued lines are placed in "firtst-in, first-out" order and are immediately available to be read from the stream. The *buffer* argument is a pointer to a string of characters, and the *length* specifies the number of characters to be queued. The return value is the actual count of characters or -1 if an error occurred.
+See Also: `ClosePublicPort()` 
 
-**See** Also: **StackF()** 
 
-```
-ReadF()- read characters from a file buffer 
-Usage: count= ReadF(IoBuff,buffer,length) 
-        DO AO Al DO 
-       (CCR)
-```
-
-Reads one or more characters from the file specified by the **IoBuff** pointer. The *buffer*  argument is a pointer to a storage area, and the *length* argument specifies the maxi.mum number of characters to be read. The return value is the actual number of characters read, or -1 **if** an error occurred.
-
-```
-ReadStr()- read a string from a file 
-Usage: (count,pointer) = ReadStr(IoBuff,buffer,length) 
-       DO Al AO Al DO
+## QueueF()
+> queue a line to a file buffer. 
+```rexx
+count = QueueF(IoBuff,buffer,length) 
+ D0              A0     A1     D0
 ```
 
-Reads characters from the file specified by the **IoBuff** pointer until a "newline" character is found. The "newline" is not included in the returned string. The return value is the actual number of characters read, or -1 if an error occurred.
+Queues a `buffer` of characters in the stream associated with the `IoBuff` structure. The stream must be managed by a DOS handler that supports the `ACTION_QUEUE` packet.
 
-122 Appendix C
+Queued lines are placed in "firtst-in, first-out" order and are immediately available to be read from the stream. The `buffer` argument is a pointer to a string of characters, and the `length` specifies the number of characters to be queued. The return value is the actual count of characters or `-1` if an error occurred.
 
-See Also: **ReadF() Rem ClipN ode()-** unlink and deallocate a list Clip node. Usage: RemClipNode(node) **AO**  Unlinks and releases the specified Clip node. The function is the "auto-delete" function for Clip nodes, and will be called automatically by RemRsrcNode() or RemRsrcList O. See Also: **AddClipNode(), RemRsrcList(), RemRsrcNode() RemRsrcList()-** unlink and deallocate a list of resource nodes **Usage: RemRsrcList(list) AO**  Scans the supplied list and releases any nodes found. The list must consist of resource nodes **(RexxRsrc** structures), which contain information to allow automatic cleanup and deletion. See Also: **RemRsrcNode() RemRsrcNode()-** unlink and deallocate a resource node Usage: RemRsrcNode(node) **AO**  Unlinks and releases the specified resource node, including the name string if one is present. If an "auto-delete" function has been specified in the node, it is called to perform any required resource deallocation before the node is released. See Also: **RemRsrcList() SeekF()-** seek to the specified position in a file. **Usage:** position = SeekF(IoBuff,offset,anchor) **DO AO DO D1**  Seeks to a new position in the file is specified by the *IoBuff* pointer. The position is given by the *offset* argument, a byte offset relative to the supplied *anchor* argument. The anchor may specify the beginning (-1), the current position (0), or the end of the file (1). The return value is the new position relative to the beginning of the file. **StackF()-** stack a line to a file buffer. **Usage:** count StackF(IoBuff,buffer,length) **DO AO ,A1 DO** 
+See Also: `StackF()`
 
-Stacks a buffer of characters in the stream associated with the **IoBuff** structure. The *buffer* argument is a pointer to a string of characters, and the *length* specifies the number of characters to be stacked. The return value is the actual count of characters or -1 if an error occurred.
-
-Stacked lines are placed in "last-in, first-out" order and are immediately available to be read from the stream. The stream must be managed by a DOS handler that supports the ACTION..STACK packet.
-
-See Also: **QueueF()** 
-
-```
-StcToken()- break out the next token from a string 
-Usage: (quote,length,scan,token) StcToken(string) 
-       DO Di AO Ai AO
+## ReadF()
+> read characters from a file buffer `
+```rexx
+count= ReadF(IoBuff,buffer,length) 
+  D0           A0     Al     D0 
+ (CCR)
 ```
 
-Scans a null-terminated string to select the next token delimited by "white space," and returns a pointer to the start of the token. The *quote* return will be an ASCII single or double quote if the token was quoted and O otherwise; white space characters are ignored within quoted strings. The *length* return is the total length of the token, including any quote characters. The *scan* return is advanced beyond the current token to prepare for the next call.
+Reads one or more characters from the file specified by the `IoBuff` pointer. The `buffer` argument is a pointer to a storage area, and the `length` argument specifies the maximum number of characters to be read. The return value is the actual number of characters read, or `-1` if an error occurred.
 
-```
-StrcpyA()- copy a string, converting to ASCII 
-Usage: hash= StrcpyA(destination,source,length) 
-       DO AO Ai DO
-```
 
-Copies the *source* string to the *destination* area, converting the characters to ASCII by clearing the high-order bit of each byte. The *length* of the string (which may include embedded nulls) is considered as a 2-byte unsigned integer. so the string is limited in length to 65,535 bytes. The *hash* return is the internal hash byte for the copied string. See Also: **StrcpyN(), StrcpyU** 
-
-```
-StrcpyN()- copy a string 
-Usage: hash = StrcpyN(destination,source,length) 
-      DO AO Ai DO
+## ReadStr()
+> read a string from a file 
+```rexx
+(count,pointer) = ReadStr(IoBuff,buffer,length) 
+   D0    Al                  A0    Al     D0
 ```
 
-Copies the *source* string to the *destination* area. The *length* of the string (which may include embedded nulls) is considered as a 2-byte unsigned integer. The *hash* return is the internal hash byte for the copied string.
+Reads characters from the file specified by the `IoBuff` pointer until a "newline" character is found. The "newline" is not included in the returned string. The return value is the actual number of characters read, or `-1` if an error occurred.
 
-See Also: **StrcpyA(), StrcpyU** 
+See Also: `ReadF()` 
 
-```
-StrcpyU()- copy a string, converting to uppercase 
-Usage: hash= StrcpyU(destination,source,length) 
-       DO AO Ai DO
-```
-
-Copies the *source* string to the *destination* area, converting to uppercase alphabetics. The *length* of the string (which may include embedded nulls) is considered as a 2-byte unsigned integer. The *hash* return is the internal hash byte for the copied string.
-
-See Also: **StrcpyA(), StrcpyN** 
-
-```
-StrflipN()- reverse the characters in a string 
-Usage: StrflipN(string,length) 
-                    AO DO 
-Reverses the sequence of characters in a string. The conversion is performed in place. 
-Strlen()- :find the length of a null-terminated string 
-Usage: length= Strlen(string)
+## RemClipNNode()
+> unlink and deallocate a list Clip node.
+```rexx
+RemClipNode(node)
+             A0
 ```
 
-**DO AO**  (CCR)
+Unlinks and releases the specified Clip `node`. The function is the "auto-delete" function for Clip nodes, and will be called automatically by `RemRsrcNode()` or `RemRsrcList()` O. See Also: `AddClipNode()`, `RemRsrcList()`, `RemRsrcNode()`
 
-Returns the number of characters in a null-terminated string. Register AO is preserved, and the CCR is set for the returned length.
 
-**StrcmpN()-** compare the values of strings
 
+
+## RemRsrcList()
+> unlink and deallocate a list of resource nodes
+```rexx
+RemRsrcList(list)
+             A0
 ```
-Usage: test= StrcmpN(string1,string2,length) 
-      DO AO A1 DO 
-     (CCR)
+
+ Scans the supplied `list` and releases any nodes found. The `list` must consist of resource nodes (**RexxRsrc** structures), which contain information to allow automatic cleanup and deletion. 
+ 
+ See Also: `RemRsrcNode()`
+ 
+ ## RemRsrcNode()
+> unlink and deallocate a resource node 
+```rexx
+RemRsrcNode(node)
+             A0
 ```
 
-The *stringl* and *string2* arguments are compared for the specified number of characters. The comparison proceeds character-by-character until a difference is found or the maximum number of characters have been examined. The returned value is -1 if the first string was less, 1 if the first string was greater, and O if the strings match exactly. The CCR register is set for the returned value.
+ Unlinks and releases the specified `resource node`, including the name string if one is present. If an "auto-delete" function has been specified in the node, it is called to perform any required resource deallocation before the node is released. 
+ See Also: `RemRsrcList()`
+ 
+ ## SeekF()
+> seek to the specified position in a file. 
+```rexx
+ position = SeekF(IoBuff,offset,anchor)
+    D0              A0     D0     D1
+```
 
-**ToUpper()-** translate an ASCII character to uppercase Usage: upper= ToUpper(character) **DO DO** 
+ Seeks to a new position in the file is specified by the `IoBuff` pointer. The position is given by the `offset` argument, a byte offset relative to the supplied `anchor` argument. The anchor may specify the beginning (`-1`), the current position (`0`), or the end of the file (`1`). The return value is the new position relative to the beginning of the file. 
+ 
+ ## StackF()
+> stack a line to a file buffer. 
+```rexx
+count = StackF(IoBuff,buffer,length)
+ D0              A0     A1     D0
+ ```
 
-Converts an ASCII character to uppercase. Only register DO is affected.
+Stacks a buffer of characters in the stream associated with the `IoBuff` structure. The `buffer` argument is a pointer to a string of characters, and the `length` specifies the number of characters to be stacked. The return value is the actual count of characters or `-1` if an error occurred.
 
-U **nlockRexxBase()-** unlock a shared resource.
+Stacked lines are placed in "last-in, first-out" order and are immediately available to be read from the stream. The stream must be managed by a DOS handler that supports the `ACTION_STACK` packet.
 
-Usage: UnlockRexxBase(resource)
+See Also: `QueueF()`
 
-**DO** 
+## StcToken()
+> break out the next token from a string 
+```rexx
+(quote,length,scan,token) = StcToken(string) 
+  D0     D1    A0    A1                D0
+```
 
-Releases the specified resource, or all resources if the argument is zero. Every call to LockRexxBaseO should be followed eventually by a call to UnlockRexxBaseO for the same resource.
+Scans a null-terminated string to select the next `token` delimited by "white space," and returns a pointer to the start of the `token`. The `quote` return will be an ASCII single or double quote if the `token` was quoted and `0` otherwise; white space characters are ignored within quoted strings. The `length` return is the total length of the `token`, including any quote characters. The `scan` return is advanced beyond the current token to prepare for the next call.
 
-See Also: **LockRexxBaseF()** 
+## StrcpyA()
+> copy a string, converting to ASCII 
+```rexx
+hash = StrcpyA(destination,source,length)
+ D0                A0        A1     D0
+```
 
-**WriteF()-** write characters to a file buffer Usage: count = WriteF(IoBuff,buffer,length) **DO AO A1 DO**  (CCR)
+Copies the `source` string to the `destination` area, converting the characters to ASCII by clearing the high-order bit of each byte. The `length` of the string (which may include embedded nulls) is considered as a 2-byte unsigned integer. so the string is limited in length to 65,535 bytes. The `hash` return is the internal hash byte for the copied string.
 
-Writes a buffer of characters of the specified length to the file associated with the **IoBuff**  pointer. The *buffer* argument is a pointer to a storage area, and the *length* argument
+See Also: `StrcpyN()`, `StrcpyU()`
 
-specifies the number of characters to be written. The returned value is the actual number of characters written or -1 if an error occurred. See Also: **CloseF(), OpenF(), ReadF()** 
+## StrcpyN()
+> copy a string 
+```rexx
+hash = StrcpyN(destination,source,length) 
+ D0                A0        A1     D0
+```
 
-126 Appendix C
+Copies the `source` string to the `destination` area. The `length` of the string (which may include embedded nulls) is considered as a 2-byte unsigned integer. The `hash` return is the internal hash byte for the copied string.
 
-# **Appendix D**
+See Also: `StrcpyA()`, `StrcpyU()` 
 
-# **The ARexx Support Library**
+## StrcpyU()
+> copy a string, converting to uppercase 
+```rexx
+hash = StrcpyU(destination,source,length) 
+ D0                A0        A1     D0
+```
 
-The ARexx language system is distributed with an external function library that provides a number of Amiga-specific functions. It is a standard Amiga shared library named rexxsupport. library and should reside in the system **LIBS:** directory. Unlike the Systems Library described in the previous Appendix, the support library functions are callable from with ARexx programs.
+Copies the `source` string to the `destination` area, converting to uppercase alphabetics. The `length` of the string (which may include embedded nulls) is considered as a 2-byte unsigned integer. The `hash` return is the internal hash byte for the copied string.
+
+See Also: `StrcpyA()`, `StrcpyN()` 
+
+## StrflipN()
+> reverse the characters in a string 
+```rexx
+length = StrflipN(string,length) 
+                    A0 D0
+```
+Reverses the sequence of characters in a `string`. The conversion is performed in place. 
+
+
+## Strlen()
+> find the length of a null-terminated string 
+```rexx
+length = Strlen(string)
+  D0              A0
+ (CCR)
+```
+Returns the number of characters in a null-terminated `string`. Register `A0` is preserved, and the CCR is set for the returned length.
+
+## StrcmpN()
+> compare the values of strings
+```rexx
+test= StrcmpN(string1,string2,length) 
+ D0             A0      A1      D0 
+(CCR)
+```
+
+The `string1` and `string2` arguments are compared for the specified number of characters. The comparison proceeds character-by-character until a difference is found or the maximum number of characters have been examined. The returned value is `-1` if the first string was less, `1` if the first string was greater, and `0` if the strings match exactly. The `CCR` register is set for the returned value.
+
+## ToUpper()
+> translate an ASCII character to uppercase
+```rexx
+upper= ToUpper(character) 
+ D0               D0
+```
+
+Converts an ASCII character to uppercase. Only register `D0` is affected.
+
+## UnlockRexxBase()
+> unlock a shared resource.
+```rexx
+UnlockRexxBase(resource)
+                  D0
+```
+
+Releases the specified `resource`, or all resources if the argument is `zero`. Every call to `LockRexxBase()` should be followed eventually by a call to `UnlockRexxBase()` for the same resource.
+
+See Also: `LockRexxBaseF()`
+
+## WriteF()
+> write characters to a file buffer
+```rexx
+count = WriteF(IoBuff,buffer,length)
+ D0              A0      A1     D0
+(CCR)
+```
+
+Writes a `buffer of characters` of the specified `length` to the file associated with the `IoBuff` pointer. The `buffer` argument is a pointer to a storage area, and the `length` argument specifies the number of characters to be written. The returned value is the actual number of characters written or `-1` if an error occurred. 
+
+See Also: `CloseF(), OpenF(), ReadF()` 
+
+
+# Appendix D **The ARexx Support Library**
+
+The ARexx language system is distributed with an external function library that provides a number of Amiga-specific functions. It is a standard Amiga shared library named `rexxsupport.library` and should reside in the system `LIBS:` directory. Unlike the Systems Library described in the previous Appendix, the support library functions are callable from with ARexx programs.
 
 The support library was designed to supplement the generic Built-In functions with functions specific to the Amiga. This library will be expanded in future releases, and users are encouraged to submit suggestions for additional functions.
 
-The Support Library must be added to the global Library List before it can be accessed by ARexx programs. This can be done using the Built-In function **ADDLIB()** or by direct communication with the resident process. The library name must be specified as rexxsupport. library, the query function offset is -30, and the version number is 0. The search priority can be set to 0 or whatever value is appropriate.
+The Support Library must be added to the global Library List before it can be accessed by ARexx programs. This can be done using the Built-In function `ADDLIB()` or by direct communication with the resident process. The library name must be specified as `rexxsupport.library`, the query function offset is -30, and the version number is 0. The search priority can be set to 0 or whatever value is appropriate.
 
-# **ALLOCMEM()**
+## ALLOCMEM()
+```rexx
+ALLOCMEM(length,[attribute])
+```
 
-*Usage:* **ALLOCMEM** *(length,[attribute})* 
-
-Allocates a block of memory of the specified length from the system free-memory pool and returns its address as a 4-byte string. The optional *attribute* parameter must be a standard EXEC memory allocation flag, supplied as a 4-byte string. The default attribute is for "PUBLIC" memory (not cleared).
+Allocates a block of memory of the specified length from the system free-memory pool and returns its address as a 4-byte string. The optional `attribute` parameter must be a standard EXEC memory allocation flag, supplied as a 4-byte string. The default attribute is for "`PUBLIC`" memory (not cleared).
 
 This function should be used whenever memory is allocated for use by external programs. It is the user's responsibility to release the memory space when it is no longer needed.
 
-See Also: **FREEMEM()** 
+See Also: `FREEMEM()`
 
-Example:
+```rexx
+say c2x(allocmem(1000)) ==> 00050000
+```
 
-**say** c2x(allocmem(1000)) ==> 00050000
+## CLOSEPORT()
+```rexx
+CLOSEPORT(name)
+```
 
-# **CLOSEPORT()**
+Closes the message port specified by the `name` argument, which must have been allocated by a call to `OPENPORT()` within the current ARexx program. Any messages received but not yet REPLYed are automatically returned with the return code set to 10.
 
-*Usage:* **CL0SEP0RT(name)** 
+See Also: `OPENPORT()`
 
-Closes the message port specified by the *name* argument, which must have been allocated by a call to **0PENP0RTO** within the current ARexx program. Any messages received but not yet REPLYed are automatically returned with the return code set to 10.
-
-See Also: **0PENP0RT ()** 
-
-Example:
-
+```rexx
 call closeport myport
-
-### FREEMEM()
-
-Usage: FREEMEM(address, length)
-
-Releases a block of memory of the given length to the system freelist. The address parameter is a four-byte string, typically obtained by a prior call to ALLOCMEM(). FREEMEM() cannot be used to release memory allocated using GETSPACE(), the ARexx internal memory allocator. The returned value is a boolean success flag.
-
-```
-See Also: ALLOCMEM()
 ```
 
-Example:
-
+## FREEMEM()
+```rexx
+FREEMEM(address, length)
 ```
-say freemem('00042000'x,32) ==> 1
-```
+Releases a block of memory of the given length to the system freelist. The address parameter is a four-byte string, typically obtained by a prior call to `ALLOCMEM()`. `FREEMEM()` cannot be used to release memory allocated using `GETSPACE()`, the ARexx internal memory allocator. The returned value is a boolean success flag. 
 
-# GETARG()
+See Also: `ALLOCMEM()`
 
-Usage: GETARG(packet,[n])
-
-Extracts a command, function name, or argument string from a message packet. The packet argument must be a 4-byte address obtained from a prior call to GETPKT(). The optional n argument specifies the slot containing the string to be extracted, and must be less than or equal to the actual argument count for the packet. Commands and function names are always in slot 0; function packets may have argument strings in slots 1-15. Examples:
-
-```
-command = getarg(packet)
-function = getarg(packet,0) /* name string */
-arg1 = getarg(packet,1) /* 1st argument */
+```rexx
+say freemem('00042000'x,32)     ==> 1
 ```
 
-### GETPKT()
-
-Usage: GETPKT(name)
-
-Checks the message port specified by the *name* argument to see whether any messages are available. The named message port must have been opened by a prior call to OPENPORT() within the current ARexx program. The returned value is the 4-byte address of the first message packet, or '0000 0000'x if no packets were available.
-
-The function returns immediately whether or not a packet is enqueued at the message port. Programs should never be designed to "busy-loop" on a message port. If there is no useful work to be done until the next message packet arrives, the program should call WAITPKT() and allow other tasks to proceed.
-
-See Also: WAITPKT()
-
-Example:
-
+## GETARG()
+```rexx
+GETARG(packet,[n])
 ```
+
+Extracts a command, function name, or argument string from a `message packet`. The `packet` argument must be a 4-byte address obtained from a prior call to `GETPKT()`. The optional `n` argument specifies the slot containing the string to be extracted, and must be less than or equal to the actual argument count for the packet. Commands and function names are always in slot 0; function packets may have argument strings in slots `1-15`. 
+
+```rexx
+command  = getarg(packet)
+function = getarg(packet,0)     /* name string  */
+arg1     = getarg(packet,1)     /* 1st argument */
+```
+
+## GETPKT()
+```rexx
+GETPKT(name)
+```
+
+Checks the message port specified by the `name` argument to see whether any messages are available. The named message port must have been opened by a prior call to `OPENPORT()` within the current ARexx program. The returned value is the 4-byte address of the first message packet, or `'0000 0000'x` if no packets were available.
+
+The function returns immediately whether or not a packet is enqueued at the message port. Programs should never be designed to "busy-loop" on a message port. If there is no useful work to be done until the next message packet arrives, the program should call `WAITPKT()` and allow other tasks to proceed.
+
+See Also: `WAITPKT()`
+
+```rexx
 packet = getpkt('MyPort')
 ```
 
-#### OPENPORT()
-
+## OPENPORT()
+```rexx
 Usage: OPENPORT(name)
+```
 
-Creates a public message port with the given name. The returned value is the 4-byte address of the Port Resource structure or '0000 0000'x if the port could not be opened or initialized. An initialization failure will occur if another port of the same name already exists, or if a signal bit couldn't be allocated.
+Creates a public message port with the given `name`. The returned value is the 4-byte address of the Port Resource structure or `'0000 0000'x` if the port could not be opened or initialized. An initialization failure will occur if another port of the same `name` already exists, or if a signal bit couldn't be allocated.
 
 The message port is allocated as a Port Resource node and is linked into the program's global data structure. Ports are automatically closed when the program exits, and any pending messages are returned to the sender.
 
-See Also: CLOSEPORT()
+See Also: `CLOSEPORT()`
 
-Example:
-
-```
+```rexx
 myport = openport("MyPort")
 ```
 
-### REPLY()
-
-Usage: REPLY(packet,rc)
-
-Returns a message packet to the sender, with the primary result field set to the value given by the rc argument. The secondary result is cleared. The packet argument must be supplied as a 4-byte address, and the rc argument must be a whole number. Example:
-
-```
-call reply packet,10 /* error return */
+## REPLY()
+```rexx
+REPLY(packet,rc)
 ```
 
-#### SHOWDIR()
+Returns a message packet to the sender, with the primary result field set to the value given by the `rc` argument. The secondary result is cleared. The `packet` argument must be supplied as a 4-byte address, and the `rc` argument must be a whole number.
 
-Usage: SHOWDIR(directory,/'All' | 'File' | 'Dir')
-
-Returns the contents of the specified directory as a string of names separated by blanks. The second parameter is an option keyword that selects whether all entries, only files, or only subdirectories will be included.
-
-Example:
-
-```
-say showdir("df1:c") ==> rx ts te hi tco tcc
+```rexx
+call reply packet,10    /* error return */
 ```
 
-#### SHOWLIST()
+## SHOWDIR()
+```rexx
+SHOWDIR(directory,['All' | 'File' | 'Dir'])
+```
 
-Usage: SHOWLIST({'D' | 'L' | 'P' | 'R' | 'W'},[name])
+Returns the contents of the specified `directory` as a string of names separated by blanks. The second parameter is an option keyword that selects whether all entries, only files, or only subdirectories will be included.
 
-The first argument is an option keyword to select a system list; the options currently supported are Devices, Libraries, Ports, Ready, and Waiting. If only the first parameter is supplied, the function scans the selected list and returns the node names in a string separated by blanks. If the *name* parameter is supplied, the boolean return indicates whether the specified list contains a node of that name. The name matching is case-sensitive.
+```rexx
+say showdir("df1:c")    ==> rx ts te hi tco tcc
+```
+
+## SHOWLIST()
+```rexx
+SHOWLIST({'D' | 'L' | 'P' | 'R' | 'W'},[name])
+```
+The first argument is an option keyword to select a system list; the options currently supported are `Devices`, `Libraries`, `Ports`, `Ready`, and `Waiting`. If only the first parameter is supplied, the function scans the selected list and returns the `node names` in a string separated by blanks. If the `name` parameter is supplied, the boolean return indicates whether the specified list contains a node of that name. The `name` matching is case-sensitive.
 
 The list is scanned with task switching forbidden so as to provide an accurate snapshot of the list at that time.
 
-Example:
-
-```
-say showlist('P') ==> REXX MyCon
-say showlist('P','REXX') ==> 1
+```rexx
+say showlist('P')               ==> REXX MyCon
+say showlist('P','REXX')        ==> 1
 ```
 
-# **STATEF()**
-
-*Usage: STA.TEF(filename)* 
-
-Returns a string containing information about an external file. The string is formatted as "{DIR I FILE} *length blocks protection comment."* 
-
-The *length* token gives the file length in bytes, and the *block* token specifies the file length in blocks.
-
-Example:
-
-```
-say st at ef ("libs: rexxsupport. library") 
-I* vould give "FILE 1880 4 RWED " *I
+## STATEF()
+```rexx
+STATEF(filename)
 ```
 
-# **WAITPKT()**
+Returns a string containing information about an `external file`. The string is formatted as 
+```rexx
+{DIR | FILE} length blocks protection comment
+```
+The `length` token gives the file length in bytes, and the `block` token specifies the file length in blocks.
 
-*Usage:* **WAITPKT(** *name)* 
+```rexx
+say statef ("libs:rexxsupport.library") 
+/* would give "FILE 1880 4 RWED " */
+```
 
-·waits for a message to be received at the specified (named) port, which must have been opened by a call to 0PENP0RTO within the current ARexx program. The returned boolean value indicates whether a message packet is available at the port. Normally the returned value will be **1 (True),** since the function waits until an event occurs at the message port.
+## WAITPKT()
+```rexx
+WAITPKT(name)
+```
 
-The packet must then be removed by a call to GETPKTO, and should be returned eventually using the REPLY() function. Any message packets received but not returned when an ARexx program exits are automatically REPLYed with the return code set to 10. Example;
+Waits for a message to be received at the specified (named) `port`, which must have been opened by a call to `OPENPORT` within the current ARexx program. The returned boolean value indicates whether a message packet is available at the port. Normally the returned value will be `1` **(True),** since the function waits until an event occurs at the message port.
 
-call vaitpkt 'MyPort' I\* vait awhile \*I
+The packet must then be removed by a call to `GETPKT`, and should be returned eventually using the `REPLY()` function. Any message packets received but not returned when an ARexx program exits are automatically `REPLYed` with the return code set to 10.
 
-# **Appendix E**
+```rexx
+call waitpkt 'MyPort'   /* wait awhile */
+```
 
-# **Distribution Files**
+# Appendix E **Distribution Files**
 
-This appendix lists the directories of the standard ARexx distribution disk. The contents of some of the directories may change from time to time, so your disk may not show exactly the same files. Most notably, the : **rexx** directory will expand as more program examples are included in it.
+This appendix lists the directories of the standard ARexx distribution disk. The contents of some of the directories may change from time to time, so your disk may not show exactly the same files. Most notably, the `:rexx` directory will expand as more program examples are included in it.
 
-The second section of the Appendix lists the HEADER files that define the constants and data structures used with ARexx. All of these files are available in the :INCLUDE directory, but are listed here for convenience in studying the structures.
+The second section of the Appendix lists the `HEADER` files that define the constants and data structures used with ARexx. All of these files are available in the `:INCLUDE` directory, but are listed here for convenience in studying the structures.
 
-# **E-1 Directories**
+## E-1 Directories
 
-The files are listed below as they would be using the system dir command. For example, "dir dfl:c opt a" would list the contents of the : c directory on disk drive 1.
+The files are listed below as they would be using the system `dir` command. For example, `dir dfl:c opt a` would list the contents of the `:c` directory on `disk drive 1`.
 
-### **The : C Directory**
+### The `:C` Directory
 
-This directory contains the command utilities used with ARexx. These files should be copied to your system C: directory when you install the program.
+This directory contains the command utilities used with ARexx. These files should be copied to your system `C:` directory when you install the program.
 
 | c (dir)  |         |
 |----------|---------|
@@ -4142,9 +4672,9 @@ This directory contains the command utilities used with ARexx. These files shoul
 | tee      | tco     |
 | te       | ts      |
 
-#### **The :** INCLUDE **Directory**
+### The `:INCLUDE` Directory
 
-This directory has the INCLUDE and HEADER files used for assembly language and "C" programming, respectively. These files contain the structure definitions necessary to build an interface to ARexx.
+This directory has the `INCLUDE` and `HEADER` files used for assembly language and "C" programming, respectively. These files contain the structure definitions necessary to build an interface to ARexx.
 
 | include (dir) |           |
 |---------------|-----------|
@@ -4153,1004 +4683,615 @@ This directory has the INCLUDE and HEADER files used for assembly language and "
 | errors.i      | rexxio.i  |
 | rxslib.i      | storage.i |
 
-Distribution Files 131
+### The `:LIBS` Directory
 
-# **The** : LIBS **Directory**
+These are the library files for the language interpreter and the Support Library functions. Both files should be copied to your system `LIBS:` directory when you install ARexx.
 
-These are the library files for the language interpreter and the Support Library functions. Both files should be copied to your system LIBS: directory when you install ARexx.
+| libs (dir)          |                    |
+|---------------------|--------------------|
+| rexxsupport.library | rexxsyslib.library |
 
-> libs (dir) rexxsupport.library rexxsyslib.library
+### The `:REXX` Directory
 
-# **The** : **REXX Directory**
+The `:REXX` directory contains example programs to illustrate various features of the language. New files will be added from time to time, and users are welcome to contribute files to be distributed in this way.
 
-The : **rexx** directory contains example programs to illustrate various features of the language. New files will be added from time to time, and users are welcome to contribute files to be distributed in this way.
+| rexx (dir)    |                |
+| ------------- | -------------- |
+| bigif.rexx    | break.rexx     |
+| builtin.rexx  | calc.rexx      |
+| cmdtest.rexx  | fact.rexx      |
+| factv.rexx    | halftime.rexx  |
+| hosttest.rexx | iftest.rexx    |
+| marquis.rexx  | nesttest.rexx  |
+| paver.rexx    | potpourri.rexx |
+| rslib.rexx    | select.rexx    |
+| sigtest.rexx  | support.rexx   |
+| test1.rexx    | timer.rexx     |
 
-> **rexx** (dir) **bigif.rexx builtin.rexx cmdtest.rexx factw.rexx hosttest.rexx marquis.rexx paver.rexx rslib.rexx sigtest.rexx test1.rexx**  break.rexx calc.rexx fact.rexx haltme.rexx if test. rexx nesttest.rexx potpourri.rexx select.rexx support.rexx timer.rexx
 
-### The :TOOLS Directory
+### The `:TOOLS` Directory
 
-These files are intended for software developers, and include examples of interfacing to ARexx. The file rexxtest is of particular interest; it calls the ARexx interpreter directly, and can be run under a debugger to aid with developing new function libraries.
+These files are intended for software developers, and include examples of interfacing to ARexx. The file `rexxtest` is of particular interest; it calls the ARexx interpreter directly, and can be run under a debugger to aid with developing new function libraries.
 
-> tools (dir) hosttest loadlib.asm rexxtest.asm hosttest.asm rexxtest rxoffsets.o
+| tools (dir)  |              |
+| ------------ | ------------ |
+| hosttest     | hosttest.asm |
+| loadlib.asm  | rexxtest     |
+| rexxtest.asm | rxoffsets.o  |
 
-#### Miscellaneous Files
+### Miscellaneous Files
 
-.info README Install-ARexx Start-ARexx
+| files  |               |
+| ------ | ------------- |
+| .info  | Install-ARexx |
+| README | Start-ARexx   |
 
-132 Appendix E
+## E-2 Listings of Header Files
 
-# **E-2 Listings of Header Files**
+This section of the chapter consists of listings of the header files contained in the `:include` directory.
 
-This section of the chapter consists of listings of the header files contained in the : include directory.
-
-# **storage.h**
+### storage.h
 
 This is the main header file and contains definitions for all of the important data structures used by ARexx.
 
-```
-I* === rexx/storage.h ================================================== * 
- * Copyright (c) 1986, 1987 by William S. Hawes (All Rights Reserved) 
- * 
- * ===================================================================== * Header file to define ARexx data structures. 
- •I 
-#ifndef REXX_STORAGE_H 
-#define REXX_STORAGE_H 
-#ifndef EXEC_TYPES_H 
-#include "exec/types.h" 
-#endif 
-#ifndef EXEC_NODES_H 
-#include "exec/nodes.h" 
-#endif 
-#ifndef EXEC_LISTS_H 
-#include "exec/lists.h" 
-#endif 
-#ifndef EXEC_PORTS_H 
-#include "exec/ports.h" 
-#endif 
-#ifndef EXEC_LIBRARIES_H 
-#include "exec/libraries.h" 
-#endif 
-/• The NexxStr structure is used to maintain the internal strings in REXX. 
- * It includes the buffer area for the string and associated attributes. 
- * This is actually a variable-length structure; it is allocated for a 
- * specific length string, and the length is never modified thereafter 
- • (since it's used for recycling). 
- •I
-```
-
-Distribution Files 133
-
-```
-storage.h (cont.)
-```
-
-```
-struct NexxStr { 
-  LONG ns_Ivalue; 
-  UliORD ns_Length; 
-  UBYTE ns_Flags; 
-  UBYTE ns_Hash; 
-  BYTE ns_Buff [8] ; 
-  }; 
-#define NXADDLEN 9 
-                                   /• integer value •/ 
-                                   I* length in bytes (excl null) •/ 
-                                   I• attribute flags •/ 
-                                   /• hash code •/ 
-                                   /• buffer area for strings •I 
-                                   /• size: 16 bytes (minimum) •I 
-                                   /• offset plus null byte 
-#define IVALUE(nsPtr) (nsPtr->ns_Ivalue) 
-/• String attribute flag bit definitions 
-#define NSB_KEEP O /• permanent string? 
-#define NSB_STRIRG 1 /• string form valid? 
-#define NSB_NOTNUM 2 /• non-numeric? 
-#define HSB_RUMBER 3 /• a valid number? 
-#define NSB_BINARY 4 /• integer value saved? •/ 
-#define RSB_FLOAT 5 
-#define NSB_EXT 6 
-#define NSB_SOURCE 7 
-                                   /• floating point format? •/ 
-                                   /• an external string? •/ 
-                                   /• part of the program source? •I 
-I• The flag form of the string attributes 
-#define RSF_KEEP (1 « NSB_KEEP ) 
-#define NSF_STRING (1 « NSB_STRING) 
-#define NSF_NOTNUM {1 « NSB_NOTNUM) 
-#define RSF_NUHBER (1 « NSB_IUMBER) 
-#define NSF_BINARY (1 « NSB_BIRARY) 
-#define NSF_FLOAT (1 « NSB_FLOAT ) 
-#define NSF_EXT (1 « IISB_EXT ) 
-#define RSF_SOURCE (1 « NSB_SOURCE) 
-* Combinations of flags 
-#define IISF_INTNUM (NSF_NUHBER 
-#define NSF_DPNUM (NSF_NUMBER 
-                               NSF_BINARY I NSF_STRING) 
-                               NSF_FLOAT) 
-                               NSF_STRING) 
-                               NSF_EXT I NSF_KEEP) 
-                               NSF_SOURCE I NSF_NOTNUH) 
-#define IISF_ALPHA 
-#define NSF_OWIIED 
-#define KEEPSTR 
-#define KEEPNUM 
-                  (NSF_IOTNUM 
-                  (RSF_SOURCE 
-                  (NSF_STRING 
-                  (NSF_STRING NSF_SOURCE I NSF_IUMBER I NSF_BIIARY)
-```
-
-134 Appendix E
-
-```
-storage.h (cont.)
-    /* The RexxArg structure is identical to the NexxStr structure, but
-     * is allocated from system memory rather than from internal storage.
-     * This structure is used for passing arguments to external programs.
-     * It is usually passed as an "argstring", a pointer to the string buffer.
-     */
-    struct RexxArg {
-       LONG
-                ra_Size;
-                                           /* total allocated length
-                                                                            */
-       UWORD
-                ra_Length;
-                                           /* length of string
-                                                                            */
-       UBYTE
-                ra_Flags;
-                                           /* attribute flags
-                                                                            */
-       UBYTE
-                ra_Hash;
-                                           /* hash code
-                                                                            */
-       BYTE
-                ra_Buff[8];
-                                           /* buffer area
-                                                                            */
-                                           /* size: 16 bytes (minimum)
-                                                                            */
-       }:
-    /* The RexxMsg structure is used for all communications with Rexx programs.
-     * It is an EXEC message with a parameter block appended.
-     */
-   struct RexxMsg {
-       struct Message rm_Node;
-                                           /* EXEC message structure
-                                                                            */
-       APTR
-                rm_TaskBlock;
-                                           /* pointer to global structure
-                                                                            */
-       APTR
-                rm_LibBase;
-                                           /* library base
-      LONG
-                rm_Action;
-                                           /* command (action) code
-                                                                            */
-      LONG
-               rm_Result1;
-                                           /* primary result (return code)
-      LONG
-                rm_Result2;
-                                           /* secondary result
-                                                                            */
-      STRPTR rm_Args[16];
-                                           /* argument block (ARG0-ARG15)
-                                                                            */
-       struct MsgPort *rm_PassPort;
-                                           /* forwarding port
-                                                                            */
-      STRPTR rm_CommAddr;
-                                           /* host address (port name)
-                                                                            */
-      STRPTR rm_FileExt;
-                                           /* file extension
-                                                                            */
-      LONG
-                                           /* input stream (filehandle)
-                rm_Stdin;
-                                                                            */
-      LONG
-                rm_Stdout;
-                                           /* output stream (filehandle)
-                                                                            */
-      LONG
-                                           /* future expansion
-                rm_avail;
-                                                                            */
-      };
-                                           /* size: 128 bytes
-    /* Field definitions
-                                                                            */
-   #define ARG0(rmp) (rmp->rm_Args[0])
-                                           /* start of argblock
-                                                                            */
-    #define ARG1(rmp) (rmp->rm_Args[1])
-                                           /* first argument
-   #define ARG2(rmp) (rmp->rm_Args[2])
-                                           /* second argument
-   #define MAXRMARG 15
-                                           /* maximum arguments
-                                                                            */
-                                                                            */
-    /* Command (action) codes for message packets
-                   $01000000
-   #define RXCOMM
-                                           /* a command-level invocation
-                                                                            */
-   #define RXFUNC
-                     $02000000
-                                          /* a function call
-                                                                            */
-   #define RXCLOSE $03000000
-                                          /* close the port
-                                                                            */
-   #define RXQUERY $0400000
-                                          /* query for information
-                                                                            */
-```
-
-Distribution Files 135
-
-#define RXADDFH \$0700000
-
-/\* add a function host
-
-\*/
-
-#### storage.h (cont.)
-
-```
+```c
+#ifndef REXX_STORAGE_H
+#define REXX_STORAGE_H
+/*
+**	$Filename: rexx/storage.h $
+**	$Release: 2.0 release 1 $
+**	$Revision: 1.2 $
+**	$Date: 90/07/12 $
+**
+**	Header file to define ARexx data structures.
+**
+**	(C) Copyright 1986,1987,1988,1989,1990 William S. Hawes
+**		All Rights Reserved
 */
-#define RXADDLIB $08000000
-                                       /* add a function library
-                                       /* remove a function library
-#define RXREMLIB $0900000
-                                       /* add/update a ClipList string
-#define RXADDCON $0A000000
-#define RXREMCON $0B000000
-                                       /* remove a ClipList string
-#define RXTCOPN
-                  $0C000000
-                                       /* open the trace console
-#define RXTCCLS
-                  $0D000000
-                                       /* close the trace console
-/* Command modifier flag bits
-#define RXFB_NOIO
-                     16
-                                       /* suppress I/O inheritance?
-#define RXFB_RESULT 17
-                                       /* result string expected?
-                                                                        */
-#define RXFB_STRING 18
-                                       /* program is a "string file"?
-#define RXFB_TOKEN
-                                       /* tokenize the command line?
-#define RXFB_NONRET 20
-                                       /* a "no-return" message?
-                                                                        */
-/* Modifier flags
-#define RXFF_RESULT (1 << RXFB_RESULT)
-#define RXFF_STRING (1 << RXFB_STRING)</pre>
-#define RXFF_TOKEN
-                     (1 << RXFB_TOKEN )
-#define RXFF_NONRET (1 << RXFB_NONRET)
-#define RXCODEMASK
-                     $FF000000
-#define RXARGMASK
-                     $000000F
-/* The RexxRsrc structure is used to manage global resources.
- * The name string for each node is created as a RexxArg structure,
- * and the total size of the node is saved in the "rr_Size" field.
- * Functions are provided to allocate and release resource nodes.
- * If special deletion operations are required, an offset and base can
- * be provided in "rr_Func" and "rr_Base", respectively. This function
- * will be called with the base in register A6 and the node in AO.
+
+#ifndef EXEC_TYPES_H
+#include "exec/types.h"
+#endif
+
+#ifndef EXEC_NODES_H
+#include "exec/nodes.h"
+#endif
+
+#ifndef EXEC_LISTS_H
+#include "exec/lists.h"
+#endif
+
+#ifndef EXEC_PORTS_H
+#include "exec/ports.h"
+#endif
+
+#ifndef EXEC_LIBRARIES_H
+#include "exec/libraries.h"
+#endif
+
+/* The NexxStr structure is used to maintain the internal strings in REXX.
+ * It includes the buffer area for the string and associated attributes.
+ * This is actually a variable-length structure; it is allocated for a
+ * specific length string, and the length is never modified thereafter
+ * (since it's used for recycling).
+ */
+
+struct NexxStr {
+   LONG     ns_Ivalue;                 /* integer value                 */
+   UWORD    ns_Length;                 /* length in bytes (excl null)   */
+   UBYTE    ns_Flags;                  /* attribute flags               */
+   UBYTE    ns_Hash;                   /* hash code                     */
+   BYTE     ns_Buff[8];                /* buffer area for strings       */
+   };                                  /* size: 16 bytes (minimum)      */
+
+#define NXADDLEN 9                     /* offset plus null byte         */
+#define IVALUE(nsPtr) (nsPtr->ns_Ivalue)
+
+/* String attribute flag bit definitions                                */
+#define NSB_KEEP     0                 /* permanent string?             */
+#define NSB_STRING   1                 /* string form valid?            */
+#define NSB_NOTNUM   2                 /* non-numeric?                  */
+#define NSB_NUMBER   3                 /* a valid number?               */
+#define NSB_BINARY   4                 /* integer value saved?          */
+#define NSB_FLOAT    5                 /* floating point format?        */
+#define NSB_EXT      6                 /* an external string?           */
+#define NSB_SOURCE   7                 /* part of the program source?   */
+
+/* The flag form of the string attributes                               */
+#define NSF_KEEP     (1 << NSB_KEEP  )
+#define NSF_STRING   (1 << NSB_STRING)
+#define NSF_NOTNUM   (1 << NSB_NOTNUM)
+#define NSF_NUMBER   (1 << NSB_NUMBER)
+#define NSF_BINARY   (1 << NSB_BINARY)
+#define NSF_FLOAT    (1 << NSB_FLOAT )
+#define NSF_EXT      (1 << NSB_EXT   )
+#define NSF_SOURCE   (1 << NSB_SOURCE)
+
+/* Combinations of flags                                                */
+#define NSF_INTNUM   (NSF_NUMBER | NSF_BINARY | NSF_STRING)
+#define NSF_DPNUM    (NSF_NUMBER | NSF_FLOAT)
+#define NSF_ALPHA    (NSF_NOTNUM | NSF_STRING)
+#define NSF_OWNED    (NSF_SOURCE | NSF_EXT    | NSF_KEEP)
+#define KEEPSTR      (NSF_STRING | NSF_SOURCE | NSF_NOTNUM)
+#define KEEPNUM      (NSF_STRING | NSF_SOURCE | NSF_NUMBER | NSF_BINARY)
+
+/* The RexxArg structure is identical to the NexxStr structure, but
+ * is allocated from system memory rather than from internal storage.
+ * This structure is used for passing arguments to external programs.
+ * It is usually passed as an "argstring", a pointer to the string buffer.
+ */
+
+struct RexxArg {
+   LONG     ra_Size;                   /* total allocated length        */
+   UWORD    ra_Length;                 /* length of string              */
+   UBYTE    ra_Flags;                  /* attribute flags               */
+   UBYTE    ra_Hash;                   /* hash code                     */
+   BYTE     ra_Buff[8];                /* buffer area                   */
+   };                                  /* size: 16 bytes (minimum)      */
+
+/* The RexxMsg structure is used for all communications with REXX
+ * programs.  It is an EXEC message with a parameter block appended.
+ */
+
+struct RexxMsg {
+   struct Message rm_Node;             /* EXEC message structure        */
+   APTR     rm_TaskBlock;              /* global structure (private)    */
+   APTR     rm_LibBase;                /* library base (private)        */
+   LONG     rm_Action;                 /* command (action) code         */
+   LONG     rm_Result1;                /* primary result (return code)  */
+   LONG     rm_Result2;                /* secondary result              */
+   STRPTR   rm_Args[16];               /* argument block (ARG0-ARG15)   */
+
+   struct MsgPort *rm_PassPort;        /* forwarding port               */
+   STRPTR   rm_CommAddr;               /* host address (port name)      */
+   STRPTR   rm_FileExt;                /* file extension                */
+   LONG     rm_Stdin;                  /* input stream (filehandle)     */
+   LONG     rm_Stdout;                 /* output stream (filehandle)    */
+   LONG     rm_avail;                  /* future expansion              */
+   };                                  /* size: 128 bytes               */
+
+/* Field definitions                                                    */
+#define ARG0(rmp) (rmp->rm_Args[0])    /* start of argblock             */
+#define ARG1(rmp) (rmp->rm_Args[1])    /* first argument                */
+#define ARG2(rmp) (rmp->rm_Args[2])    /* second argument               */
+
+#define MAXRMARG  15                   /* maximum arguments             */
+
+/* Command (action) codes for message packets                           */
+#define RXCOMM    0x01000000           /* a command-level invocation    */
+#define RXFUNC    0x02000000           /* a function call               */
+#define RXCLOSE   0x03000000           /* close the REXX server         */
+#define RXQUERY   0x04000000           /* query for information         */
+#define RXADDFH   0x07000000           /* add a function host           */
+#define RXADDLIB  0x08000000           /* add a function library        */
+#define RXREMLIB  0x09000000           /* remove a function library     */
+#define RXADDCON  0x0A000000           /* add/update a ClipList string  */
+#define RXREMCON  0x0B000000           /* remove a ClipList string      */
+#define RXTCOPN   0x0C000000           /* open the trace console        */
+#define RXTCCLS   0x0D000000           /* close the trace console       */
+
+/* Command modifier flag bits                                           */
+#define RXFB_NOIO    16                /* suppress I/O inheritance?     */
+#define RXFB_RESULT  17                /* result string expected?       */
+#define RXFB_STRING  18                /* program is a "string file"?   */
+#define RXFB_TOKEN   19                /* tokenize the command line?    */
+#define RXFB_NONRET  20                /* a "no-return" message?        */
+
+/* The flag form of the command modifiers                               */
+#define RXFF_NOIO    (1L << RXFB_NOIO  )
+#define RXFF_RESULT  (1L << RXFB_RESULT)
+#define RXFF_STRING  (1L << RXFB_STRING)
+#define RXFF_TOKEN   (1L << RXFB_TOKEN )
+#define RXFF_NONRET  (1L << RXFB_NONRET)
+
+#define RXCODEMASK   0xFF000000
+#define RXARGMASK    0x0000000F
+
+/* The RexxRsrc structure is used to manage global resources.  Each node 
+ * has a name string created as a RexxArg structure, and the total size
+ * of the node is saved in the "rr_Size" field.  The REXX systems library
+ * provides functions to allocate and release resource nodes.  If special
+ * deletion operations are required, an offset and base can be provided in
+ * "rr_Func" and "rr_Base", respectively.  This "autodelete" function will
+ * be called with the base in register A6 and the node in A0.
+ */
+
 struct RexxRsrc {
    struct Node rr_Node;
-   WORD
-           rr_Func;
-                                       /* "auto-delete" offset
-                                                                        */
-   APTR
-           rr_Base;
-                                       /* "auto-delete" base
-  LONG
-           rr_Size;
-                                       /* total size of node
-                                                                        */
-  LONG
-           rr_Arg1;
-                                       /* available ...
-                                                                        */
-   LONG
-            rr_Arg2;
-                                       /* available ...
-                                                                        */
-   }:
-                                       /* size: 32 bytes
-                                                                        */
-/* Resource node types
-                                                                        */
-                                                                        */
-#define RRT_ANY
-                                       /* any node type ...
-                                                                        */
-                                       /* a function library
-#define RRT_LIB
-#define RRT_PORT
-                                       /* a public port
-                                                                        */
-                                       /* a file IoBuff
-#define RRT_FILE
-                     3
-                                                                        */
-                                       /* a function host
-#define RRT_HOST
-                                                                        */
-#define RRT_CLIP
-                     5
-                                       /* a Clip List node
-```
+   WORD     rr_Func;                   /* "auto-delete" offset          */
+   APTR     rr_Base;                   /* "auto-delete" base            */
+   LONG     rr_Size;                   /* total size of node            */
+   LONG     rr_Arg1;                   /* available ...                 */
+   LONG     rr_Arg2;                   /* available ...                 */
+   };                                  /* size: 32 bytes                */
 
-136
+/* Resource node types                                                  */
+#define RRT_ANY      0                 /* any node type ...             */
+#define RRT_LIB      1                 /* a function library            */
+#define RRT_PORT     2                 /* a public port                 */
+#define RRT_FILE     3                 /* a file IoBuff                 */
+#define RRT_HOST     4                 /* a function host               */
+#define RRT_CLIP     5                 /* a Clip List node              */
 
-#### storage.h (cont.)
-
-```
 /* The RexxTask structure holds the fields used by REXX to communicate with
- * external processes, including the client task. It includes the global
- * data structure (and the base environment). The structure is passed to
+ * external processes, including the client task.  It includes the global
+ * data structure (and the base environment).  The structure is passed to
  * the newly-created task in its "wake-up" message.
  */
-#define GLOBALSZ 200
-                                      /* total size of GlobalData
-                                                                       */
+
+#define GLOBALSZ  200                  /* total size of GlobalData      */
+
 struct RexxTask {
-           rt_Global[GLOBALSZ];
-                                      /* global data structure
-   struct MsgPort rt_MsgPort;
-                                      /* global message port
-                                                                       */
-   UBYTE
-           rt_Flags;
-                                      /* task flag bits
-                                                                       */
-   BYTE
-           rt_SigBit;
-                                      /* signal bit
-   APTR
-           rt_ClientID;
-                                      /* the client's task ID
-                                      /* the packet being processed
-   APTR
-           rt_MsgPkt;
-           rt_TaskID:
-                                      /* our task ID
-   APTR
-   APTR
-           rt_RexxPort;
-                                      /* the REXX public port
-                                      /* Error trap address
-  APTR
-           rt_ErrTrap;
-                                      /* stack pointer for traps
-  APTR
-           rt_StackPtr;
-                                                                       */
-   struct List rt_Header1;
-                                      /* Environment list
-   struct List rt_Header2;
-                                      /* Memory freelist
-   struct List rt_Header3;
-                                      /* Memory allocation list
-                                                                       */
-  struct List rt_Header4;
-                                      /* Files list
-                                                                       */
-   struct List rt_Header5;
-                                      /* Message Ports List
-  }:
-                                                                       */
-/* Definitions for RexxTask flag bits
-#define RTFB_TRACE 0
-                                      /* external trace flag
-#define RTFB_HALT
-                                      /* external halt flag
-#define RTFB_SUSP
-                    2
-                                      /* suspend task?
-                                                                       */
-#define RTFB_TCUSE 3
-                                      /* trace console in use?
-                                                                       */
-#define RTFB_WAIT
-                                      /* waiting for reply?
-#define RTFB_CLOSE 7
-                                      /* task completed?
-                                                                       */
-/* Definitions for memory allocation constants
-                                                                       */
-#define MEMQUANT 16
-                                      /* quantum of memory space
-#define MEMMASK $FFFFFFFO
-                                      /* mask for rounding the size
-#define MEMQUICK (1 << 0 )</pre>
-                                      /* EXEC flags: MEMF_PUBLIC
-#define MEMCLEAR (1 << 16)
-                                      /* EXEC flags: MEMF_CLEAR
-```
+   BYTE     rt_Global[GLOBALSZ];       /* global data structure         */
+   struct MsgPort rt_MsgPort;          /* global message port           */
+   UBYTE    rt_Flags;                  /* task flag bits                */
+   BYTE     rt_SigBit;                 /* signal bit                    */
 
-Distribution Files 137
+   APTR     rt_ClientID;               /* the client's task ID		*/
+   APTR     rt_MsgPkt;		       /* the packet being processed	*/
+   APTR     rt_TaskID;		       /* our task ID			*/
+   APTR     rt_RexxPort;	       /* the REXX public port		*/
 
-# storage.h (cont.)
+   APTR     rt_ErrTrap;	       /* Error trap address		*/
+   APTR     rt_StackPtr;	       /* stack pointer for traps	*/
 
-```
-/* The SrcNode is a temporary structure used to hold values destined for a
- * segment array. It is also used to maintain the memory freelist.
+   struct List rt_Header1;	       /* Environment list		*/
+   struct List rt_Header2;	       /* Memory freelist		*/
+   struct List rt_Header3;	       /* Memory allocation list	*/
+   struct List rt_Header4;	       /* Files list			*/
+   struct List rt_Header5;	       /* Message Ports List		*/
+   };
+
+/* Definitions for RexxTask flag bits					*/
+#define RTFB_TRACE   0		       /* external trace flag		*/
+#define RTFB_HALT    1		       /* external halt flag		*/
+#define RTFB_SUSP    2		       /* suspend task?		*/
+#define RTFB_TCUSE   3		       /* trace console in use?	*/
+#define RTFB_WAIT    6		       /* waiting for reply?		*/
+#define RTFB_CLOSE   7		       /* task completed?		*/
+
+/* Definitions for memory allocation constants				*/
+#define MEMQUANT  16L		       /* quantum of memory space	*/
+#define MEMMASK   0xFFFFFFF0	       /* mask for rounding the size	*/
+
+#define MEMQUICK  (1L << 0 )	       /* EXEC flags: MEMF_PUBLIC	*/
+#define MEMCLEAR  (1L << 16)	       /* EXEC flags: MEMF_CLEAR	*/
+
+/* The SrcNode is a temporary structure used to hold values destined for
+ * a segment array.  It is also used to maintain the memory freelist.
  */
+
 struct SrcNode {
-                                      /* next node
-                                                                       */
-  struct SrcNode *sn_Succ;
-  struct SrcNode *sn_Pred;
-                                      /* pointer value
-  APTR
-           sn_Ptr;
-  LONG
-                                      /* size of object
-            sn_Size;
-                                                                       */
-  };
-                                      /* size: 16 bytes
-                                                                       */
+   struct SrcNode *sn_Succ;	       /* next node			*/
+   struct SrcNode *sn_Pred;	       /* previous node		*/
+   APTR     sn_Ptr;		       /* pointer value		*/
+   LONG     sn_Size;		       /* size of object		*/
+   };				       /* size: 16 bytes		*/
+
 #endif
+
 ```
 
-Appendix E
-
-#### rxslib.h
+### rxslib.h
 
 This file defines the library base for the ARexx Systems Library.
 
-```
-/* === rexx/rxslib.h ====================================
- * Copyright (c) 1986, 1987 by William S. Hawes (All Rights Reserved)
- * -----
- * The header file for the REXX Systems Library
+```c
 #ifndef REXX_RXSLIB_H
 #define REXX_RXSLIB_H
+/*
+**	$Filename: rexx/rxslib.h $
+**	$Release: 2.0 release 1 $
+**	$Revision: 1.3 $
+**	$Date: 90/07/12 $
+**
+**	The header file for the REXX Systems Library
+**
+**	(C) Copyright 1987,1988,1989,1990 William S. Hawes
+**		All Rights Reserved
+*/
+
 #ifndef REXX_STORAGE_H
 #include "rexx/storage.h"
 #endif
-/* Some macro definitions
-                                                                  */
-#define RXSNAME "rexxsvslib.library"
-#define RXSID
-                "rexxsyslib 1.0 (23 AUG 87)"
-#define RXSDIR
-               "REXX"
+
+#define RXSNAME  "rexxsyslib.library"
+#define RXSDIR	 "REXX"
 #define RXSTNAME "ARexx"
-/* The REXX systems library structure. This should be considered as */
-/* semi-private and read-only, except for documented exceptions.
-                                                                  */
+
+/* The REXX systems library structure.	This should be considered as	*/
+/* semi-private and read-only, except for documented exceptions.	*/
+
 struct RxsLib {
-                                     /* EXEC library node
-   struct Library rl_Node;
-                                                                  */
-  UBYTE
-           rl_Flags;
-                                     /* global flags
-                                                                  */
-  UBYTE
-           rl_pad;
-                                                                  */
-  APTR
-           rl_SysBase;
-                                     /* EXEC library base
-                                     /* DOS library base
-  APTR
-           rl_DOSBase;
-                                                                  */
-                                     /* IEEE DP math library base
-  APTR
-           rl_IeeeDPBase;
-                                                                  */
-           rl_SegList;
-                                     /* library seglist
-  LONG
-                                                                  */
-  LONG
-           rl_MaxAlloc;
-                                     /* maximum memory allocation
-                                                                  */
-  LONG
-           rl_Chunk;
-                                     /* allocation quantum
-                                                                  */
-  LONG
-           rl_MaxNest;
-                                     /* maximum expression nesting
-  struct NexxStr *rl_NULL;
-                                     /* static string: NULL
-                                                                  */
-   struct NexxStr *rl_FALSE;
-                                     /* static string: FALSE
-                                                                  */
-  struct NexxStr *rl_TRUE;
-                                     /* static string: TRUE
-                                                                  */
-  struct NexxStr *rl_REXX;
-                                     /* static string: REXX
-                                                                  */
-  struct NexxStr *rl_COMMAND;
-                                     /* static string: COMMAND
-  struct NexxStr *rl_STDIN;
-                                     /* static string: STDIN
-  struct NexxStr *rl_STDOUT;
-                                     /* static string: STDOUT
-  struct NexxStr *rl_STDERR;
-                                     /* static string: STDERR
-```
+   struct Library rl_Node;	       /* EXEC library node		*/
+   UBYTE    rl_Flags;		       /* global flags			*/
+   UBYTE    rl_Shadow;		       /* shadow flags			*/
+   APTR     rl_SysBase;	       /* EXEC library base		*/
+   APTR     rl_DOSBase;	       /* DOS library base		*/
+   APTR     rl_IeeeDPBase;	       /* IEEE DP math library base	*/
+   LONG     rl_SegList;	       /* library seglist		*/
+   LONG     rl_NIL;		       /* global NIL: filehandle	*/
+   LONG     rl_Chunk;		       /* allocation quantum		*/
+   LONG     rl_MaxNest;	       /* maximum expression nesting	*/
+   struct NexxStr *rl_NULL;	       /* static string: NULL		*/
+   struct NexxStr *rl_FALSE;	       /* static string: FALSE		*/
+   struct NexxStr *rl_TRUE;	       /* static string: TRUE		*/
+   struct NexxStr *rl_REXX;	       /* static string: REXX		*/
+   struct NexxStr *rl_COMMAND;	       /* static string: COMMAND	*/
+   struct NexxStr *rl_STDIN;	       /* static string: STDIN		*/
+   struct NexxStr *rl_STDOUT;	       /* static string: STDOUT	*/
+   struct NexxStr *rl_STDERR;	       /* static string: STDERR	*/
+   STRPTR    rl_Version;	       /* version string		*/
 
-Distribution Files 139
+   STRPTR    rl_TaskName;	       /* name string for tasks	*/
+   LONG      rl_TaskPri;	       /* starting priority		*/
+   LONG      rl_TaskSeg;	       /* startup seglist		*/
+   LONG      rl_StackSize;	       /* stack size			*/
+   STRPTR    rl_RexxDir;	       /* REXX directory		*/
+   STRPTR    rl_CTABLE;	       /* character attribute table	*/
+   STRPTR    rl_Notice;	       /* copyright notice		*/
 
-#### rxslib.h (cont.)
+   struct MsgPort rl_RexxPort;	       /* REXX public port		*/
+   UWORD     rl_ReadLock;	       /* lock count			*/
+   LONG      rl_TraceFH;	       /* global trace console		*/
+   struct List rl_TaskList;	       /* REXX task list		*/
+   WORD      rl_NumTask;	       /* task count			*/
+   struct List rl_LibList;	       /* Library List header		*/
+   WORD      rl_NumLib;	       /* library count		*/
+   struct List rl_ClipList;	       /* ClipList header		*/
+   WORD      rl_NumClip;	       /* clip node count		*/
+   struct List rl_MsgList;	       /* pending messages		*/
+   WORD      rl_NumMsg;	       /* pending count		*/
+   struct List rl_PgmList;	       /* cached programs		*/
+   WORD      rl_NumPgm;	       /* program count		*/
 
-```
-STRPTR
-             rl_Version;
-                                        /* version/configuration string*/
-   STRPTR
-             rl_TaskName;
-                                        /* name string for tasks
-   LONG
-             rl_TaskPri;
-                                        /* starting priority
-   LONG
-             rl_TaskSeg;
-                                        /* startup seglist
-                                                                        */
-   LONG
-             rl_StackSize;
-                                        /* stack size
-                                                                        */
-   STRPTR
-                                        /* REXX directory
-                                                                        */
-             rl_RexxDir;
-   STRPTR
-             rl_CTABLE;
-                                        /* character attribute table
-                                                                        */
-   struct NexxStr *rl_Notice;
-                                        /* copyright notice
-   struct MsgPort rl_RexxPort;
-                                        /* REXX public port
-   UWORD
-             rl_ReadLock;
-                                        /* lock count
-                                                                        */
-   LONG
-             rl_TraceFH;
-                                        /* global trace console
-                                                                        */
-   struct List rl_TaskList;
-                                        /* REXX task list
-   WORD
-             rl_NumTask;
-                                        /* task count
-                                                                        */
-                                                                        */
-   struct List rl_LibList;
-                                        /* Library List header
-   WORD
-             rl_NumLib;
-                                                                        */
-                                        /* library count
-   struct List rl_ClipList;
-                                        /* ClipList header
-                                                                        */
-   WORD
-             rl_NumClip;
-                                        /* clip node count
-                                                                        */
-   struct List rl_MsgList;
-                                        /* pending messages
-                                                                        */
-   WORD
-             rl_NumMsg;
-                                        /* pending count
-                                                                        */
+   UWORD     rl_TraceCnt;	       /* usage count for trace console */
+   WORD      rl_avail;
    };
-/* Global flag bit definitions for RexxMaster
-                                                                        */
-#define RLFB_TRACE RTFB_TRACE
-                                        /* interactive tracing?
-                                                                        */
-#define RLFB_HALT RTFB_HALT
-                                        /* halt execution?
-                                                                        */
-                                                                        */
-#define RLFB_SUSP RTFB_SUSP
-                                        /* suspend execution?
-#define RLFB_TCUSE RTFB_TCUSE
-                                        /* trace console in use?
-                                                                        */
-#define RLFB_TCOPN 4
-                                        /* trace console open?
-                                                                        */
-#define RLFB_STOP 6
-                                        /* deny further invocations
-                                                                        */
-#define RLFB_CLOSE 7
-                                        /* close the master
-#define RLFMASK
-                   0x07
-                                        /* passed flags
-         ; Initialization constants
-                                        /* main version
-#define RXSVERS
-                                                                        */
-#define RXSREV
-                                        /* revision
-                                                                        */
-#define RXSALLOC
-                   0x800000
-                                        /* maximum allocation
-                                                                        */
-#define RXSCHUNK
-                   1024
-                                        /* allocation quantum
-                                                                        */
-#define RXSNEST
-                   32
-                                        /* expression nesting limit
-                                                                       */
-#define RXSTPRI
-                                        /* task priority
-                                                                        */
-#define RXSSTACK
-                   4096
-                                        /* stack size
-                                                                       */
-                                        /* number of list headers
-#define RXSLISTH
-                                                                       */
+
+/* Global flag bit definitions for RexxMaster				*/
+#define RLFB_TRACE RTFB_TRACE	       /* interactive tracing?		*/
+#define RLFB_HALT  RTFB_HALT	       /* halt execution?		*/
+#define RLFB_SUSP  RTFB_SUSP	       /* suspend execution?		*/
+#define RLFB_STOP  6		       /* deny further invocations	*/
+#define RLFB_CLOSE 7		       /* close the master		*/
+
+#define RLFMASK    (1<<RLFB_TRACE) | (1<<RLFB_HALT) | (1<<RLFB_SUSP)
+
+/* Initialization constants						*/
+#define RXSCHUNK   1024	       /* allocation quantum		*/
+#define RXSNEST    32		       /* expression nesting limit	*/
+#define RXSTPRI    0		       /* task priority		*/
+#define RXSSTACK   4096	       /* stack size			*/
+
+/* Character attribute flag bits used in REXX.				*/
+#define CTB_SPACE   0		       /* white space characters	*/
+#define CTB_DIGIT   1		       /* decimal digits 0-9		*/
+#define CTB_ALPHA   2		       /* alphabetic characters	*/
+#define CTB_REXXSYM 3		       /* REXX symbol characters	*/
+#define CTB_REXXOPR 4		       /* REXX operator characters	*/
+#define CTB_REXXSPC 5		       /* REXX special symbols		*/
+#define CTB_UPPER   6		       /* UPPERCASE alphabetic		*/
+#define CTB_LOWER   7		       /* lowercase alphabetic		*/
+
+/* Attribute flags							*/
+#define CTF_SPACE   (1 << CTB_SPACE)
+#define CTF_DIGIT   (1 << CTB_DIGIT)
+#define CTF_ALPHA   (1 << CTB_ALPHA)
+#define CTF_REXXSYM (1 << CTB_REXXSYM)
+#define CTF_REXXOPR (1 << CTB_REXXOPR)
+#define CTF_REXXSPC (1 << CTB_REXXSPC)
+#define CTF_UPPER   (1 << CTB_UPPER)
+#define CTF_LOWER   (1 << CTB_LOWER)
+
+#endif
 ```
 
-140 Appendix E
 
-```
-rxslib.h (cont.)
-```
+### rexxio.h
 
-```
-/• Character attribute flag bits used in REXX. Defined only for •I 
-I• ASCII characters (range 0-127). •I 
-#define CTB_SPACE 0 
-#define CTB_DIGIT 1 
-#define CTB_ALPHA 2 
-#define CTB_REXXSYM 3 
-#define CTB_REXX0PR 4 
-#define CTB_REXXSPC 5 
-#define CTB_UPPER 6 
-#define CTB_L0WER 7 
-/* Attribute flags 
-#define CTF_SPACE (1 
-#define CTF_DIGIT (1 
-#define CTF_ALPHA (1 
-#define CTF_REXXSYM (1 
-#define CTF_REXX0PR (1 
-#define CTF_REXXSPC (1 
-#define CTF_UPPER (1 
-#define CTF_L0WER (1 
-#endif 
-                     << CTB_SPACE) 
-                     << CTB_DIGIT) 
-                     << CTB_ALPHA) 
-                     << CTB_REXXSYM) 
-                     << CTB_REXX0PR) 
-                     << CTB_REXXSPC) 
-                     << CTB_UPPER) 
-                     << CTB_L0WER) 
-                                    I• white space characters •/ 
-                                    /• decimal digits 0-9 •I 
-                                    /• alphabetic characters •I 
-                                    I• REXX symbol characters •/ 
-                                    /• REXX operator characters •/ 
-                                    I• REXX special symbols •I 
-                                    /• UPPERCASE alphabetic •/ 
-                                    /• lowercase alphabetic •/
-```
+This file defines the data structures used for buffered I/O. ARexx uses linked lists of `IoBuff` structures to keep track of the files it opens. Each IoBuff node is allocated as an "auto-delete" structure and can be closed and released by a call to either `CloseF()` or `RemRsrcNode()`. An entire list of files can be closed with a call to `RemRsrcList()`.
 
-Distribution Files 141
-
-#### rexxio.h
-
-This file defines the data structures used for buffered I/O. ARexx uses linked lists of IoBuff structures to keep track of the files it opens. Each IoBuff node is allocated as an "auto-delete" structure and can be closed and released by a call to either CloseF() or RemRsrcNode(). An entire list of files can be closed with a call to RemRsrcList().
-
-```
-/* === rexx/rexxio.h ====================================
- * Copyright (c) 1986, 1987 by William S. Hawes (All Rights Reserved)
- * ------------------------------------
- * Header file for ARexx Input/Output related structures
-#ifndef REXX REXXIO H
+```c
+#ifndef REXX_REXXIO_H
 #define REXX_REXXIO_H
+/*
+**	$Filename: rexx/rexxio.h $
+**	$Release: 2.0 release 1 $
+**	$Revision: 1.2 $
+**	$Date: 90/07/12 $
+**
+**	Header file for ARexx Input/Output related structures
+**
+**	(C) Copyright 1986,1987,1988,1989,1990 William S. Hawes
+**		All Rights Reserved
+*/
+
 #ifndef REXX_STORAGE_H
 #include "rexx/storage.h"
 #endif
-                                     /* buffer length
-#define RXBUFFSZ 204
-/* The IoBuff is a resource node used to maintain the File List. Nodes are
- * allocated and linked into the list whenever a file is opened.
+
+#define RXBUFFSZ  204		       /* buffer length		*/
+
+/*
+ * The IoBuff is a resource node used to maintain the File List.  Nodes
+ * are allocated and linked into the list whenever a file is opened.
  */
 struct IoBuff {
-  struct RexxRsrc iobNode;
-                                    /* structure for files/strings
-  APTR
-           iobRpt;
-                                    /* read/write pointer
-                                                                    */
-  LONG
-           iobRct:
-                                    /* character count
-                                                                    */
-  LONG
-                                    /* DOS filehandle
-           iobDFH;
-                                                                    */
-  APTR
-           iobLock;
-                                    /* DOS lock
-                                                                    */
-  LONG
-           iobBct;
-                                     /* buffer length
-                                                                    */
-  BYTE
-           iobArea[RXBUFFSZ]:
-                                     /* buffer area
-                                                                    */
-  };
-                                    /* size: 256 bytes
-                                                                    */
-/* Access mode definitions
-                                                                    */
-#define RXIO_EXIST -1
-                                    /* an external filehandle
-                                                                    */
-#define RXIO_STRF
-                                    /* a "string file"
-                                                                    */
-#define RXIO READ
-                                    /* read-only access
-                                                                    */
-                   1
-#define RXIO_WRITE 2
-                                    /* write mode
-                                                                    */
-#define RXIO_APPEND 3
-                                    /* append mode (existing file)
-                                                                    */
-```
+   struct RexxRsrc iobNode;	       /* structure for files/strings	*/
+   APTR     iobRpt;		       /* read/write pointer		*/
+   LONG     iobRct;		       /* character count		*/
+   LONG     iobDFH;		       /* DOS filehandle		*/
+   APTR     iobLock;		       /* DOS lock			*/
+   LONG     iobBct;		       /* buffer length		*/
+   BYTE     iobArea[RXBUFFSZ];	       /* buffer area			*/
+   };				       /* size: 256 bytes		*/
 
-142 Appendix E
+/* Access mode definitions						*/
+#define RXIO_EXIST   -1	       /* an external filehandle	*/
+#define RXIO_STRF    0		       /* a "string file"		*/
+#define RXIO_READ    1		       /* read-only access		*/
+#define RXIO_WRITE   2		       /* write mode			*/
+#define RXIO_APPEND  3		       /* append mode (existing file)	*/
 
-#### rexxio.h (cont.)
+/*
+ * Offset anchors for SeekF()
+ */
+#define RXIO_BEGIN   -1L	       /* relative to start		*/
+#define RXIO_CURR    0L	       /* relative to current position	*/
+#define RXIO_END     1L	       /* relative to end		*/
 
-```
-*/
-/* Offset anchors for SeekF()
-                                                                      */
-#define RXIO_BEGIN -1
-                                      /* relative to start
-#define RXIO_CURR
-                                      /* relative to current position */
-                                      /* relative to end
-#define RXIO_END
-                                                                      */
-                    1
-/* The Library List contains just plain resource nodes.
-#define LLOFFSET(rrp) (rrp->rr_Arg1) /* "Query" offset
-#define LLVERS(rrp) (rrp->rr_Arg2) /* library version
-                                                                      */
-/* The RexxClipNode structure is used to maintain the Clip List. The
- * value string is stored as an argstring in the rr_Arg1 field.
+/* The Library List contains just plain resource nodes.		*/
+
+#define LLOFFSET(rrp) (rrp->rr_Arg1)   /* "Query" offset		*/
+#define LLVERS(rrp)   (rrp->rr_Arg2)   /* library version		*/
+
+/*
+ * The RexxClipNode structure is used to maintain the Clip List.  The value
+ * string is stored as an argstring in the rr_Arg1 field.
  */
 #define CLVALUE(rrp) ((STRPTR) rrp->rr_Arg1)
-/* A message port structure, maintained as a resource node.
- * The ReplyList holds packets that have been received but haven't been
- * replied.
+
+/*
+ * A message port structure, maintained as a resource node.  The ReplyList
+ * holds packets that have been received but haven't been replied.
  */
 struct RexxMsgPort {
-   struct RexxRsrc rmp_Node;
-                                      /* linkage node
-   struct MsgPort rmp_Port;
-                                      /* the message port
-                                                                      */
-   struct List
-               rmp_ReplyList;
-                                      /* messages awaiting reply
-                                                                      */
-   }:
-/* DOS Device types
-                                                                      */
-#define DT_DEV
-                                      /* a device
-                                                                      */
-                                      /* an ASSIGNed directory
-#define DT_DIR
-                 1
-                                                                      */
-#define DT_VOL
-                                      /* a volume
-/* Private DOS packet types
-#define ACTION_STACK 2002
-                                      /* stack a line
-                                                                      */
-#define ACTION_QUEUE 2003
-                                      /* queue a line
-                                                                      */
+   struct RexxRsrc rmp_Node;           /* linkage node                  */
+   struct MsgPort  rmp_Port;           /* the message port              */
+   struct List     rmp_ReplyList;      /* messages awaiting reply       */
+   };
+
+/*
+ * DOS Device types
+ */
+#define DT_DEV    0L                   /* a device                      */
+#define DT_DIR    1L                   /* an ASSIGNed directory         */
+#define DT_VOL    2L                   /* a volume                      */
+
+/*
+ * Private DOS packet types
+ */
+#define ACTION_STACK 2002L             /* stack a line                  */
+#define ACTION_QUEUE 2003L             /* queue a line                  */
+
 #endif
+
 ```
 
-Distribution Files 143
-
-#### errors.h
+### errors.h
 
 This file contains the definitions for all of the error messages issued by the ARexx interpreter.
 
-```
-/* == errors.h ====================================
- * Copyright (c) 1987 by William S. Hawes (All Rights Reserved)
- * -----
- * Definitions for ARexx error codes
-#define ERRC MSG 0
-                                     /* error code offset
-#define ERR10_001 (ERRC_MSG+1)
-                                    /* program not found
-#define ERR10_002 (ERRC_MSG+2)
-                                    /* execution halted
-#define ERR10_003 (ERRC_MSG+3)
-                                    /* no memory available
-#define ERR10_004 (ERRC_MSG+4)
-                                    /* invalid character in program*/
-                                    /* unmatched quote
-#define ERR10_005 (ERRC_MSG+5)
-                                    /* unterminated comment
-#define ERR10_006 (ERRC_MSG+6)
-                                                                   */
-#define ERR10_007 (ERRC_MSG+7)
-                                    /* clause too long
-                                                                   */
-#define ERR10_008 (ERRC_MSG+8)
-                                    /* unrecognized token
-#define ERR10_009 (ERRC_MSG+9)
-                                    /* symbol or string too long
-#define ERR10_010 (ERRC_MSG+10)
-                                    /* invalid message packet
-#define ERR10_011 (ERRC_MSG+11)
-                                    /* command string error
-#define ERR10_012 (ERRC_MSG+12)
-                                    /* error return from function */
-#define ERR10_013 (ERRC_MSG+13)
-                                    /* host environment not found */
-#define ERR10_014 (ERRC_MSG+14)
-                                     /* required library not found */
-                                    /* function not found
-#define ERR10_015 (ERRC_MSG+15)
-                                                                   */
-                                    /* no return value
-#define ERR10_016 (ERRC_MSG+16)
-                                                                   */
-#define ERR10_017 (ERRC_MSG+17)
-                                     /* wrong number of arguments
-#define ERR10_018 (ERRC_MSG+18)
-                                     /* invalid argument to function*/
-                                     /* invalid PROCEDURE
-#define ERR10_019 (ERRC_MSG+19)
-#define ERR10_020 (ERRC_MSG+20)
-                                     /* unexpected THEN/ELSE
-#define ERR10_021 (ERRC_MSG+21)
-                                     /* unexpected WHEN/OTHERWISE
-#define ERR10_022 (ERRC_MSG+22)
-                                     /* unexpected LEAVE or ITERATE */
-#define ERR10_023 (ERRC_MSG+23)
-                                     /* invalid statement in SELECT */
-#define ERR10_024 (ERRC_MSG+24)
-                                     /* missing THEN clauses
-#define ERR10_025 (ERRC_MSG+25)
-                                    /* missing OTHERWISE
-#define ERR10_026 (ERRC_MSG+26)
-                                    /* missing or unexpected END
-#define ERR10_027 (ERRC_MSG+27)
-                                    /* symbol mismatch on END
-#define ERR10_028 (ERRC_MSG+28)
-                                    /* invalid DO syntax
-#define ERR10_029 (ERRC_MSG+29)
-                                    /* incomplete DO/IF/SELECT
-                                                                   */
-```
-
-Appendix E
-
-#### errors.h (cont.)
-
-```
+```c
+#ifndef REXX_ERRORS_H
+#define REXX_ERRORS_H
+/*
+**	$Filename: rexx/errors.h $
+**	$Release: 2.0 release 1 $
+**	$Revision: 1.2 $
+**	$Date: 90/07/12 $
+**
+**	Definitions for ARexx error codes
+**
+**	(C) Copyright 1987,1988,1989,1990 William S. Hawes
+**		All Rights Reserved
 */
-#define ERR10_030 (ERRC_MSG+30)
-                                      /* label not found
-#define ERR10_031 (ERRC_MSG+31)
-                                      /* symbol expected
-#define ERR10_032 (ERRC_MSG+32)
-                                      /* string or symbol expected
-                                      /* invalid sub-keyword
-#define ERR10_033 (ERRC_MSG+33)
-                                      /* required keyword missing
-#define ERR10_034 (ERRC_MSG+34)
-#define ERR10_035 (ERRC_MSG+35)
-                                      /* extraneous characters
-                                      /* sub-keyword conflict
-#define ERR10_036 (ERRC_MSG+36)
-                                                                     */
-#define ERR10_037 (ERRC_MSG+37)
-                                      /* invalid template
-#define ERR10_038 (ERRC_MSG+38)
-                                      /* invalid TRACE request
-#define ERR10_039 (ERRC_MSG+39)
-                                      /* uninitialized variable
-#define ERR10_040 (ERRC_MSG+40)
-                                      /* invalid variable name
-#define ERR10_041 (ERRC_MSG+41)
-                                      /* invalid expression
-#define ERR10_042 (ERRC_MSG+42)
-                                      /* unbalanced parentheses
-#define ERR10_043 (ERRC_MSG+43)
-                                      /* nesting level exceeded
-#define ERR10_044 (ERRC_MSG+44)
-                                      /* invalid expression result
-#define ERR10_045 (ERRC_MSG+45)
-                                      /* expression required
-#define ERR10_046 (ERRC_MSG+46)
-                                      /* boolean value not 0 or 1
-                                                                     */
-#define ERR10_047 (ERRC_MSG+47)
-                                      /* arithmetic conversion error */
-#define ERR10_048 (ERRC_MSG+48)
-                                      /* invalid operand
-/* Return Codes for general use ...
-#define RC_FAIL -1
-                                      /* something's wrong
-                                      /* success
-#define RC_OK
-#define RC_WARN 5
-                                      /* warning only
-                                                                     */
-#define RC_ERROR 10
-                                      /* something's wrong
-#define RC_FATAL 20
-                                      /* complete or severe failure */
+
+#define ERRC_MSG  0		       /*  error code offset	       */
+#define ERR10_001 (ERRC_MSG+1)	       /*  program not found	       */
+#define ERR10_002 (ERRC_MSG+2)	       /*  execution halted	       */
+#define ERR10_003 (ERRC_MSG+3)	       /*  no memory available	       */
+#define ERR10_004 (ERRC_MSG+4)	       /*  invalid character in program*/
+#define ERR10_005 (ERRC_MSG+5)	       /*  unmatched quote	       */
+#define ERR10_006 (ERRC_MSG+6)	       /*  unterminated comment        */
+#define ERR10_007 (ERRC_MSG+7)	       /*  clause too long	       */
+#define ERR10_008 (ERRC_MSG+8)	       /*  unrecognized token	       */
+#define ERR10_009 (ERRC_MSG+9)	       /*  symbol or string too long   */
+
+#define ERR10_010 (ERRC_MSG+10)        /*  invalid message packet      */
+#define ERR10_011 (ERRC_MSG+11)        /*  command string error        */
+#define ERR10_012 (ERRC_MSG+12)        /*  error return from function  */
+#define ERR10_013 (ERRC_MSG+13)        /*  host environment not found  */
+#define ERR10_014 (ERRC_MSG+14)        /*  required library not found  */
+#define ERR10_015 (ERRC_MSG+15)        /*  function not found	       */
+#define ERR10_016 (ERRC_MSG+16)        /*  no return value	       */
+#define ERR10_017 (ERRC_MSG+17)        /*  wrong number of arguments   */
+#define ERR10_018 (ERRC_MSG+18)        /*  invalid argument to function*/
+#define ERR10_019 (ERRC_MSG+19)        /*  invalid PROCEDURE	       */
+
+#define ERR10_020 (ERRC_MSG+20)        /*  unexpected THEN/ELSE        */
+#define ERR10_021 (ERRC_MSG+21)        /*  unexpected WHEN/OTHERWISE   */
+#define ERR10_022 (ERRC_MSG+22)        /*  unexpected LEAVE or ITERATE */
+#define ERR10_023 (ERRC_MSG+23)        /*  invalid statement in SELECT */
+#define ERR10_024 (ERRC_MSG+24)        /*  missing THEN clauses        */
+#define ERR10_025 (ERRC_MSG+25)        /*  missing OTHERWISE	       */
+#define ERR10_026 (ERRC_MSG+26)        /*  missing or unexpected END   */
+#define ERR10_027 (ERRC_MSG+27)        /*  symbol mismatch on END      */
+#define ERR10_028 (ERRC_MSG+28)        /*  invalid DO syntax	       */
+#define ERR10_029 (ERRC_MSG+29)        /*  incomplete DO/IF/SELECT     */
+
+#define ERR10_030 (ERRC_MSG+30)        /*  label not found	       */
+#define ERR10_031 (ERRC_MSG+31)        /*  symbol expected	       */
+#define ERR10_032 (ERRC_MSG+32)        /*  string or symbol expected   */
+#define ERR10_033 (ERRC_MSG+33)        /*  invalid sub-keyword	       */
+#define ERR10_034 (ERRC_MSG+34)        /*  required keyword missing    */
+#define ERR10_035 (ERRC_MSG+35)        /*  extraneous characters       */
+#define ERR10_036 (ERRC_MSG+36)        /*  sub-keyword conflict        */
+#define ERR10_037 (ERRC_MSG+37)        /*  invalid template	       */
+#define ERR10_038 (ERRC_MSG+38)        /*  invalid TRACE request       */
+#define ERR10_039 (ERRC_MSG+39)        /*  uninitialized variable      */
+
+#define ERR10_040 (ERRC_MSG+40)        /*  invalid variable name       */
+#define ERR10_041 (ERRC_MSG+41)        /*  invalid expression	       */
+#define ERR10_042 (ERRC_MSG+42)        /*  unbalanced parentheses      */
+#define ERR10_043 (ERRC_MSG+43)        /*  nesting level exceeded      */
+#define ERR10_044 (ERRC_MSG+44)        /*  invalid expression result   */
+#define ERR10_045 (ERRC_MSG+45)        /*  expression required	       */
+#define ERR10_046 (ERRC_MSG+46)        /*  boolean value not 0 or 1    */
+#define ERR10_047 (ERRC_MSG+47)        /*  arithmetic conversion error */
+#define ERR10_048 (ERRC_MSG+48)        /*  invalid operand	       */
+
+/*
+ * Return Codes for general use
+ */
+#define RC_OK	  0L		       /*  success		       */
+#define RC_WARN   5L		       /*  warning only	       */
+#define RC_ERROR  10L		       /*  something's wrong           */
+#define RC_FATAL  20L                  /*  complete or severe failure  */
+
+#endif
+
+
 ```
 
-Distribution Files 145
+# Glossary
 
-**Allocation.** A grant of a system resource, such as memory space. Programs designed to run in a multitasking environment generally use dynamic allocation to avoid tying up system resources. **AmigaDOS.** The higher-level part of the Amiga operating system that supports the filing system and input/output operations. **Argstring.** An "argument string" structure used to pass data to an ARex:x program. The structure is passed as a pointer to the buffer area containing the string data, and can be treated as a pointer to a null-terminated string. **Argument.** A data item passed to a function, sometimes called a parameter. **Clause.** A group of one or more tokens forming a "sentence" in a language. The clause is the smallest executable language fragment. **Command Line Interface (CLI).** A program that accepts input from the user and runs programs based on the entered command. The CLI generally refers to the command interpreter supplied with the Amiga, but other command "shells" may be used instead. **Concatenation.** An operation in which two strings are joined or "chained together." ARex:x provides two concatenation operators, one of which joins strings directly and the other of which embeds a blank between the operands. EXEC. The multitasking kernel of the Amiga's operating system. EXEC provides the task scheduling, interrupt handling, and message-passing primitives used to support ARex:x. **Function Host.** A program that manages a public message port for receiving function invocation messages. The message port may be the same one used for command messages. **Function Library.** A collection of functions callable from ARex:x and managed as an Amiga shared library. Each function library includes an entry point to associate a function name with the code to be called. **Host Address.** The name of the public �essage port associated with a host application. The host address is used as the unique identifier for the host, and should be unique within
+**Allocation.** A grant of a system resource, such as memory space. Programs designed to run in a multitasking environment generally use dynamic allocation to avoid tying up system resources. 
 
-the system message ports list. Within an ARex:x program the host address identifies the
+**AmigaDOS.** The higher-level part of the Amiga operating system that supports the filing system and input/output operations. 
 
-external host to which commands will be sent.
+**Argstring.** An "argument string" structure used to pass data to an ARexx program. The structure is passed as a pointer to the buffer area containing the string data, and can be treated as a pointer to a null-terminated string. 
+
+**Argument.** A data item passed to a function, sometimes called a parameter. 
+
+**Clause.** A group of one or more tokens forming a "sentence" in a language. The clause is the smallest executable language fragment. 
+
+**Command Line Interface (CLI).** A program that accepts input from the user and runs programs based on the entered command. The CLI generally refers to the command interpreter supplied with the Amiga, but other command "shells" may be used instead. 
+
+**Concatenation.** An operation in which two strings are joined or "chained together." ARexx provides two concatenation operators, one of which joins strings directly and the other of which embeds a blank between the operands. EXEC. The multitasking kernel of the Amiga's operating system. EXEC provides the task scheduling, interrupt handling, and message-passing primitives used to support ARexx. 
+
+**Function Host.** A program that manages a public message port for receiving function invocation messages. The message port may be the same one used for command messages. 
+
+**Function Library.** A collection of functions callable from ARexx and managed as an Amiga shared library. Each function library includes an entry point to associate a function name with the code to be called. 
+
+**Host Address.** The name of the public message port associated with a host application. The host address is used as the unique identifier for the host, and should be unique within the system message ports list. Within an ARexx program the host address identifies the external host to which commands will be sent.
 
 **Host Application.** An executable program that provides a suitable command interface to receive ARexx commands. Most host applications will also provide a means to invokde macro programs from within the application.
 
 **Interrupt.** An event that alters the normal flow of control in a program. Interrupts in ARexx refer to events within the program execution and are distinct from the hardware-level interrupts managed by the Amiga EXEC system.
 
-**Macro Program. A** program that implements a complex "macro" operation from a series of "micro" commands.
+**Macro Program.** A program that implements a complex "macro" operation from a series of "micro" commands.
 
 **Message Packet.** A data structure used to pass information between tasks. A message packet is allocated and initialized by one task and then sent to another task's message port. After the recipient has processed the message, it "replies" the message to the replyport associated with the message.
 
@@ -5170,18 +5311,6 @@ external host to which commands will be sent.
 
 **Task.** An entity consisting of executable code and a data structure managed by the EXEC operating system. The task is the smallest program unit that can be scheduled and run separately.
 
-148 Glossary
-
 **Token.** The elementary words or atoms of a language. A token can be considered as a string of one or more characters forming the smallest unit of the language.
 
 **Typeless.** Data items having no assumed structure or usage. ARexx treats all data as typeless character strings and checks for specific characteristics only when required by an operation.
-
-
-
-ARexx macro programs can interact with other software products that include an ARexx command interface, allowing you to extend and customize your software and to build integrated applications. The growing list of software products supporting the ARexx command interface includes TxEd-Plus from MicroSmiths, C.A.P.E.68K from Inovatronics, and Amiga'I'\_E.-"X from Radical Eye Software.
-
-Look also for WShell, our companion Amiga software product. WShell is a CLI-compatible command shell with the features you've always wanted in a command environment - command aliases, resident and built-in commands, prompt string/window titlebar variables, concurrent piping, and many more. With its ARexx command interface, WShell provides transparent support for REXX macros as well as the standard "execute" scripts (including support for the new "script bit".)
-
-> Developed and supported by: William S. Hawes P.O. Box 308 Maynard, MA 01754
-
-System requirements: Amiga 500/1000/2000 with Vl.2 OS Amiga is a trademark of Commodore-Amiga, Inc.
