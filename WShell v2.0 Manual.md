@@ -655,7 +655,7 @@ Variable expansion is performed in one complete pass through the command line an
 
 ### Backticked Commands
 
-Backticked commands are subcommands embedded in a larger command and delimited by backtick (`‘`) characters. The subcommands are processed by executing them as commands in a subshell. The text output of each subcommand is scanned to replace any "newline" characters with spaces and then substituted in place of the original command text. Back-ticked subcommands are processed from left to right.
+Backticked commands are subcommands embedded in a larger command and delimited by backtick `` ` `` characters. The subcommands are processed by executing them as commands in a subshell. The text output of each subcommand is scanned to replace any "newline" characters with spaces and then substituted in place of the original command text. Back-ticked subcommands are processed from left to right.
 
 Backticked commands can include other backticked commands by using a doubled backtick for the nested command. For example, ```echo `dir ``list quick ram:`` opt a` ``` includes the command `dir ``list quick ram:`` opt a`, which itself includes `list quick ram:`. Each embedded command is run before the command containing it, and eventually the original command is executed with the appropriate substituted text.
 
