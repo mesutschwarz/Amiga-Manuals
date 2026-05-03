@@ -505,9 +505,9 @@ ABBREV(full,abbrev,[length])
 Returns `1` if `abbrev` is an abbreviation of `full` and `abbrev` is at least `length` characters long. If `length` is not specified, it defaults to `0`.
 
 ```rexx
-abbrev('fullname', 'ful')         returns 1
-abbrev('almost', 'alm', 4)        returns 0
-abbrev('any', '')                 returns 1
+abbrev('fullname', 'ful')      /* returns 1 */
+abbrev('almost', 'alm', 4)     /* returns 0 */
+abbrev('any', '')              /* returns 1 */
 ```
 
 ## ABS
@@ -518,8 +518,8 @@ ABS(number)
 Returns the absolute value of `number`, which must be numeric.
 
 ```rexx
-abs(-5.35)                        returns 5.35
-abs(10)                           returns 10
+abs(-5.35)              /* returns 5.35 */
+abs(10)                 /* returns 10   */
 ```
 
 See Also: `MAX()`, `MIN()`, `SIGN()`
@@ -542,7 +542,7 @@ Function libraries must be added using the second form of `ADDLIB()`. The `offse
 `ADDLIB()` returns 1 if the operation was successful. If a library is specified, the library is not actually opened until it is required. Similarly, function hosts are not accessed until required.
 
 ```rexx
-addlib( "rexxsupport.library", 0, -30, 0 )     returns 1 
+addlib( "rexxsupport.library", 0, -30, 0 )   /* returns 1 
 call addlib "EtherNet", -20
 ```
 
@@ -562,7 +562,7 @@ ADDRESS()
 Returns the current `host address` string. The host address is the message port to which commands will be sent. `ADDRESS()` does not check the validity of the host address — use `SHOW()` to list known hosts.
 
 ```rexx
-address()                         returns 'REXX'
+address()               /* returns 'REXX' */
 ```
 
 The resident process' host addresses are `REXX` and `AREXX`.
@@ -715,7 +715,7 @@ BITOR(string1,string2,[pad])
 Returns the bit-by-bit logical OR of `string1` and `string2`, with the result length being the longer of the two operand strings. The shorter string is padded on the right with `pad`, if present; otherwise the OR operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
 
 ```rexx
-bitand('0313'x,'003F'x)         /* returns '033F'x */
+bitand('0313'x,'003F'x) /* returns '033F'x */
 ```
 
 See Also: `BITAND()`, `BITCMP()`, `BITXOR()`
@@ -729,211 +729,202 @@ Sets the specified `bit` in the argument `string`. Bit numbers are defined such 
 
 
 ```
-bitset( '0313'x, 2 ) returns '0313'x
+bitset('0313'x,2)       /* returns '0313'x */
 ```
 
-See Also: BITCHG(), BITCLR(), BITTST()
+See Also: `BITCHG()`, `BITCLR()`, `BITTST()`
 
-## **BITTST**
-
-#### BITTST( *string, bit )*
-
-#### Summary
-
-Returns the state of the specified *bit* in the argument *string.* Bit numbers are defined such that bit 0 is the low-order bit of the rightmost byte of the string.
-
-#### Examples
-
+## BITTST
+```rexx
+BITTST(string,bit)
 ```
+
+Returns the state of the specified `bit` in the argument `string`. Bit numbers are defined such that `bit 0` is the low-order bit of the rightmost byte of the string.
+
+```rexx
 bittst( '0313'x, 4 ) returns 1
 ```
 
-See Also: BITCHG(),BITCLR(),BITSET()
+See Also: `BITCHG()`, `BITCLR()`, `BITSET()`
 
+## BITXOR
+```rexx
+BITXOR(string1,string2,[pad])
 ```
-c2d('FFFF'x) returns -1
-c2d('FF0100'x, 2') returns 256
+Returns the bit-by-bit logical exclusive OR of `string1` and `string2`, with the result length being the longer of the two operand strings. The shorter string is padded on the right with `pad`, if present; otherwise the XOR operation terminates at the end of the shorter string and the remainder of the longer string is appended to the result.
+
+```rexx
+bitxor('0313'x,'001F'x) /* returns '030C'x */
 ```
+See Also: `BITAND()`, `BITCMP()`, `BITOR()`
 
-See Also: C2B(), C2X(), D2C()
-
-#### C2X
-
-```
-C2X( string )
-```
-
-#### Summary
-
-Converts the string argument from its character representation to the corresponding hexadecimal number, expressed as the ASCII characters 0-9 and A-F.
-
-#### Examples
-
-```
-c2x( 'abc' )
+## C2B
+```rexx
+C2B(string)
 ```
 
-returns 616263
+Converts  the character string string  into the equivalent string of binary digits.
 
-See Also: C2B(), C2D(), D2X(), X2C()
+```rexx
+c2b('abc')              /* returns '011000010110001001100011' */
+```
+
+See Also: `B2C()`, `C2X()`
+
+## C2D
+```rexx
+C2D(string, [n])
+```
+Converts the string argument from its character representation to the corresponding decimal number, as expressed in ASCII digits (0-9). If `n` is supplied, the character string is considered to be a number expressed in `n` bytes. The string is truncated  or padded with nulls on the left as required and the sign bit is extended for the conversion. 
+
+```rexx
+c2d('0020'x)            /* returns 32  */
+c2d('FFFF'x)            /* returns -1  */
+c2d('FF0100'x, 2)       /* returns 256 */
+```
+
+See Also: `C2B()`, `C2X()`, `D2C()`
+
+## C2X
+```rexx
+C2X(string)
+```
+
+Converts the `string` argument from its character representation to the corresponding hexadecimal number, expressed as the ASCII characters `0-9` and `A-F`.
+
+```rexx
+c2x('abc')              /* returns '616263' */
+```
+
+See Also: `C2B()`, `C2D()`, `D2X()`, `X2C()`
 
 ## CENTER/CENTRE
-
-```
-CENTER( string, length, [pad])
+```rexx
+CENTER(string,length,[pad])
 or
-CENTRE( string, length, [pad])
+CENTRE(string,length,[pad])
 ```
 
-#### Summary
+Centers the `string` argument in a string with the specified `length`. If the length is longer than that of the string, `pad` characters (or blanks if `pad` is not supplied) are added as necessary.
 
-Centers the string argument in a string with the specified length. If the length is longer than that of the string, pad characters (or blanks if pad is not supplied) are added as necessary.
-
-#### Examples
-
-```
-center( 'abc', 6 )
+```rexx
+center('abc',6)         /* returns ' abc  ' */
+center('abc',6,'+')     /* returns '+abc++' */
+center('123456',3)      /* returns '234'    */
 ```
 
-See Also: COPIES(), OVERLAY()
+See Also: `COPIES()`, `OVERLAY()`
 
-#### CLOSE
-
-```
-CLOSE( handle )
-```
-
-Closes the file specified by *handle,* the logical name that was specified to the **OPEN()** function call that opened the file. If the file was not open then 0 is returned, otherwise it is closed and 1 is returned.
-
-#### **Examples**
-
-```
-close( 'input' ) returns 1 or 0
+## CLOSE
+```rexx
+CLOSE(handle)
 ```
 
-**See Also: EOF() , OPEN() , READCH(), READLN(), SEEK() , WRITECH(), WRITELN()** 
+Closes the file specified by `handle`, the logical name that was specified to the `OPEN()` function call that opened the file. If the file was not open then `0` is returned, otherwise it is closed and `1` is returned.
 
-## CLOSEPORT+
-
-#### **CLOSEPORT(** *name )*
-
-#### **Summary**
-
-Closes the message port name, which must have been allocated by a call to **OPENPORT()** within the current ARexx program. Any messages received but not yet replied are automatically returned to their sender with the return code set to 10.
-
-#### **Examples**
-
+```rexx
+close('input')          /* returns 1 or 0 */
 ```
+
+See Also: `EOF()`, `OPEN()`, `READCH()`, `READLN()`, `SEEK()`, `WRITECH()`, `WRITELN()`
+
+## CLOSEPORT [+]
+```rexx
+CLOSEPORT(name)
+```
+
+Closes the message port `name`, which must have been allocated by a call to `OPENPORT()` within the current ARexx program. Any messages received but not yet replied are automatically returned to their sender with the return code set to 10.
+
+```rexx
 call closeport myport
 ```
 
-#### **Notes**
+`CLOSEPORT()` is a support library function. See, Chapter 3 Support Functions.
 
-**+CLOSEPORT()** is a support library function. See page 17.
+See Also: `OPENPORT()`, `REPLY()`
 
-**See Also: OPENPORT(), REPLY()** 
-
-## **COMPARE**
-
-```
-COMPARE( string1 , string2 , [ pad ] )
+## COMPARE
+```rexx
+COMPARE(string1,string2,[pad])
 ```
 
-#### **Summary**
+Compares two index strings and returns the index of the first position in which they differ, or `0` if the strings are identical. The shorter string is padded on the right as required with `pad` or blanks if `pad` is not specified.
 
-Compares two index strings and returns the index of the first position in which they differ, or 0 if the strings are identical. The shorter string is padded on the right as required with pad or blanks if pad is not specified.
-
-```
-compare( 'abcde', 'abcce' ) returns 4 
-compare( 'abcde', 'abcde' ) returns 0 
-compare( 'abc+++', 'abc', '+' ) returns 0
+```rexx
+compare('abcde','abcce')        /* returns 4 */
+compare('abcde','abcde')        /* returns 0 */
+compare('abc+++','abc','+')     /* returns 0 */
 ```
 
-## **COMPRESS**
-
-```
-COMPRESS( string, [ list ] )
-```
-
-#### Summary
-
-If the *list* argument is omitted, all leading, trailing and embedded blanks are removed from *string. I*f list is specified, the characters in *list* are removed from *string* instead.
-
-#### Examples
-
-```
-compress( 'why not ' ) returns 'whynot' 
-compress( '+ + 12-34-+' , '+-' ) returns '1234 '
+## COMPRESS
+```rexx
+COMPRESS(string,[list])
 ```
 
-See Also: SPACE(), STRIP(), TRIM()
+If the `list` argument is omitted, all leading, trailing and embedded blanks are removed from `string`. If list is specified, the characters in `list` are removed from `string` instead.
 
-## **COPIES**
-
+```rexx
+compress('why not ' )           /* returns 'whynot' */
+compress('+ + 12-34-+','+- ')   /* returns '1234'   */
 ```
-COPIES( string, number )
+
+See Also: `SPACE()`, `STRIP()`, `TRIM()`
+
+## COPIES
+```rexx
+COPIES(string,number)
 ```
 
 #### Summary
 
-Creates a new string by concatenating *number* copies of *string.* If *number* is zero, the null string is returned.
+Creates a new string by concatenating `number` copies of `string`. If `number` is zero, the null string is returned.
 
-#### Examples
-
-```
-copies( 'abc' , 3 ) returns ' abcabcabc' 
-copies( 'yo', 0 ) returns ''
+```rexx
+copies('abc',3)         /* returns 'abcabcabc' */
+copies('yo',0)          /* returns ''          */
 ```
 
-See Also: CENTER(), OVERLAY()
+See Also: `CENTER()`, `OVERLAY()`
 
-## **D2C**
-
-```
-D2C( number )
-```
-
-#### Summary
-
-Returns a character string that is the ASCII representation of the decimal *number,* which should be an integer.
-
-```
-d2c( 65 ) 
-d2c( 31 ) 
-                                         returns ' A' 
-                                    x returns '1F'
+## D2C
+```rexx
+D2C(number)
 ```
 
-See Also: C2D()
+Returns a character string that is the ASCII representation of the decimal `number`, which should be an integer.
 
-#### D2X
+```
+d2c(65)                 /* returns 'A' */
+d2c(31)                 /* returns '1F'x */
+```
 
-#### D2X( number )
+See Also: `C2D()`
 
-#### Summary
+## D2X
+```rexx
+D2X(number)
+```
 
-Returns the string that is the hexadecimal representation of the given decimal number.
+Returns the string that is the hexadecimal representation of the given decimal `number`.
 
-#### Examples
+```rexx
+d2x( 256 )              /* returns '100' */
+```
 
-d2x( 256 )
+See Also: `C2X()`, `X2C()`, `X2D()`
 
-returns '100'
+## DATATYPE
+```rexx
+DATATYPE(string,[option])
+```
 
-See Also: C2X(), X2C(), X2D()
+If `option` is not specified, `DATATYPE()` tests whether `string` is a valid number and returns `'NUM'` if it is, `'CHAR'` if it isn't.
 
-### DATATYPE
-
-#### Summary
-
-If option is not specified, DATATYPE() tests whether string is a valid number and returns 'NUM' if it is, 'CHAR' if it isn't.
-
-If option is specified, DATATYPE() returns a boolean value indicating whether string is of the given type. Valid keywords for option are:
+If `option` is specified, `DATATYPE()` returns a boolean value indicating whether `string` is of the given type. Valid keywords for `option` are:
 
 | Keyword        | Characters Accepted         |
 |----------------|-----------------------------|
-| 'Alphanumeric' | Alphabetics (A-Z, a-Z)      |
-|                | or Numeric (0-9)            |
+| 'Alphanumeric' | Alphabetics (A-Z, a-Z)  or Numeric (0-9) |
 | 'Binary'       | Binary digits only          |
 | 'Lowercase'    | Lowercase alphabetics (a-z) |
 | 'Mixed'        | Alphabetics (A-Z, a-z)      |
@@ -941,23 +932,20 @@ If option is specified, DATATYPE() returns a boolean value indicating whether st
 | 'Symbol'       | Valid ARexx symbol          |
 | 'Upper'        | Uppercase alphabetics (A-Z) |
 | 'Whole'        | Integer number              |
-| ,χ,            | Hexadecimal digits only     |
+| 'X'            | Hexadecimal digits only     |
 
-```
-datatype('123') returns 'NUM'
-datatype('1a f2', 'x') returns 1
-datatype('aBcde', 'L') returns 0
-```
-
-#### DATE
-
-```
-DATE([option], [date], [format])
+```rexx
+datatype('123')         /* returns 'NUM' */
+datatype('1a f2', 'x')  /* returns 1     */
+datatype('aBcde', 'L')  /* returns 0     */
 ```
 
-#### Summary
+## DATE
+```rexx
+DATE([option],[date],[format])
+```
 
-In its simplest form, DATE() returns the current date in the format specified by option. Recognized options are:
+In its simplest form, `DATE()` returns the current date in the format specified by `option`. Recognized options are:
 
 | Keyword    | Date format                                           |
 |------------|-------------------------------------------------------|
@@ -974,21 +962,17 @@ In its simplest form, DATE() returns the current date in the format specified by
 | 'USA'      | current date in form MM/DD/YY                         |
 | 'Weekday'  | current day of the week (mixed case)                  |
 
-If option is omitted it defaults to 'Normal'.
+If `option` is omitted it defaults to `'Normal'`.
 
-If date is specified, DATE() will use that date instead of the computer's current date in its calculations. If format is not specified, then date is assumed to be in system (internal) days. If specified, format can be either 'I' if date is in internal format, or 'S' if date is in sorted (YYYYMMDD) format.
+If date is specified, `DATE()` will use that date instead of the computer's current date in its calculations. If `format` is not specified, then `date` is assumed to be in system (internal) days. If specified, `format` can be either `'I'` if `date` is in internal format, or `'S'` if `date` is in sorted (YYYYMMDD) format.
 
-#### Examples
-
+```rexx
+date()                          /* returns '17 Oct 1990'   */
+date('M')                       /* returns 'October'       */
+date('s')                       /* returns '19901017'      */
+date('s', date('i') + 21)       /* returns '19901038'      */
+date('w', 19901117, 's')        /* returns 'Saturday'      */
 ```
-date()
-date('M')
-date('M')
-date('s')
-date('s', date('i') + 21)
-date('w', 19901117, 's')
-returns '17 Oct 1990'
-returns '0ctober'
 returns 19880420
 returns 19880609
 returns 'Saturday'
