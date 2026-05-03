@@ -4,7 +4,7 @@ Version 1.0
 The REXX Language for the Amiga
 
 Copyright © 1987 William S. Hawes 
-All Rights Reserved
+All Rights Reserved.
 
 
 # **ARexx Version 1.0**
