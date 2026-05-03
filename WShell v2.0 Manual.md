@@ -1,6 +1,7 @@
 <img src="assets/wshell.svg" alt="WShell Cover" width="200"/>
 
 # **The Beachcomber's Guide to the WShell Version 2.0**
+
 *Copyright © 1988, 1991 William S. Hawes All Rights Reserved*
 
 # WShell 2.0
