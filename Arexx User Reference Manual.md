@@ -18,7 +18,6 @@ ARexx is a multitasking implementation of the REXX language, an elegant high-lev
 * Supports External Function Libraries
 * Compact, Reentrant Code — Only 32K
 
-
 ARexx macro programs can interact with other software products that include an ARexx command interface, allowing you to extend and customize your software and to build integrated applications. The growing list of software products supporting the ARexx command interface includes TxEd-Plus from MicroSmiths, C.A.P.E.68K from Inovatronics, and Amiga TEX from Radical Eye Software.
 
 Look also for WShell, our companion Amiga software product. WShell is a CLI-compatible command shell with the features you've always wanted in a command environment - command aliases, resident and built-in commands, prompt string/window titlebar variables, concurrent piping, and many more. With its ARexx command interface, WShell provides transparent support for REXX macros as well as the standard "execute" scripts (including support for the new "script bit".)
